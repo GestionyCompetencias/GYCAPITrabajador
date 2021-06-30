@@ -1,0 +1,80 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script>
+    function OK(mensaje) {
+        alert(mensaje);
+    }
+</script>
+
+<!DOCTYPE html>
+
+@if (ViewBag.Redireccionar == true)
+{
+    <script type="text/javascript">
+        OK("Su nueva contraseña fue enviada al mail registrado");
+    </script>
+    <meta http-equiv="refresh" content="0;URL=Index">
+}
+
+@if (ViewBag.ErrorInfo == true)
+{
+    <script type="text/javascript">
+        OK("Error en la información ingresada");
+    </script>
+    <meta http-equiv="refresh" content="0;URL=Index">
+}
+
+<html>
+<head>
+    <title>GYC Soluciones</title>
+    <!-- meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- /meta tags -->
+    <!-- custom style sheet -->
+    <link href="~/Content/css/EstiloPropio.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/vendor/fontawesome-free/css/style.css" rel="stylesheet" />
+    <!-- /custom style sheet -->
+    <!-- fontawesome css -->
+    <link href="~/Content/vendor/fontawesome-free/css/fontawesome-all.css" rel="stylesheet" />
+    <!-- /fontawesome css -->
+    <!-- google fonts-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <!-- /google fonts-->
+</head>
+
+
+<body class="imgFondo">
+    <h1>
+    </h1>
+    <div class=" w3l-login-form">
+        <h2><img src="~/Content/img/Vectorizadojpg.jpg" width="300" /></h2>
+        <form method="POST">
+            <div class=" w3l-form-group">
+                <label>Ingrese su usuario:</label>
+                <div class="group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="form-control" placeholder="Rut" required="required" name="Usuario" id="Usuario" />
+                </div>
+            </div>
+            <div class=" w3l-form-group">
+                <label>Ingrese rut empresa:</label>
+                <div class="group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="form-control" placeholder="Rut" required="required" name="Empresa" id="Empresa" />
+                </div>
+            </div>
+            <button type="submit" >Recuperar</button>
+        </form>
+    </div>
+    <footer>
+        <p class="copyright-agileinfo">Gestion y Competencias - Chile</p>
+    </footer>
+
+</body>
+</html>
+

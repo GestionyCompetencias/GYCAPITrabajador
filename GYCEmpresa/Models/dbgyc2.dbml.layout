@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10.75" name="dbgyc2">
+  <DataContextMoniker Name="/dbgyc2DataContext" />
+  <nestedChildShapes>
+    <classShape Id="2172d7fb-8dd0-4f31-a227-fb4a64aff600" absoluteBounds="4.75, 1.875, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_SOLICITUD_VACACIONES" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5f6a0026-1c2e-4a9a-abd4-a87c320320bf" absoluteBounds="4.765, 2.335, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c60bbc34-cac4-4c20-aea5-aa889d9a7537" absoluteBounds="4.75, 0.5, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_SOL_MOD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="85a9ec14-3028-431e-a6bd-7768edd328ec" absoluteBounds="4.765, 0.96, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b5d1d735-f0d8-4ef7-ba6d-7accb6bc9bd8" absoluteBounds="1.875, 1.875, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_CONTRATAPROFESIONAL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b143eaa9-e8a7-4773-8536-c69f2125e6ac" absoluteBounds="1.8899999999999997, 2.335, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5c825d71-ef8e-4cae-826c-625678b571f3" absoluteBounds="1.875, 0.5, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_SOL_PERMISO" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9d61ffb7-6dbc-41a0-999a-e1184269141a" absoluteBounds="1.8900000000000001, 0.96, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="aa30867c-bcde-4957-ab47-21f236ddcc8c" absoluteBounds="4.75, 3.25, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_CARTAAMONESTACION" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c934602f-66d0-42cf-a044-551a5bc01620" absoluteBounds="4.765, 3.71, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="86728941-b69c-41cb-859e-8df3533a8252" absoluteBounds="5.75, 5.25, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/dbgyc2DataContext/TURNO_TRABAJADOR" />
+      <nestedChildShapes>
+        <elementListCompartment Id="db51312a-f143-440b-9b63-f19ea95364b4" absoluteBounds="5.765, 5.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="449b25a2-dfee-4b34-a6fb-f2fa8cde63cc" absoluteBounds="2, 3.375, 2, 1.0016910807291668">
+      <DataClassMoniker Name="/dbgyc2DataContext/MAX_ID_VACACIONES" />
+      <nestedChildShapes>
+        <elementListCompartment Id="25db2785-661d-4a75-8251-59e51e6e2034" absoluteBounds="2.015, 3.835, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9799e93e-5e66-4825-b736-c0b7d1e97c98" absoluteBounds="8.125, 8.375, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dbgyc2DataContext/LOG_MAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="28e9d3d8-54de-4b09-be43-e1966d4213cc" absoluteBounds="8.14, 8.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

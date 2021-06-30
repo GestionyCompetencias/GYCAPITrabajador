@@ -1,0 +1,135 @@
+﻿@{
+    @model IEnumerable<GYCEmpresa.Models.EMPRESA>
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- /meta tags -->
+    <!-- custom style sheet -->
+    <link href="~/Content/css/EstiloPropio.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/vendor/fontawesome-free/css/style.css" rel="stylesheet" />
+    <!-- /custom style sheet -->
+    <!-- fontawesome css -->
+    <link href="~/Content/vendor/fontawesome-free/css/fontawesome-all.css" rel="stylesheet" />
+    <!-- /fontawesome css -->
+    <!-- google fonts-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <!-- /google fonts-->
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/recorrer.js"></script>
+</head>
+
+
+
+<body class="imgFondo">
+
+    
+    <div class="container-fluid">
+        <h1>
+
+        </h1>
+        <div class=" w3l-login-form">
+            <h2><img src="~/Content/img/Vectorizadojpg.jpg" width="300" /></h2>
+            <form method="POST">
+                <div class=" w3l-form-group">
+                    <table class="table table-sm table-light table-responsive-xl table-hover" id="tablaHHEE">
+                        <thead>
+                            <tr><th class="font-weight-bold" colspan="10"><font color="white">Seleccione la empresa con la que desea trabajar</font></th></tr>
+                            <tr></tr>
+                            <tr>
+                                <th></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+
+            </form>
+        </div>
+
+        <form class="" method="post">
+
+
+            <div>
+
+                
+
+
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+       
+
+    function AgregarDatos2() {
+
+        var array = @Html.Raw(Json.Encode(ViewBag.ListaEmpresas));
+        for (var i = 0; i < array.length; i++) {
+
+            var RUT = array[i]['RUT'];
+            var NOMBRE = array[i]['RSOCIAL'];
+
+
+            var name_table = document.getElementById("tablaHHEE");
+            var row = name_table.insertRow(0 + 2);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+
+            cell1.innerHTML = '';
+            cell2.innerHTML = '<p><input type="hidden" id="RUT" name="RUT" value="'+RUT+'"></p>';
+            cell3.innerHTML = '<p><strong><font color="white">' + NOMBRE + '</font></strong></p>';
+            cell4.innerHTML = '<span style="color:Dodgerblue; font-size: 1.5em" class="icon fas fa-arrow-alt-circle-right ir"></span>';
+
+
+        }
+
+        $(".ir").unbind("click").click(SeleccionaEmpresa);
+
+    }
+
+
+    function SeleccionaEmpresa() {
+        var _this = this;
+        //Obtener las filas los datos de la fila que se va a elimnar
+        var array_fila = this;
+        //Obtener las filas los datos de la fila que se va a elimnar
+        var a = this.parentNode.parentNode;
+        var RUT = a.getElementsByTagName("td")[1].getElementsByTagName("input")[0].value;;
+
+            var uri = '@Url.Action("SeleccionaEmpresaLogin" , "Home")?Empresa=' + RUT;
+
+
+            $.ajax({
+                url: uri,
+                data: {},
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (Json) { window.location = "Index";},
+                fail: function (data) { }
+            });
+
+
+    }
+        </script>
+
+</body>
+</html>
+
+

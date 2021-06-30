@@ -1,0 +1,196 @@
+﻿
+@model IEnumerable<GYCEmpresa.Models.NOTIFICACION>
+
+@{
+    ViewBag.Title = "Notificaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        var table = $('#TablaNotificaciones').DataTable();
+
+        $('#TablaNotificaciones tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+
+        $('#button').click(function () {
+
+            var fila = document.getElementsByClassName('selected');
+
+            LeerClick(fila[0].id);
+            table.row('.selected').remove().draw(false);
+        });
+    });
+
+        function LeerClick(ID) {
+            //var _this = this;
+            //Obtener las filas los datos de la fila que se va a elimnar
+            //var array_fila = this;
+            //Obtener las filas los datos de la fila que se va a elimnar
+            //var a = this.parentNode;
+            //var ID = fila[1].value;
+
+
+            var uri = '@Url.Action("LeeNotificacion" , "Notificaciones")?idnotificacion=' + ID;
+                //$("#result").load(uri);
+
+                //var data = array_fila;
+
+                @*var uri = '@Url.Action("AutorizaHHEE" , "ControlAsistencia")';*@
+
+                //alert(uri);
+                $.ajax({
+                    url: uri,
+                    data: {},
+                    type: 'POST',
+                    contentType: 'application/json'
+                });
+
+                var elementos = document.getElementsByName("i[]");
+                for (var x = 0; x < elementos.length; x++) {
+                    elementos[x].innerHTML = x;
+            }
+        }
+
+        function LeeTodo() {
+        var uri = '@Url.Action("LeeTodoNotificacion", "Notificaciones")';
+        $.ajax({
+            url: uri,
+            data: {},
+            type: 'POST',
+            contentType: 'application/json'
+        });
+        window.location.href = '@Url.Action("Notificaciones", "Notificaciones")';
+    }
+
+    function MostrarDetalle(ID) {
+        var _this = this;
+            //Obtener las filas los datos de la fila que se va a elimnar
+            var array_fila = this;
+            //Obtener las filas los datos de la fila que se va a elimnar
+        //    var a = this.parentNode.parentNode;
+        //var ID = a.getElementsByTagName("td")[4].getElementsByTagName("input")[0].value;
+        //var FECHA = a.getElementsByTagName("td")[0].getElementsByTagName("p")[0].innerHTML;
+
+        var DetFecha = document.getElementById("DetalleFecha");
+        DetFecha.innerHTML = "";
+
+        var DetTipo = document.getElementById("DetalleTipo");
+        DetTipo.innerHTML = "";
+
+        var DetObs = document.getElementById("DetalleObservacion");
+        DetObs.innerHTML = "";
+
+        fetch("@Url.Content("~/Notificaciones/DetalleNotificacion")" + "?ID=" + ID)
+                .then(function (result) {
+                    if (result.ok) {
+                        return result.json();
+                    }
+                })
+                .then(function (data) {
+
+                    var TextoFecha = document.createTextNode(data.FECHA);
+                    DetFecha.appendChild(TextoFecha);
+
+                    var TextoTipo = document.createTextNode(data.TIPO);
+                    DetTipo.appendChild(TextoTipo);
+
+                    var TextoObs = document.createTextNode(data.OBSERVACION);
+                    DetObs.appendChild(TextoObs);
+
+                })
+
+        $('#modalAlert').modal('show');
+    }
+
+
+</script>
+
+<div class="container-fluid">
+
+    <h2>Centro de Notificaciones </h2>
+    <hr />
+
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelAlert" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelAlert">Detalle de Notificación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Tipo</span>
+                                </div>
+                                <p class="form-control" id="DetalleTipo"></p>
+                                @*<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" readonly>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Fecha</span>
+                                </div>
+                                <p class="form-control" id="DetalleFecha"></p>
+                                @*<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" readonly>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Observación</span>
+                                </div>
+                                <p class="form-control" id="DetalleObservacion" style="height:auto"></p>
+                                @*<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" readonly>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="button" class="btn btn-primary">Marcar como leido</button>
+    <button class="btn btn-danger" onclick="LeeTodo()" >Marcar Todo como leido</button>
+    <table class="table datatable-button-html5-basic" id="TablaNotificaciones">
+        <thead>
+            <tr>
+                <th data-field="fecha">FECHA</th>
+                <th data-field="tipo">TIPO</th>
+                <th data-field="observacion" width="20%">OBSERVACIÓN</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="@item.ID">
+                    <td><label id="FECHA @item.FECHA">@item.FECHA</label></td>
+                    <td><label id="TIPO @item.TIPO">@item.TIPO</label></td>
+                    <td><label id="OBS @item.OBSERVACION">@item.OBSERVACION</label></td>
+                    <td><button class="btn btn-info" onclick="MostrarDetalle(@item.ID)">DETALLES</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

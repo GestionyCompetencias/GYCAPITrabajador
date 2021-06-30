@@ -1,0 +1,362 @@
+.btnbuscar {
+    padding: 15px 15px 15px 15px;
+    background: url(../Images/lang/1842.png) center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+.Editar {
+    padding: 16px 16px 16px 16px;
+    background: url(../Images/gycsol/editar2.png)center no-repeat;
+    align-items: center;
+    width: 50%;
+    border-color: transparent;
+    background-color: transparent;
+}
+.btnrechazar {
+    padding: 16px 16px 16px 16px;
+    background: url(../Images/gycsol/Rechazar1.png) center no-repeat;
+    background-color: transparent;
+    align-items: center;
+    width: 50%;
+    border-color: transparent;
+}
+.btnvolver {
+    padding: 16px 16px 16px 16px;
+    background: url('../Images/gycsol/volver 2.png') center no-repeat;
+    background-color: transparent;
+    align-items: center;
+    width: 120%;
+    border-color: transparent;
+}
+
+.btnaprobar {
+    padding: 16px 16px 16px 16px;
+    background: url(../Images/gycsol/Aprobar.png) center no-repeat;
+    background-color: transparent;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+}
+
+.btnejecutar {
+    padding: 16px 16px 16px 16px;
+    background: url(../Images/gycsol/ejecutar60.png) center no-repeat;
+    background-color: transparent;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+}
+.btncrear {
+    padding: 25px 25px 25px 25px;
+    background: url(../Images/gycsol/crear.png) center no-repeat;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+.Crear {
+    padding: 25px 25px 25px 25px;
+    background: url(../Images/gycsol/crear.png) center no-repeat;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.Editar1 {
+    padding: 16px 16px 16px 16px;
+    background: url('../Images/gycsol/editar 2.png')center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.Volver {
+    padding: 16px 16px 16px 16px;
+    background: url('../Images/gycsol/volver 1.png') center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.Guardar {
+    padding: 16px 16px 16px 16px;
+    background: url('../Images/gycsol/guardar1.png') center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.Eliminar {
+    padding: 16px 16px 16px 16px;
+    background: url('../Images/gycsol/rechazar.png') center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+.btnpdf {
+    padding: 15px 15px 15px 15px;
+    background: url(../Images/gycsol/pdfGris.png) left center no-repeat;
+    width: 100px;
+    background-color:transparent;
+    border-color: transparent;
+}
+
+
+.btnguardar {
+    padding: 15px 15px 15px 15px;
+    background: url('../Images/gycsol/guardar 2.png') center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.btneliminar {
+    padding: 15px 15px 15px 15px;
+    background: url('../Images/gycsol/rechazar.png') center no-repeat;
+    align-items: center;
+    width: 100%;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+
+.comprobante {
+    margin: 80px;
+    top: 45px;
+    min-height: 595px;
+    min-width: 822px;
+}
+
+.head-comprobante {
+    width: 822px;
+    height: 80px;
+    display: -webkit-box;
+    display: flex;
+}
+
+
+.titulo {
+    padding-left: 49px;
+}
+
+.body-comprobante {
+    width: 822px;
+    height: 320px;
+    display: -webkit-box;
+    display: flex;
+}
+
+.contenido1 {
+    width: 460px;
+    height: 320px;
+}
+
+.contenido2 {
+    width: 362px;
+    height: 320px;
+    border-style: solid;
+    border-right: black;
+    border-top: black;
+    border-bottom: black;
+}
+
+.footer-comprobante {
+    width: 822px;
+    height: 80px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 66px;
+}
+
+.firmas-comprobante {
+    width: 822px;
+    height: 120px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding-left: 50px;
+    padding-top: 30px;
+    padding-right: 50px;
+}
+
+.detalle {
+    width: 280px;
+    height: 22px;
+}
+
+.papeleta {
+    width: 850px;
+    height: auto;
+    border: 1px solid grey;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.titulo-empresa {
+    background-color: #2a9da4;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-empresa {
+    padding: 5px;
+    border: 1px solid grey;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-trabajador {
+    background-color: #2a9da4;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-trabajador {
+    padding: 5px;
+    border: 1px solid grey;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-nominal {
+    background-color: #2a9da4;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-nominal {
+    padding: 5px;
+    border: 1px solid grey;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-pago {
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-pago {
+    padding: 5px;
+    border: 1px solid grey;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-descuento {
+    background-color: #2a9da4;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-descuento {
+    padding: 5px;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-otro {
+    background-color: #2a9da4;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-otro {
+    padding: 5px;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+.titulo-cobro {
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.content-cobro {
+    padding: 5px;
+    border: 1px solid grey;
+    display: flex;
+    display: -webkit-box;
+    flex-direction: row;
+}
+
+#tablanomina {
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+#tabladescuento {
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.centrar-div {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+}
+
+.end-div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.div-style {
+    border: 3px solid #e0E0E0;
+    border-radius: 10px;
+    background-color:#F5F5F5;
+    margin:5px;
+    padding:7px;
+    margin-bottom:10px;
+
+}
+
+
+#ColorButton {
+    background-color: #2099CC;
+}
+
+.ColorButton {
+    background-color: #2099CC;
+}
+
+#input-borde{
+    border:2px solid #2a9da4;
+}
+
+.input-borde{
+    border: 2px solid #2a9da4;
+}

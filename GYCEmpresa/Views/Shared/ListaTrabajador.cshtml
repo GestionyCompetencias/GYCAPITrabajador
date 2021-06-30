@@ -1,0 +1,21 @@
+﻿<head>
+    <link href="~/Content/css/stylesVacaciones.css" rel="stylesheet" />
+</head>
+
+<div class="div-style">
+    <div class="row" id="trabajadores">
+        <div class="col-lg-6">
+
+            <span>Trabajadores</span>
+
+            <div class="input-group mb-3">
+
+                @Html.DropDownList("Trabajador", ViewBag.Trabajadores as SelectList, htmlAttributes: new { @class = "custom-select input-borde", id = "Trabajador" })
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+

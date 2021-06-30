@@ -1,0 +1,561 @@
+﻿@model GYCEmpresa.Models.PERSONA
+<head>
+    <link href="~/Content/css/stylesVacaciones.css" rel="stylesheet" />
+</head>
+<script type="text/javascript">
+    function OK(mensaje) {
+        alert(mensaje);
+    }
+        $(document).ready(function() {
+            $("form").keypress(function (e) {
+                if (e.which == 13) {
+                    return false;
+                }
+            });
+         });
+
+
+
+    var Fn = {
+        // Valida el rut con su cadena completa "XXXXXXXX-X"
+        validaRut: function (rutCompleto) {
+            rutCompleto = rutCompleto.replace("‐", "-");
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
+                $("#msgerror").html("Rut inválido");
+                return false;
+
+            }
+            var tmp = rutCompleto.split('-', 9);
+            var digv = tmp[1];
+            var rut = tmp[0];
+            var rutd = tmp[0] + tmp[1];
+            if (digv == 'K') digv = 'k';
+
+            if (Fn.dv(rut) == digv)
+            {
+                //$("#msgerror").html("Rut correcto");
+                var per = Fn.existeRut(rutd);
+                console.log("persona "+per);
+            }
+            else
+            {
+                $("#msgerror").html("Rut inválido");
+            }
+            return true;
+        },
+        dv: function (T) {
+            var M = 0, S = 1;
+            for (; T; T = Math.floor(T / 10))
+                S = (S + T % 10 * (9 - M++ % 6)) % 11;
+            return S ? S - 1 : 'k';
+        },
+
+        existeRut: function (T) {
+            var exi = "N";
+            var rut = T;
+            var uri = '@Url.Action("ExistePersona" , "Maestros")?RUT=' + rut;
+            console.log(uri);
+            $.ajax({
+                url: uri ,
+                data: {},
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (json) {
+                    var res = json;
+                    console.log("Region  " + res.REGION + "   Ciudad " + res.CIUDAD + "   Comuna " + res.COMUNA);
+                    $('#NOMBRE').val(res.NOMBRE);
+                    $('#APATERNO').val(res.APATERNO);
+                    $('#AMATERNO').val(res.AMATERNO);
+                    $('#FNACIMIENTO').val(res.FNACIM);
+                    $('#NACIONALIDAD').val(res.NACIONALIDAD);
+                    $('#TELEFONO1').val(res.TELEFON1);
+                    $('#TELEFONO2').val(res.TELEFONO2);
+                    $('#CORREO').val(res.CORREO);
+                    $('#DIRECCION').val(res.DIRECCION);
+                    $('#CIUDAD').val(res.CIUDAD);
+                    $('#COMUNA').val(res.COMUNA);
+                    $('#REGION').val(res.REGION);
+                    $('#SEXO').val(res.SEXO);
+                    $('#BANCO').val(res.BANCO);
+                    $('#TCUENTA').val(res.TCUENTA);
+                    $('#NCUENTA').val(res.NCUENTA);
+                    $('#ECIVIL').val(res.ECIVIL);
+                    $('#NHIJOS').val(res.NHIJOS);
+                    $('#SALUD').val(res.SALUD);
+                    $('#ADICIONALSALUD').val(res.ADICIONALSALUD);
+                    $('#PREVISION').val(res.PREVISION);
+                    $('#APV').val(res.APV);
+                    $('#AHORRO').val(res.AHORRO);
+                    $('#EMPRESAACTUAL').val(res.EMPRESAACTUAL);
+                    $('#ESTADOCONTRACTUAL').val(res.ESTADOCONTRATUAL);
+                    $('#FAENA').val(res.FAENAPAS);
+                    $('#TURNO').val(res.TURNO);
+                    $('#FINICIO').val(res.FINICI);
+                    $('#FTERMINO').val(res.FTERMI);
+                    $('#Feriado').val(res.FFERIA);
+                    $('#Diasfer').val(res.DIAS);
+                    $('#Fecsind').val(res.FSINDI);
+                    $('#Sindicato').val(res.CODIGO);
+                    $('#Rsocial').val(res.Rsocial);
+                    $('#Cargo').val(res.CARGO);
+                    $('#Tipcon').val(res.TCONTRATO);
+                    $('#Sueldo').val(res.Sueldo);
+                    $('#Tipcon').val(res.Tipcon);
+                    $('#Existe').val(res.Existe);
+                    console.log("return " + res.Existe);
+               },
+                fail: function (data) { }
+            });
+            return exi;
+        }
+    }
+
+</script>
+
+
+@if (ViewBag.Mensaje != "x")
+{
+    <script type="text/javascript">
+		OK("@ViewBag.Mensaje");
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="div-style">
+        <div class="row">
+            <h1>Editar trabajador</h1>
+            <div class="col-lg-1">
+                <button class="btnguardar" id="btnguardar" name="Guardar" value="Guardar"></button>
+            </div>
+            <div class="col-md-1">
+                <button class="btnvolver" id="Volver" type="submit" name="Volver" value="Volver"></button>
+            </div>
+        </div>
+    </div>
+    <div name="datosbanco" class="div-style">
+        <h3>Información personal</h3>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="form-group col-lg-2">
+                @Html.LabelFor(model => model.RUT, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>RUT</span>
+                @*<div class="input-group mb-3>*@
+                <input id="input-borde" type="text" name="RUT" class="form-control" placeholder="Ingrese rut con guión" onblur="Fn.validaRut(this.value)" />&nbsp;&nbsp;<p class="text-info" id="msgerror"></p>
+                @Html.ValidationMessageFor(model => model.RUT, "", new { @class = "text-danger" })
+                @*</div>*@
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.NOMBRE, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Nombre</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "NOMBRE" } })
+                    @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.APATERNO, "", htmlAttributes: new { @class = "control-label col-md-4" })
+                <span>Apellido Paterno</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.APATERNO, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "APATERNO" } })
+                    @Html.ValidationMessageFor(model => model.APATERNO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.AMATERNO, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Apellido Materno</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.AMATERNO, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "AMATERNO" } })
+                    @Html.ValidationMessageFor(model => model.AMATERNO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.FNACIMIENTO, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Fecha Nacimiento</span>
+                <div class="input-group mb-0">
+                    @*@Html.EditorFor(model => model.FNACIMIENTO, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.FNACIMIENTO, "", new { @class = "text-danger" })
+                    <input id="FNACIMIENTO" type="date" name="FNACIMIENTO" class="form-control input-borde" value="" />
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.NACIONALIDAD, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Nacionalidad</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("NACIONALIDAD", ViewBag.Nacionalidad as SelectList, htmlAttributes: new { @class = "form-control input-borde", @id = "NACIONALIDAD" })
+                    @*@Html.EditorFor(model => model.NACIONALIDAD, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.NACIONALIDAD, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.TELEFONO1, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Telefono1</span>
+                <div class="input-group mb-0">
+                    <input id="TELEFONO1" class="form-control input-borde" type="number" name="TELEFONO1" value="0" maxlength="9" placeholder="Ingrese FONO sin espacios" />&nbsp;&nbsp; <p>* ej: 912398754</p>
+                    @*@Html.EditorFor(model => model.TELEFONO1, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.TELEFONO1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.TELEFONO2, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Telefono2</span>
+                <div class="input-group mb-0">
+                    <input id="TELEFONO2" class="form-control input-borde" type="number" name="TELEFONO2" value="0" maxlength="9" placeholder="Ingrese FONO sin espacios" />&nbsp;&nbsp; <p>* ej: 912398754</p>
+                    @*@Html.EditorFor(model => model.TELEFONO2, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.TELEFONO2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-6">
+                @Html.LabelFor(model => model.CORREO, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Correo Electronico</span>
+                <div class="input-group mb-0">
+                    <input id="CORREO" class="form-control input-borde" type="email" name="CORREO" value="" onkeyup="this.value = this.value.toUpperCase();" class="form-control" placeholder="xxxxxxxx@xxxx.xxx" />
+                    @*@Html.EditorFor(model => model.CORREO, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.CORREO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.DIRECCION, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Dirección</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.DIRECCION, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "DIRECCION" } })
+                    @Html.ValidationMessageFor(model => model.DIRECCION, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Región</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("REGION", ViewBag.Region as SelectList, htmlAttributes: new { @class = "form-control input-borde", @id = "REGION" })
+                    @Html.ValidationMessageFor(model => model.REGION, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                <span>Ciudad</span>
+                <div class="input-group mb-0">
+                    <select id="CIUDAD" name="ciudad" class="form-control input-borde"></select>
+                    @*@Html.DropDownList("CIUDAD", ViewBag.Ciudad as SelectList, htmlAttributes: new { @class = "form-control" ,@id="CIUDAD"})*@
+                    @Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @*@Html.LabelFor(model => model.COMUNA, "", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <span>Comuna</span>
+                <div class="input-group mb-0">
+                    <select id="COMUNA" name="comuna" class="form-control input-borde"></select>
+                    @*@Html.DropDownList("COMUNA", ViewBag.Comuna as SelectList, htmlAttributes: new { @class = "form-control", @id="COMUNA" })*@
+                    @Html.ValidationMessageFor(model => model.COMUNA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @*@Html.LabelFor(model => model.SEXO, "", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <span>Sexo</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("SEXO", ViewBag.Sexo as SelectList, htmlAttributes: new { @class = "form-control input-borde", @id = "SEXO" })
+                    @*@Html.EditorFor(model => model.SEXO, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.SEXO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div name="datosbanco" class="div-style">
+        <h4>Información Bancaria</h4>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.BANCO, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Banco</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("BANCO", ViewBag.Banco as SelectList, htmlAttributes: new { @Id = "BANCO", @class = "form-control input-borde" })
+                    @Html.ValidationMessageFor(model => model.BANCO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.TCUENTA, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Tipo de Cuenta</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("TCUENTA", ViewBag.TipoCuenta as SelectList, htmlAttributes: new { @Id = "TCUENTA", @class = "form-control input-borde" })
+                    @Html.ValidationMessageFor(model => model.TCUENTA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.NCUENTA, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Número de cuenta</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.NCUENTA, new { htmlAttributes = new { @class = "form-control input-borde", @id = "NCUENTA" } })
+                    @Html.ValidationMessageFor(model => model.NCUENTA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div name="datosfamilia" class="div-style">
+        <h4>Información Familiar</h4>
+        <div class="row">
+            <div class="form-group col-lg-2">
+                @Html.LabelFor(model => model.ECIVIL, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Estado Civil</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("ECIVIL", ViewBag.EstadoCivil as SelectList, htmlAttributes: new { @Id = "ECIVIL", @class = "form-control input-borde" })
+                    @*@Html.EditorFor(model => model.ECIVIL, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.ECIVIL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                @Html.LabelFor(model => model.NHIJOS, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Número de Hijos</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.NHIJOS, new { htmlAttributes = new { @class = "form-control input-borde", @value = "0", @id = "NHIJOS" } })
+                    @Html.ValidationMessageFor(model => model.NHIJOS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.NCONTACTOEM, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Nombre de Contacto Emergencia</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.NCONTACTOEM, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "NCONTACTOEM" } })
+                    @Html.ValidationMessageFor(model => model.NCONTACTOEM, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                @Html.LabelFor(model => model.TCONTACTOEM, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Telefono Contacto Emergencia</span>
+                <div class="input-group mb-0">
+                    <input class="form-control input-borde" id="TCONTACTOEM" type="number" name="TCONTACTOEM" value="0" placeholder="564112312312" />
+                    @*@Html.EditorFor(model => model.TCONTACTOEM, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.TCONTACTOEM, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div name="datosprevicion" class="div-style">
+
+        <h4>Información Previsional</h4>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.SALUD, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Institución de Salud</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("SALUD", ViewBag.Salud as SelectList, htmlAttributes: new { @Id = "SALUD", @class = "form-control input-borde" })
+                    @Html.ValidationMessageFor(model => model.SALUD, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.ADICIONALSALUD, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Adicional Salud</span>
+                <div class="input-group mb-0">
+                    <input id="ADICIONALSALUD" type="text" name="ADICIONALSALUD" value="0" step="0.1" />&nbsp;&nbsp; <p> * UF</p>
+                    @*@Html.EditorFor(model => model.ADICIONALSALUD, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.ADICIONALSALUD, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.PREVISION, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Previsión</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("PREVISION", ViewBag.Prevision as SelectList, htmlAttributes: new { @Id = "PREVISION", @class = "form-control input-borde" })
+                    @Html.ValidationMessageFor(model => model.PREVISION, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.APV, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>APV</span>
+                <div class="input-group mb-0">
+                    <input id="APV" type="text" name="APV" value="0" step="0.1" />&nbsp;&nbsp; <p> * UF</p>
+                    @*@Html.EditorFor(model => model.APV, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.APV, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                @Html.LabelFor(model => model.AHORRO, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Ahorro</span>
+                <div class="input-group mb-0">
+                    <input id="AHORRO" type="text" name="AHORRO" value="0" step="0.1" />&nbsp;&nbsp; <p> * UF</p>
+                    @*@Html.EditorFor(model => model.AHORRO, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.AHORRO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4">
+                @Html.LabelFor(model => model.EMPRESAACTUAL, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Empresa Actual</span>
+                <div class="input-group mb-0">
+                    @Html.EditorFor(model => model.EMPRESAACTUAL, new { htmlAttributes = new { @class = "form-control input-borde", @onkeyup = "this.value = this.value.toUpperCase();", @id = "EMPRESAACTUAL" } })
+                    @Html.ValidationMessageFor(model => model.EMPRESAACTUAL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-lg-2">
+                @Html.LabelFor(model => model.ESTADOCONTRATUAL, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                <span>Estado Contractual</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("ESTADOCONTRACTUAL", ViewBag.EstadoContractual as SelectList, htmlAttributes: new { @Id = "ESTADOCONTRACTUAL", @class = "form-control input-borde" })
+                    @*@Html.EditorFor(model => model.ESTADOCONTRATUAL, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.ESTADOCONTRATUAL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div name="infocontrato" class="div-style">
+        <h4>Información de Contrato</h4>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Contrato</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("GENERA", ViewBag.Genera as SelectList, htmlAttributes: new { @class = "form-control input-borde" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                <span>Empresa (*)</span>
+                <div class="input-group">
+                    @Html.DropDownList("Rsocial", ViewBag.Rsocial as SelectList, htmlAttributes: new { @class = "custom-select input-borde", @id = "Rsocial" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <span>Tipo contrato (*)</span>
+                <div class="input-group">
+                    @Html.DropDownList("Tipcon", ViewBag.Tipcon as SelectList, htmlAttributes: new { @class = "form-control input-borde", @id = "Tipcon" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-2">
+                <span>Faena</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("FAENA", ViewBag.Faena as SelectList, htmlAttributes: new { @Id = "FAENA", @class = "form-control input-borde" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                <span>Cargo (*)</span>
+                <div class="input-group">
+                    @Html.DropDownList("Cargo", ViewBag.Cargo as SelectList, htmlAttributes: new { @Id = "Cargo", @class = "form-control input-borde" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <span>Turno</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("TURNO", ViewBag.Turno as SelectList, htmlAttributes: new { @Id = "TURNO", @class = "form-control input-borde" })
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Fecha Inicio</span>
+                <div class="input-group mb-0">
+                    <input type="date" name="FINICIO" id="FINICIO" class="form-control input-borde" value="@ViewBag.fecini" />
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                <span>Fecha Termino</span>
+                <div class="input-group mb-0">
+                    <input type="date" name="FTERMINO" id="FTERMINO" class="form-control input-borde" value="@ViewBag.fecfin" />
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <span>Sueldo</span>
+                <div class="input-group">
+                    <input id="Sueldo" class="form-control input-borde" type="text" name="Sueldo" value="0" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Fecha Feriado Progresivo</span>
+                <div class="input-group mb-0">
+                    <input type="date" name="Feriado" id="Feriado" class="form-control input-borde" value="@ViewBag.fecfer" />
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <span>Dias Contrato</span>
+                <div class="input-group mb-0">
+                    <input name="Diasfer" id="Diasfer" class="form-control input-borde" value="0" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Fecha Sindicato</span>
+                <div class="input-group mb-0">
+                    <input type="date" name="Fecsind" id="Fecsind" class="form-control input-borde" value="@ViewBag.fecsind" />
+                </div>
+            </div>
+            <div class="form-group col-lg-2">
+                <span>Sindicato</span>
+                <div class="input-group mb-0">
+                    @Html.DropDownList("Sindicato", ViewBag.Sindicatos as SelectList, htmlAttributes: new { @Id = "Sindicato", @class = "form-control input-borde" })
+                </div>
+            </div>
+
+        </div>
+        <input style="visibility:hidden;" color="transparent" id="Existe" name="Existe"></input>
+    </div>
+}
+<script type="text/javascript">
+    var cboRegion = document.getElementById("REGION");
+    var cboCiudad = document.getElementById("CIUDAD");
+    cboRegion.addEventListener("change", RefreshCiudad);
+    cboCiudad.addEventListener("change", RefreshComuna);
+    RefreshCiudad();
+
+    function RefreshCiudad() {
+        fetch("@Url.Content("~/Contrato/CboCiudad")" + "?idRegion=" + cboRegion.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (data) {
+                console.log(data);
+                cbo = document.getElementById("CIUDAD");
+                cbo.innerHTML = "";
+                data.forEach(function (element) {
+                    let opt = document.createElement("option");
+                    opt.appendChild(document.createTextNode(element.Text));
+                    opt.value = element.Value;
+                    cbo.appendChild(opt);
+                })
+            })
+        RefreshComuna();
+    }
+
+        function RefreshComuna() {
+
+            fetch("@Url.Content("~/Contrato/CboComuna")" + "?idRegion=" + cboRegion.value)
+                .then(function (result) {
+                    if (result.ok) {
+                        return result.json();
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                    cbo = document.getElementById("COMUNA");
+                    cbo.innerHTML = "";
+                    data.forEach(function (element) {
+                        let opt = document.createElement("option");
+                        opt.appendChild(document.createTextNode(element.Text));
+                        opt.value = element.Value;
+                        cbo.appendChild(opt);
+                    })
+                })
+        }
+
+
+</script>
+
+

@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @*<meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <title>@ViewBag.Title - GYC Soluciones</title>
+        </head>
+        <body>*@
+
+    @Html.ActionLink("Personal", "ExistePersonaDetalle", "APITrabajador")
+    @Html.ActionLink("Marcacion", "MarcacionesTrabajador", "APITrabajador")
+    @Html.ActionLink("Vacacion", "SolicitudVacaciones", "APITrabajador")
+    @Html.ActionLink("Compensacion", "SolicitudCompensacion", "APITrabajador")
+    @Html.ActionLink("Periodos", "Periodos", "APITrabajador")
+    @Html.ActionLink("Utilizados", "Utilizados", "APITrabajador")
+    @Html.ActionLink("CtaCorriente", "Ctacte", "APITrabajador")
+    @*@Html.ActionLink("Licencias", "LicenciasMedicas", "APITrabajador")*@
+
+    @*<div class="content-wrapper">*@
+    @RenderBody()
+    @*</div>*@
+
+    </body>
+
+</html>

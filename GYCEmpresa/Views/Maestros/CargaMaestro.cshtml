@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Carga Maestro";
+}
+
+<h2>Carga Maestro</h2>
+<head>
+    <link href="~/Content/css/stylesVacaciones.css" rel="stylesheet" />
+</head>
+
+<script type="text/javascript">
+    function OK(mensaje) {
+        alert(mensaje);
+    }
+        $(document).ready(function() {
+            $("form").keypress(function (e) {
+                if (e.which == 13) {
+                    return false;
+                }
+            });
+         });
+
+
+
+    var Fn = {
+
+        existeRut: function () {
+            var exi = "N";
+            var rut = "135324493";
+            var uri = '@Url.Action("ExistePersonaDetalle" , "Maestros")?RUT=' + rut;
+            console.log(uri);
+            $.ajax({
+                url: uri ,
+                data: {},
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (json) {
+                    var res = json;
+                    console.log(res);
+                    $('#NOMBRE').val(res.NOMBRE);
+                    $('#APATERNO').val(res.APATERNO);
+                    $('#AMATERNO').val(res.AMATERNO);
+                    $('#FNACIMIENTO').val(res.FNACIM);
+                    $('#NACIONALIDAD').val(res.NACIONALIDAD);
+                    $('#TELEFONO1').val(res.TELEFON1);
+                    $('#TELEFONO2').val(res.TELEFONO2);
+                    $('#CORREO').val(res.CORREO);
+                    $('#DIRECCION').val(res.DIRECCION);
+                    $('#CIUDAD').val(res.CIUDAD);
+                    $('#COMUNA').val(res.COMUNA);
+                    $('#REGION').val(res.REGION);
+                    $('#SEXO').val(res.SEXO);
+                    $('#BANCO').val(res.BANCO);
+                    $('#TCUENTA').val(res.TCUENTA);
+                    $('#NCUENTA').val(res.NCUENTA);
+                    $('#ECIVIL').val(res.ECIVIL);
+                    $('#NHIJOS').val(res.NHIJOS);
+                    $('#SALUD').val(res.SALUD);
+                    $('#ADICIONALSALUD').val(res.ADICIONALSALUD);
+                    $('#PREVISION').val(res.PREVISION);
+                    $('#APV').val(res.APV);
+                    $('#AHORRO').val(res.AHORRO);
+                    $('#EMPRESAACTUAL').val(res.EMPRESAACTUAL);
+                    $('#ESTADOCONTRACTUAL').val(res.ESTADOCONTRATUAL);
+                    $('#FAENA').val(res.FAENAPAS);
+                    $('#TURNO').val(res.TURNO);
+                    $('#FINICIO').val(res.FINICI);
+                    $('#FTERMINO').val(res.FTERMI);
+                    $('#Feriado').val(res.FFERIA);
+                    $('#Diasfer').val(res.DIAS);
+                    $('#Fecsind').val(res.FSINDI);
+                    $('#Sindicato').val(res.CODIGO);
+                    $('#Rsocial').val(res.Rsocial);
+                    $('#Cargo').val(res.CARGO);
+                    $('#Tipcon').val(res.TCONTRATO);
+                    $('#Sueldo').val(res.Sueldo);
+                    $('#Tipcon').val(res.Tipcon);
+                    $('#Existe').val(res.Existe);
+                    console.log("return " + res.Existe);
+               },
+                fail: function (data) { }
+            });
+            return exi;
+        }
+    }
+
+</script>
+<div class="div-style">
+    <div class="row">
+        <div class="col-lg-1">
+            <button class="btnaprobar" id="aprobar" onclick="Fn.existeRut()"></button>
+        </div>
+        <div class="col-lg-1">
+            <button class="btnvolver" id="Volver" type="submit" name="Volver" value="Volver"></button>
+        </div>
+    </div>
+</div>
+
+

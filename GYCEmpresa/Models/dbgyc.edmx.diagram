@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="549717327d1742be94ced78409769d26" Name="Diagram1" ZoomLevel="101" ShowGrid="true">
+        <EntityTypeShape EntityType="dbgycModel.AREA" Width="1.5" PointX="16.5" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.BANCO" Width="1.5" PointX="3.75" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.BANCOEMPRESA" Width="1.5" PointX="19.25" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CALIBRACIONEQUIPOS" Width="1.5" PointX="14.25" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CARGO" Width="1.5" PointX="20" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CARGOEMPRESA" Width="1.5" PointX="14.25" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CARROCERIA" Width="1.5" PointX="18" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CCOSTO" Width="1.5" PointX="14.25" PointY="81.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CHARLASEGURIDAD" Width="1.5" PointX="8.25" PointY="56.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CIUDAD" Width="1.5" PointX="3.75" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.CLIENTE" Width="1.5" PointX="14.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.COMUNA" Width="1.5" PointX="3.75" PointY="56.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.DESCBATERIAEXAMENES" Width="1.5" PointX="9" PointY="41.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.DESCPERMISO" Width="1.5" PointX="17" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.DESCUENTOHABERCONTRATO" Width="1.5" PointX="16.5" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.DESCUENTOSHABERES" Width="1.5" PointX="0.75" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.DESCVALIDACION" Width="1.5" PointX="17.25" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.ECIVIL" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.EMPRESA" Width="1.5" PointX="12" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.ESPECIALIDAD" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.EXAMENMEDICO" Width="1.5" PointX="11.25" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.FORMHEXTRA" Width="1.5" PointX="14.25" PointY="84.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.IMPUNICO" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.INSTALACIONES" Width="1.5" PointX="9.75" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.INSTITUCION" Width="1.5" PointX="9" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.LIMPIEZABANHOS" Width="1.5" PointX="14.25" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.MANDANTE" Width="1.5" PointX="7.5" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.MARCA" Width="1.5" PointX="18" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.MODELO" Width="1.5" PointX="18" PointY="59.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.NACIONALIDAD" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.NOTAS" Width="1.5" PointX="22.25" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.PERMISO" Width="1.5" PointX="19.25" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.PREVISION" Width="1.5" PointX="0.75" PointY="50.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.REGION" Width="1.5" PointX="1.5" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.REGISTRORELOJ" Width="1.5" PointX="8.25" PointY="77.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.REMUNERACION" Width="1.5" PointX="3" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.SALUD" Width="1.5" PointX="0.75" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.SERVICIO" Width="1.5" PointX="9" PointY="60.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDSERVICIO" Width="1.5" PointX="11.25" PointY="50.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.TIPOCONTRATO" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.TIPOCUENTA" Width="1.5" PointX="3.75" PointY="59.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.USUARIO" Width="1.5" PointX="17" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.VALIDACIONES" Width="1.5" PointX="19.5" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbgycModel.VEHICULO" Width="1.5" PointX="20.25" PointY="32" IsExpanded="true" />
+        <AssociationConnector Association="dbgycModel.FK_AREA_CCOS" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_BANCOEMP_BANCO_BAN_BANCO" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_BANCOEMP_BANCOEMPR_EMPRESA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_CARGOEMP_CARGOEMPR_EMPRESA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VEHICULO_VEHICARRO_CARROCER" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_CCOS_EMPR" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_CHAR_INST" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_CIUD_REGI" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_EMPR_CIUD" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_USUA_CLIE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_COMU_REGI" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_EMPR_COMU" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_PERMI_DESC" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_DESCU_DESCU" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VALI_DESC" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_EMPR_REGI" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_FORM_EMPR" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_NOTA_EMPR" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISO_REFERENCE_EMPRESA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_SOLSEREMP_EMPRESA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VALID_EMPR" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VEHICULO_VEHIEMPRE_EMPRESA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_EXAM_INST" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_INSTALAC_REFERENCE_MANDANTE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_MODELO_REFERENCE_MARCA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VEHICULO_VEHIMARC_MARCA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_VEHICULO_VEHIMODE_MODELO" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_NOTA_USUA_DEST" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_NOTA_USUA_ORIG" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_PERMI_USUA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_PREV_AH" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_PREV_APV" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_PREV_OTRO" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_PREV_PREV" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_SALU" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_SOLSERSER_SERVICIO" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.BATERIAEXAMEN" ManuallyRouted="false" />
+        <AssociationConnector Association="dbgycModel.REMUNERACIONDESCUENTOHABER" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbgycModel.MARCACIONRELOJ" Width="1.5" PointX="8.25" PointY="89.75" />
+        <EntityTypeShape EntityType="dbgycModel.PERMISOINASISTENCIA" Width="1.5" PointX="8.25" PointY="83.25" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDPERMANENTESERVICIO" Width="1.5" PointX="19.25" PointY="52.25" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_SOLPERMEM_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_SOLPERSER_SERVICIO" />
+        <EntityTypeShape EntityType="dbgycModel.RESUMENCONTRATAPROFESIONAL" Width="1.5" PointX="6.75" PointY="3.75" />
+        <EntityTypeShape EntityType="dbgycModel.ACREDITACION" Width="1.5" PointX="11.25" PointY="54.375" />
+        <EntityTypeShape EntityType="dbgycModel.ENROLL" Width="1.5" PointX="8.25" PointY="102.75" />
+        <EntityTypeShape EntityType="dbgycModel.GESTIONORGANIZACIONAL" Width="1.5" PointX="8.25" PointY="97.25" />
+        <EntityTypeShape EntityType="dbgycModel.GRUPOFAMILIAR" Width="1.5" PointX="8.25" PointY="92" />
+        <EntityTypeShape EntityType="dbgycModel.ITEMACREDITACION" Width="1.5" PointX="13.5" PointY="60.25" />
+        <EntityTypeShape EntityType="dbgycModel.LOGINTRABAJADOR" Width="1.5" PointX="8.25" PointY="37.25" />
+        <EntityTypeShape EntityType="dbgycModel.TRABAJADORESNOACREDITADOS" Width="1.5" PointX="6.75" PointY="6.75" />
+        <AssociationConnector Association="dbgycModel.FK_ACREDITA_ACREEMPRE_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_ACREDITA_ACREEMPRE_MANDANTE" />
+        <AssociationConnector Association="dbgycModel.FK_ITEMACRE_ITEMACRED_ACREDITA" />
+        <EntityTypeShape EntityType="dbgycModel.ESCALASUELDOS" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.NOTIFICACION" Width="1.5" PointX="19.25" PointY="19.5" />
+        <AssociationConnector Association="dbgycModel.FK_NOTIFICA_NOTIUSUAR_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.OTROSERVICIO" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="dbgycModel.CARTAAMONESTACION" Width="1.5" PointX="8.25" PointY="47.625" />
+        <EntityTypeShape EntityType="dbgycModel.COLACIONESHHEE" Width="1.5" PointX="14.25" PointY="25.125" />
+        <EntityTypeShape EntityType="dbgycModel.MOVILIZACIONHHEE" Width="1.5" PointX="14.25" PointY="21.625" />
+        <EntityTypeShape EntityType="dbgycModel.ACREDITAVEHICULO" Width="1.5" PointX="2.75" PointY="8.75" />
+        <EntityTypeShape EntityType="dbgycModel.ACTEXTRAPROGRAMATICA" Width="1.5" PointX="14.25" PointY="17.625" />
+        <EntityTypeShape EntityType="dbgycModel.TRABAJADORCONTRATO" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.ANEXOSPENDIENTES" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.HHEE" Width="1.5" PointX="8.25" PointY="30.25" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDHHEE" Width="1.5" PointX="19.25" PointY="11.625" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_HHEEUSUAR_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.ATENCIONORGANIZACIONAL" Width="1.5" PointX="14.25" PointY="56.375" />
+        <EntityTypeShape EntityType="dbgycModel.ATENCIONORGANIZACIONALONLINE" Width="1.5" PointX="8.25" PointY="105.625" />
+        <EntityTypeShape EntityType="dbgycModel.DECMATERIA" Width="1.5" PointX="12" PointY="67" />
+        <EntityTypeShape EntityType="dbgycModel.ENVIOMAIL" Width="1.5" PointX="16.5" PointY="37.375" />
+        <EntityTypeShape EntityType="dbgycModel.SETUPMANDANTE" Width="1.5" PointX="9.75" PointY="21.5" />
+        <AssociationConnector Association="dbgycModel.FK_ATENCION_ATENSMATE_DECMATER" />
+        <AssociationConnector Association="dbgycModel.FK_ENVIOMAI_CARGOEMPM_CARGOEMP" />
+        <AssociationConnector Association="dbgycModel.FK_SETUPMAN_REFERENCE_MANDANTE" />
+        <EntityTypeShape EntityType="dbgycModel.HHEEPORFAENA" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="dbgycModel.NOTICIA" Width="1.5" PointX="10.75" PointY="13.75" />
+        <EntityTypeShape EntityType="dbgycModel.SERVICIOEMPRESA" Width="1.5" PointX="14.25" PointY="87.25" />
+        <EntityTypeShape EntityType="dbgycModel.BUSCADORTRABAJADORES" Width="1.5" PointX="14.75" PointY="0.75" />
+        <AssociationConnector Association="dbgycModel.FK_SERVICIO_SERVEMPRE_EMPRESA" />
+        <EntityTypeShape EntityType="dbgycModel.PANORAMA" Width="1.5" PointX="4.75" PointY="15.75" />
+        <EntityTypeShape EntityType="dbgycModel.TICKET" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.TURNOCOLACION" Width="1.5" PointX="14.25" PointY="32.125" />
+        <EntityTypeShape EntityType="dbgycModel.ABASTECIMIENTOAGUA" Width="2.75" PointX="14.25" PointY="6.625" />
+        <EntityTypeShape EntityType="dbgycModel.MANOOBRADIRECTA" Width="1.5" PointX="22.25" PointY="14" />
+        <AssociationConnector Association="dbgycModel.FK_MANOOBRA_REFERENCE_CARGO" />
+        <AssociationConnector Association="dbgycModel.FK_MANOOBRA_REFERENCE_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDANEXO" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="dbgycModel.EPP" Width="1.5" PointX="8.25" PointY="67.125" />
+        <EntityTypeShape EntityType="dbgycModel.CONTRATADIRECTA" Width="1.5" PointX="22.25" PointY="18.75" />
+        <AssociationConnector Association="dbgycModel.FK_CONTRATA_REFERENCE_CARGO" />
+        <EntityTypeShape EntityType="dbgycModel.CONTRATAPROFESIONAL" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="dbgycModel.FK_CONTRATA_REFERENCE_ESPECIAL" />
+        <EntityTypeShape EntityType="dbgycModel.VACACIONES" Width="1.5" PointX="8.25" PointY="109.125" />
+        <EntityTypeShape EntityType="dbgycModel.SERVICIOCONTRATADO" Width="1.5" PointX="19.25" PointY="36.875" />
+        <AssociationConnector Association="dbgycModel.FK_SERVICIO_EMPRSERVC_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_SERVICIO_SERVSERVC_SERVICIO" />
+        <AssociationConnector Association="dbgycModel.FK_SERVICIO_USUASERVC_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.TIPOLICENCIASMEDICAS" Width="1.5" PointX="6" PointY="62.125" />
+        <EntityTypeShape EntityType="dbgycModel.TIPOMEDICO" Width="1.5" PointX="6" PointY="59.875" />
+        <EntityTypeShape EntityType="dbgycModel.LICENCIAMEDICA" Width="1.5" PointX="8.25" PointY="52" />
+        <AssociationConnector Association="dbgycModel.FK_LICENCIA_REFERENCE_TIPOLICE" />
+        <AssociationConnector Association="dbgycModel.FK_LICENCIA_REFERENCE_TIPOMEDI" />
+        <EntityTypeShape EntityType="dbgycModel.DESGLOSEVACACION" Width="1.5" PointX="10.5" PointY="109.25" />
+        <EntityTypeShape EntityType="dbgycModel.TIPOVACACION" Width="1.5" PointX="8.25" PointY="112.5" />
+        <AssociationConnector Association="dbgycModel.FK_DESGLOSE_REFERENCE_TIPOVACA" />
+        <AssociationConnector Association="dbgycModel.FK_DESGLOSE_REFERENCE_VACACION" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDVACACIONES" Width="1.5" PointX="19.25" PointY="27.375" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_REFERENCE_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_REFERENCE_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.CERTIFICACIONUPDATE" Width="1.5" PointX="14.25" PointY="65.125" />
+        <EntityTypeShape EntityType="dbgycModel.CERTIFICACION" Width="1.5" PointX="14.25" PointY="73.25" />
+        <EntityTypeShape EntityType="dbgycModel.CERTIFICADOVIEW" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="dbgycModel.DIASCOMPENSADOS" Width="1.5" PointX="8.25" PointY="86.375" />
+        <EntityTypeShape EntityType="dbgycModel.PARAMETRODIACOMPENSADO" Width="1.5" PointX="14.25" PointY="90.25" />
+        <AssociationConnector Association="dbgycModel.EMPRESA_PARAMETRO_DCOMPENSADO" />
+        <EntityTypeShape EntityType="dbgycModel.SOLICITUDPERMISOINASISTENCIA" Width="1.5" PointX="6.75" PointY="17.75" />
+        <EntityTypeShape EntityType="dbgycModel.COMPENSADO_UTILIZADO" Width="1.5" PointX="10.5" PointY="83.5" />
+        <AssociationConnector Association="dbgycModel.FK_COMPENSA_REFERENCE_PERMISOI" />
+        <EntityTypeShape EntityType="dbgycModel.COLACIONESDIARIAS" Width="1.5" PointX="17.25" PointY="32.625" />
+        <AssociationConnector Association="dbgycModel.FK_COLACION_REFERENCE_EMPRESA" />
+        <EntityTypeShape EntityType="dbgycModel.LOG_MARCACIONES" Width="2.5" PointX="8.75" PointY="17.75" />
+        <EntityTypeShape EntityType="dbgycModel.PERSONA" Width="1.5" PointX="6" PointY="45" />
+        <AssociationConnector Association="dbgycModel.FK_ACREDITA_ACRETRABA_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_ATENCION_ATENPERS_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_ATENCION_ATENONLIN_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_BANC" />
+        <AssociationConnector Association="dbgycModel.FK_CARTAAMO_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_CHAR_PERS" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_CIUDAD" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_COM" />
+        <AssociationConnector Association="dbgycModel.FK_DIASCOMP_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_ENROLL_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_EPP_PERS" />
+        <AssociationConnector Association="dbgycModel.FK_EXAM_PERS" />
+        <AssociationConnector Association="dbgycModel.FK_GESTIONO_GESTORGAN_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_GRUPOFAM_GRUPFAMTR_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_HHEE_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_LICENCIA_LICENPERS_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_LOGINTRA_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_MARCACIO_MARCAPERS_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISOI_PERMIPERS_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_PREV" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_REG" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_SALU" />
+        <AssociationConnector Association="dbgycModel.FK_PERS_TCUENTA" />
+        <AssociationConnector Association="dbgycModel.FK_REGISTRO_TRABREGIR_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_REMU_PERS" />
+        <AssociationConnector Association="dbgycModel.FK_SOLICITU_REFERENCE_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_VACACION_VACAPERSO_PERSONA" />
+        <AssociationConnector Association="dbgycModel.FK_VALI_PERS" />
+        <EntityTypeShape EntityType="dbgycModel.ARCHIVOS_ERROR" Width="1.5" PointX="16.375" PointY="10.75" />
+        <EntityTypeShape EntityType="dbgycModel.LOG_ACCESO" Width="1.5" PointX="16.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbgycModel.FINIQUITO" Width="1.5" PointX="23.375" PointY="37.25" />
+        <AssociationConnector Association="dbgycModel.FK_FINIQUIT_TRAB_SOLF_PERSONA" />
+        <EntityTypeShape EntityType="dbgycModel.DOCUMENTOS_CLOUD" Width="1.5" PointX="25.25" PointY="26.875" />
+        <AssociationConnector Association="dbgycModel.FK_DOCUMENT_REFERENCE_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_DOCUMENT_REFERENCE_USUARIO" />
+        <EntityTypeShape EntityType="dbgycModel.FAENA" Width="1.5" PointX="26.25" PointY="32.875" />
+        <AssociationConnector Association="dbgycModel.FK_ABASTECI_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_ACTEXTRA_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_CALIBRAC_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_CERTIFIC_CERTI_FAE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_CERTIFICA_CERTI_FAE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_COLACION_REFERENCE_FAENA_2" />
+        <AssociationConnector Association="dbgycModel.FK_COLACION_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_FAEN_EMPR" />
+        <AssociationConnector Association="dbgycModel.FK_FAENA_REFERENCE_INSTALAC" />
+        <AssociationConnector Association="dbgycModel.FK_FINIQUIT_FAENA_SOL_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_LIMPIEZA_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_MOVILIZA_REFERENCE_FAENA" />
+        <AssociationConnector Association="dbgycModel.FK_TURNOCOL_REFERENCE_FAENA" />
+        <EntityTypeShape EntityType="dbgycModel.TIPO_BUCKET" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.CONTRATO" Width="1.5" PointX="28.5" PointY="42.5" />
+        <AssociationConnector Association="dbgycModel.FK_CONT_EMPR" />
+        <AssociationConnector Association="dbgycModel.FK_CONT_FAEN" />
+        <AssociationConnector Association="dbgycModel.FK_CONT_PERS" />
+        <AssociationConnector Association="dbgycModel.FK_DESCU_CONT" />
+        <AssociationConnector Association="dbgycModel.FK_FINIQUIT_REFERENCE_CONTRATO" />
+        <AssociationConnector Association="dbgycModel.FK_VALI_CONT" />
+        <EntityTypeShape EntityType="dbgycModel.JORNADA" Width="1.5" PointX="20.375" PointY="3.875" />
+        <AssociationConnector Association="dbgycModel.FK_CONT_JORN" />
+        <EntityTypeShape EntityType="dbgycModel.ARCHIVOS_EMPRESA" Width="1.5" PointX="14.25" PointY="40.875" />
+        <AssociationConnector Association="dbgycModel.FK_ARCHIVOS_REFERENCE_EMPRESA" />
+        <EntityTypeShape EntityType="dbgycModel.PERMISO_V2" Width="1.5" PointX="23.25" PointY="33.375" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISO__REFERENCE_EMPRESA" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISO__REFERENCE_SERVICIO" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISO__REFERENCE_USUARIO" />
+        <AssociationConnector Association="dbgycModel.FK_PERMISO__REFERENCE_DESCPERM" />
+        <EntityTypeShape EntityType="dbgycModel.MARCACIONyRUT" Width="1.5" PointX="20.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbgycModel.LOG_DOCUMENTOS_VALIDACION" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.HASH_DOCUMENTOS" Width="1.5" PointX="3.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbgycModel.TRABAJADORCONTRATONUEVO" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="dbgycModel.ANEXOS" Width="1.5" PointX="30.75" PointY="44.25" />
+        <AssociationConnector Association="dbgycModel.FK_ANEX_CONT" />
+        <EntityTypeShape EntityType="dbgycModel.LOG_ACEPTATIEMPO" Width="1.5" PointX="21.375" PointY="10.75" />
+        <EntityTypeShape EntityType="dbgycModel.rhuedias" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.FERIADO" Width="1.5" PointX="16.375" PointY="21.75" />
+        <EntityTypeShape EntityType="dbgycModel.remecarg" Width="1.5" PointX="24.375" PointY="21.75" />
+        <EntityTypeShape EntityType="dbgycModel.remedesc" Width="1.5" PointX="26.375" PointY="9.75" />
+        <EntityTypeShape EntityType="dbgycModel.remehabe" Width="1.5" PointX="26.375" PointY="19.75" />
+        <EntityTypeShape EntityType="dbgycModel.remepage" Width="1.5" PointX="28.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbgycModel.remepara" Width="1.5" PointX="5.375" PointY="28.75" />
+
+        <EntityTypeShape EntityType="dbgycModel.Turno" Width="1.5" PointX="28.375" PointY="17.75" />
+        <EntityTypeShape EntityType="dbgycModel.TurnoDetalle" Width="1.5" PointX="30.625" PointY="15.875" />
+        <EntityTypeShape EntityType="dbgycModel.TurnoTrabajador" Width="1.5" PointX="30.625" PointY="19.75" />
+        <AssociationConnector Association="dbgycModel.FK_TurnoDetalle_Turno" />
+
+        <AssociationConnector Association="dbgycModel.FK_TurnoTrabajador_Turno" />
+        <EntityTypeShape EntityType="dbgycModel.rhueperi" Width="1.5" PointX="29.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbgycModel.rhuesolc" Width="1.5" PointX="22.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbgycModel.rhuesolv" Width="1.5" PointX="21.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbgycModel.rhueusos" Width="1.5" PointX="29.375" PointY="29.75" />
+        <EntityTypeShape EntityType="dbgycModel.remeasis" Width="1.5" PointX="23.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbgycModel.remebanc" Width="1.5" PointX="3.375" PointY="24.75" />
+        <EntityTypeShape EntityType="dbgycModel.remebene" Width="1.5" PointX="24.375" PointY="13.75" />
+        <EntityTypeShape EntityType="dbgycModel.remecenr" Width="1.5" PointX="24.375" PointY="4.75" />
+        <EntityTypeShape EntityType="dbgycModel.remedein" Width="1.5" PointX="16.375" PointY="27.75" />
+        <EntityTypeShape EntityType="dbgycModel.remefami" Width="1.5" PointX="28.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbgycModel.remehain" Width="1.5" PointX="10.375" PointY="28.75" />
+        <EntityTypeShape EntityType="dbgycModel.remeinst" Width="1.5" PointX="25.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.remelabo" Width="1.5" PointX="30.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.remepers" Width="1.5" PointX="30.375" PointY="6.75" />
+        <EntityTypeShape EntityType="dbgycModel.remeproc" Width="1.5" PointX="26.375" PointY="13.75" />
+        <EntityTypeShape EntityType="dbgycModel.remeresu" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="dbgycModel.rhueempr" Width="1.5" PointX="30.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbgycModel.remebita" Width="1.5" PointX="3.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbgycModel.FERIADOESPECIAL" Width="1.5" PointX="5.375" PointY="31.75" />
+        <EntityTypeShape EntityType="dbgycModel.SINDICATOTRABAJADOR" Width="1.5" PointX="31.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbgycModel.PERFILTRABAJADOR" Width="1.5" PointX="31.375" PointY="26.75" />
+        <EntityTypeShape EntityType="dbgycModel.DOMINGOSTRABAJADOS" Width="1.5" PointX="31.375" PointY="29.75" />
+
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,25 @@
+﻿<head>
+    <link href="~/Content/css/stylesVacaciones.css" rel="stylesheet" />
+</head>
+<div class="div-style">
+
+
+    <form class="form-group" method="post">
+
+        <span>Faenas</span>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="input-group mb-3">
+                    @Html.DropDownList("FAENA", ViewBag.Faenas as SelectList, htmlAttributes: new { @class = "custom-select input-borde", id = "FAENA" })
+                </div>
+            </div>
+            <div class="col-1">
+                <button  id="btnejecutar" class="btnejecutar" name="CargarButton" value="Cargar"></button>
+            </div>
+
+        </div>
+    </form>
+
+</div>

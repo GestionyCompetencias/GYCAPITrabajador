@@ -1,0 +1,155 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GYC Soluciones</title>
+    <!--Global stylesheets -->
+
+
+    <link rel="stylesheet" type="text/css" href="/Content/css/icons/icomoon/styles.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/icons/fontawesome/styles.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/css/bootstrap_limitless.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/css/layout.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/css/components.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/Content/css/colors.min.css">
+
+
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+
+
+    <!--Estilos propios GYC
+            <link rel="stylesheet" type="text/css" href="/Content/css/sb-admin-2.min.css">
+        <link rel="stylesheet" type="text/css" href="/Content/datatables.min.css">
+        <link rel="stylesheet" type="text/css" href="/Content/vendor/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="/Content/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="/Content/css/EstiloPropio.css">
+        <link rel="stylesheet" type="text/css" href="/Content/css/utilities.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+
+            Scripts.Render("~/bundles/modernizr")
+        <!-- Custom styles for this template-->
+    <!---->
+    <!--Scripts -->
+    <script src="/Content/js/main/jquery.min.js"></script>
+    <script src="/Content/js/main/bootstrap.bundle.min.js"></script>
+    <script src="/Content/js/plugins/loaders/blockui.min.js"></script>
+    <script src="/Content/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script src="/Content/js/plugins/visualization/d3/d3.min.js"></script>
+    <script src="/Content/js/plugins/visualization/d3/d3_tooltip.js"></script>
+    <script src="/Content/js/plugins/forms/styling/switchery.min.js"></script>
+    <script src="/Content/js/plugins/forms/selects/select2.min.js"></script>
+    <script src="/Content/js/plugins/forms/styling/uniform.min.js"></script>
+    <script src="/Content/js/plugins/ui/moment/moment.min.js"></script>
+    <script src="/Content/js/plugins/pickers/daterangepicker.js"></script>
+    <script src="/Content/js/app.js"></script>
+    <script src="/Content/js/demo_pages/dashboard.js"></script>
+    <script src="/Content/js/demo_pages/datatables_basic.js"></script>
+    <script src="/Content/datatables.min.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/streamgraph.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/sparklines.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/lines.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/areas.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/donuts.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/bars.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/progress.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/heatmaps.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/pies.js"></script>
+    <script src="/Content/js/demo_charts/pages/dashboard/light/bullets.js"></script>
+</head>
+
+
+<body>
+    <div class="page-content login-cover">
+        <div class="content-wrapper">
+            <div class="content d-flex justify-content-center align-items-center">
+                <form class="login-form wmin-sm-400" action="POST">
+                    <div class="card mb-0">
+                        <ul class="nav nav-tabs nav-justified alpha-grey mb-0">
+                            <li class="nav-item"><a href="#login-tab1" class="nav-link border-y-0 border-left-0 active" data-toggle="tab"><h6 class="my-1">Empresa</h6></a></li>
+                            <li class="nav-item"><a href="#login-tab2" class="nav-link border-y-0 border-right-0" data-toggle="tab"><h6 class="my-1">Trabajador</h6></a></li>
+
+                            <li class="nav-item"><a href="#login-tab3" class="nav-link border-y-0 border-right-0" data-toggle="tab"><h6 class="my-1">AYUDA</h6></a></li>
+                        </ul>
+
+                        <div class="tab-content card-body">
+                            <div class="tab-pane fade show active" id="login-tab1">
+                                <div class="text-center mb-3">
+                                    <i class="icon-reading icon-2x text-slate-300 border-slate-300 border-3 rounded-round p-3 mb-3 mt-1"></i>
+                                    <h5 class="mb-0">Acceso a su cuenta</h5>
+                                    <span class="d-block text-muted">Ingrese sus credenciales</span>
+                                </div>
+
+                                <div class="form-group form-group-feedback form-group-feedback-left">
+                                    <input type="text" class="form-control" placeholder="Usuario">
+                                    <div class="form-control-feedback">
+                                        <i class="icon-user text-muted"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-group-feedback form-group-feedback-left">
+                                    <input type="password" class="form-control" placeholder="Contraseña">
+                                    <div class="form-control-feedback">
+                                        <i class="icon-lock2 text-muted"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group d-flex align-items-center">
+                                     <a href="login_password_recover.html" class="ml-auto">Recuperar Contraseña</a>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="tab-pane fade" id="login-tab2">
+                                <div class="text-center mb-3">
+                                    <i class="icon-plus3 icon-2x text-success border-success border-3 rounded-round p-3 mb-3 mt-1"></i>
+                                    <h5 class="mb-0">Create account</h5>
+                                    <span class="d-block text-muted">All fields are required</span>
+                                </div>
+                                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                                <meta http-equiv="refresh" content="5;URL=http://www.google.com">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+        <h1></h1>
+        <div class=" w3l-login-form">
+            <h2><img src="~/Content/img/Vectorizadojpg.jpg" width="300" /></h2>
+            <h6 style="color:white; text-align: center;">Bienvenido al sistema de gestión GYCSOL</h6>
+            <form>
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("Login", "Home")'">EMPRESA</button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-success" onclick="window.location.href='@Url.Action("goTrabajador", "Home")'">TRABAJADOR</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+</body>
+</html>
+

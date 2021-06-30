@@ -1,0 +1,46 @@
+﻿@model GYCEmpresa.Models.NOTICIA
+
+@{
+    ViewBag.Title = "PortalNoticias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    @{
+        var base64 = "";
+        var imgSrc = "";
+        if (Model.IMAGEN != null)
+        {
+            base64 = Convert.ToBase64String(Model.IMAGEN);
+            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+        }
+        else
+        {
+            imgSrc = "/Content/img/undraw_posting_photo.svg";
+        }
+
+
+        <div class="container">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Model.TITULO</h6>
+                    <p>@Model.AUTOR</p>
+                    <p>@String.Format("{0:dddd, MMMM d, yyyy}", Model.FECHA)</p>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="@imgSrc" alt="">
+                    </div>
+                    <p>
+                        @Html.Raw(Model.CONTENIDO)
+
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+

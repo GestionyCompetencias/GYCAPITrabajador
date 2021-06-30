@@ -1,0 +1,907 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="gycsolcl_dbgycP" Class="dbgyc2DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=179.61.13.195;Initial Catalog=gycsolcl_dbgycP;User ID=gycsolcl_gestionAdmin;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="dbgycPConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.MAX_ID_SOLICITUD_VACACIONES" Member="MAX_ID_SOLICITUD_VACACIONES">
+    <Type Name="MAX_ID_SOLICITUD_VACACIONES">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MAX_ID_SOL_MOD" Member="MAX_ID_SOL_MOD">
+    <Type Name="MAX_ID_SOL_MOD">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MAX_ID_CONTRATAPROFESIONAL" Member="MAX_ID_CONTRATAPROFESIONAL">
+    <Type Name="MAX_ID_CONTRATAPROFESIONAL">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MAX_ID_SOL_PERMISO" Member="MAX_ID_SOL_PERMISO">
+    <Type Name="MAX_ID_SOL_PERMISO">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MAX_ID_CARTAAMONESTACION" Member="MAX_ID_CARTAAMONESTACION">
+    <Type Name="MAX_ID_CARTAAMONESTACION">
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TURNO_TRABAJADOR" Member="TURNO_TRABAJADOR">
+    <Type Name="TURNO_TRABAJADOR">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="HORA_INICIO" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="HORA_FIN" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="DIA" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="HORAS_DIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="gycsolcl_gestionAdmin.MAX_ID_VACACIONES" Member="MAX_ID_VACACIONES">
+    <Type Name="MAX_ID_VACACIONES">
+      <Column Name="Expr1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LOG_MAIL" Member="LOG_MAIL">
+    <Type Name="LOG_MAIL">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FECHA_ENVIO" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MACS" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="IPS" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="USUARIO" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="MAIL_DESTINO" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="ADJUNTO" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.TOTALLICENCIASXEMPRESA" Method="TOTALLICENCIASXEMPRESA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="TOTALLICENCIASXEMPRESAResult">
+      <Column Name="LICENCIAS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.TOTALPRESENTESXEMPESA" Method="TOTALPRESENTESXEMPESA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="TOTALPRESENTESXEMPESAResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.TOTALPERMISOSXEMPRESA" Method="TOTALPERMISOSXEMPRESA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="TOTALPERMISOSXEMPRESAResult">
+      <Column Name="PERMISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.TOTALCONTRATADOSXEMPRESA" Method="TOTALCONTRATADOSXEMPRESA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="TOTALCONTRATADOSXEMPRESAResult">
+      <Column Name="CONTRATADOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.PRESENTESyDOTACIONXFAENA" Method="PRESENTESyDOTACIONXFAENA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="PRESENTESyDOTACIONXFAENAResult">
+      <Column Name="DOTACION_FAENA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TOTAL_FAENA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FAENA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="PORCENTAJE" Type="System.String" DbType="VarChar(24) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DOTACION" Method="DOTACION">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="DOTACIONResult">
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="TOTAL_CONTRATADOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="PERMISO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LICENCIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VACACIONES" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PERMISOINASISTENCIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PRESENTES" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AUSENTES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.INSERTHHEE" Method="INSERTHHEE">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="hhee" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.PERMITEMARCACIONMANUAL" Method="PERMITEMARCACIONMANUAL">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="MARCAMANUAL" Parameter="mARCAMANUAL" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="PERMITEMARCACIONMANUALResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.REPORTEAUSENCIAS" Method="REPORTEAUSENCIAS">
+    <Parameter Name="FECHAINICIO" Parameter="fECHAINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FECHATERMINO" Parameter="fECHATERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="REPORTEAUSENCIASResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_TOTALES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DIAS_VACACIONES" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_LICENCIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_PERMISO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_PRESENTE" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_SIN_MARCAR" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOTAL_AUSENCIAS_AUTORIZADAS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOTAL_AUSENCIAS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DETALLE_HHDESCUENTO" Method="DETALLE_HHDESCUENTO">
+    <Parameter Name="fechainicio" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="fechatermino" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="faena" Type="System.Int32" DbType="Int" />
+    <Parameter Name="trabajador" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="DETALLE_HHDESCUENTOResult">
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MARCACION" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="HENTRADA" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="HSALIDA" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="CHECKTYPE" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="HENTRADA2" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="HSALIDA2" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="HORA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HHDD" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.HHEE_AUTORIZADAS" Method="HHEE_AUTORIZADAS">
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="HHEE_AUTORIZADASResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(152) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MARCA_INICIO" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="MARCA_FIN" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="HHEE" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.EVENTOSNOPAREADOS" Method="EVENTOSNOPAREADOS">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="faena" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fechainicio" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="fechatermino" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="EVENTOSNOPAREADOSResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MARCACION" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="INI_TURNO" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="FIN_TURNO" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="FAENA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIA_SEMANA" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.INSERTMARCAMANUAL" Method="INSERTMARCAMANUAL">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="MARCAMANUAL" Parameter="mARCAMANUAL" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ENTRADA_SALIDA" Parameter="eNTRADA_SALIDA" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.MODIFICA_TERMINO_CONTRATO" Method="MODIFICA_TERMINO_CONTRATO">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FECHATERMINO" Parameter="fECHATERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.INSERT_SOLICITUD_VACACIONES" Method="INSERT_SOLICITUD_VACACIONES">
+    <Parameter Name="USUARIO" Parameter="uSUARIO" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CONTRATOS_RECHAZADOS" Method="CONTRATOS_RECHAZADOS">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="CONTRATOS_RECHAZADOSResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PDF" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" />
+      <Column Name="OBSERVACIONES" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.RECHAZA_VACACIONES" Method="RECHAZA_VACACIONES">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.RECHAZA_PERMISOINASISTENCIA" Method="RECHAZA_PERMISOINASISTENCIA">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.TOTALVACACIONESXEMPRESA" Method="TOTALVACACIONESXEMPRESA">
+    <Parameter Name="empresa" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="fecha" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="TOTALVACACIONESXEMPRESAResult">
+      <Column Name="VACACIONES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.NOTIFICACIONES_TODOS_LEIDAS_EMPRESA" Method="NOTIFICACIONES_TODOS_LEIDAS_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.CONTRATOS_FIRMADOS" Method="CONTRATOS_FIRMADOS">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="CONTRATOS_FIRMADOSResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PERSONA" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHAVALIDO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.ANEXOS_FIRMADOS" Method="ANEXOS_FIRMADOS">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="ANEXOS_FIRMADOSResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PERSONA" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHAVALIDO" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.CARTAAMONESTACION_FIRMAR_EMPRESA" Method="CARTAAMONESTACION_FIRMAR_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="CARTAAMONESTACION_FIRMAR_EMPRESAResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PDF" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" />
+      <Column Name="OBSERVACIONES" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FIRMAEMPRES" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FIRMATRABAJADOR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.REPORTE_SOLICITUDES" Method="REPORTE_SOLICITUDES">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="ESTADO" Parameter="eSTADO" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="REPORTE_SOLICITUDESResult">
+      <Column Name="ID" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="DETALLE" Type="System.String" DbType="VarChar(153)" CanBeNull="true" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(17) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.FINIQUITO_FIRMA_EMPRESA" Method="FINIQUITO_FIRMA_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="FINIQUITO_FIRMA_EMPRESAResult">
+      <Column Name="FECHA_SOLICITUD" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.FINIQUITOS_FIRMADOS" Method="FINIQUITOS_FIRMADOS">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="FINIQUITOS_FIRMADOSResult">
+      <Column Name="FECHA_SOLICITUD" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="FECHA_CIERRE_SOLICITUD" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CONSULTA_ESTADO_PARA_SOLICITUD" Method="CONSULTA_ESTADO_PARA_SOLICITUD">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="CONSULTA_ESTADO_PARA_SOLICITUDResult">
+      <Column Name="ESTADO" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.SERVICIOS_CONTRATADOS" Method="SERVICIOS_CONTRATADOS">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="SERVICIOS_CONTRATADOSResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="COBRO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CODIGO" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.OFERTA_VACACIONES" Method="OFERTA_VACACIONES">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="OFERTA_VACACIONESResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA_SOLICITUD" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ID_SOLICITUD" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.DETALLE_VACACIONES" Method="DETALLE_VACACIONES">
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="DETALLE_VACACIONESResult">
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ID_PERIODO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LEGALES" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="PROGRESIVAS" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="SINDICATO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AC_CONTRATO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="TOT_PERIODO" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.INSERT_DIACOMPENSADO" Method="INSERT_DIACOMPENSADO">
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FECHAORIGEN" Parameter="fECHAORIGEN" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="AUTORIZA" Parameter="aUTORIZA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.OFERTA_DOMINGOS_TRABAJADOS" Method="OFERTA_DOMINGOS_TRABAJADOS">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="OFERTA_DOMINGOS_TRABAJADOSResult">
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.VACIONES_DISPONIBLES_Y_TOMADAS" Method="VACIONES_DISPONIBLES_Y_TOMADAS">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="VACIONES_DISPONIBLES_Y_TOMADASResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="MESES_CONTRATO" Type="System.Decimal" DbType="Decimal(20,5)" CanBeNull="true" />
+      <Column Name="TOTAL_MESES_CONSULTADOS" Type="System.Decimal" DbType="Decimal(18,5)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="RUT_V" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_LEGALES" Type="System.Decimal" DbType="Decimal(18,5)" CanBeNull="true" />
+      <Column Name="TOTAL_ADICIONAL_CONTRATO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="LEGALES_MAS_ADICIONAL_CONTRATO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_LEGALES_TOMADOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_LEGALES_DISPONIBLES" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_POR_AÑOS_SERVICIO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_TOMADOS_POR_AÑOS_SERVICIO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_DISPONIBLES_POR_AÑOS_SERVICIO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_SINDICATO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_TOMADOS_POR_SINDICATO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DIAS_DISPONIBLES_POR_SINDICATO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_VACACIONES" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_DISPONIBLES" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="TOTAL_TOMADOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.INSERT_SOLICITUD_PERMISOINASISTENCIA" Method="INSERT_SOLICITUD_PERMISOINASISTENCIA">
+    <Parameter Name="USUARIO" Parameter="uSUARIO" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="COMPENSADO" Parameter="cOMPENSADO" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.COMPENSADOS_DISPONIBLES" Method="COMPENSADOS_DISPONIBLES">
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="COMPENSADOS_DISPONIBLESResult">
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="SALDO_COMPENSADOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.CONSULTA_COMPENSADOS" Method="CONSULTA_COMPENSADOS">
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="CONSULTA_COMPENSADOSResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHAORIGENCOMPENSADO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="DIASCOMPENSADOS" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="FECHAVENCIMIENTO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.OFERTA_PERMISOINASISTENCIA" Method="OFERTA_PERMISOINASISTENCIA">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="OFERTA_PERMISOINASISTENCIAResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPENSADO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FECHA_SOLICITUD" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="COMPENSADO1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.ESTADO_ACREDITACION" Method="ESTADO_ACREDITACION">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="ESTADO_ACREDITACIONResult">
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="EMPRESACONTRATO" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="FECHA" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ESTADO_ACREDITACION" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ESTADO_CONTRATO" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ESTADO_DAS" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ESTADO_EXAMEN" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.AUTORIZA_PERMISOINASISTENCIA" Method="AUTORIZA_PERMISOINASISTENCIA">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="GOCESUELDO" Parameter="gOCESUELDO" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="DIAS_COMPENSADOS" Parameter="dIAS_COMPENSADOS" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.VALIDA_DIAS_PERMISO_INASISTENCIA" Method="VALIDA_DIAS_PERMISO_INASISTENCIA">
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="VALIDA_DIAS_PERMISO_INASISTENCIAResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DIASTOTALES" Method="DIASTOTALES">
+    <Parameter Name="fechainicio" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="fechatermino" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="faena" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DIASTOTALESResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="A_PATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="A_MATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_TRABAJADOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DIAS_VACACIONES" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_LICENCIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_PERMISO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_TOTALES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DIAS_AUSENCIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DT" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="X2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HDESCUENTO" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="HHEE" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="HORAS_PERMISO" Type="System.String" DbType="VarChar(8) NOT NULL" CanBeNull="false" />
+      <Column Name="DIAS_COMPENSADOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.MODIFICA_MARCACION" Method="MODIFICA_MARCACION">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="MARCACION" Parameter="mARCACION" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="MARCACION_NUEVA" Parameter="mARCACION_NUEVA" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TIPO" Parameter="tIPO" Type="System.String" DbType="VarChar(2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.OFERTA_HHEE_TURNO_POR_HORAS" Method="OFERTA_HHEE_TURNO_POR_HORAS">
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="HORAS" Parameter="hORAS" Type="System.Int32" DbType="Int" />
+    <Parameter Name="MINUTOS" Parameter="mINUTOS" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="OFERTA_HHEE_TURNO_POR_HORASResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MARCA_ENTRADA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MARCA_SALIDA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FIN_TURNO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="HHEE" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DETALLE_MARCACIONyRUT" Method="DETALLE_MARCACIONyRUT">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="DETALLE_MARCACIONyRUTResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="USERID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MARCACION" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="FECHA" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="HORA" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.ELIMINA_MARCACION" Method="ELIMINA_MARCACION">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="MARCACION" Parameter="mARCACION" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TIPO" Parameter="tIPO" Type="System.String" DbType="VarChar(2)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.LOGMAIL" Method="LOGMAIL">
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="MAC" Parameter="mAC" Type="System.String" DbType="VarChar(200)" />
+    <Parameter Name="IP" Parameter="iP" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="USUARIO" Parameter="uSUARIO" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="MAIL_DESTINO" Parameter="mAIL_DESTINO" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="ADJUNTO" Parameter="aDJUNTO" Type="System.String" DbType="VarChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.TRABAJADORES_SINCONTRATO" Method="TRABAJADORES_SINCONTRATO">
+    <ElementType Name="TRABAJADORES_SINCONTRATOResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.GET_FIRMA" Method="GET_FIRMA">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FECHA" Parameter="fECHA" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="GET_FIRMAResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.GET_DOCUMENTO" Method="GET_DOCUMENTO">
+    <Parameter Name="TABLA" Parameter="tABLA" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GET_DOCUMENTOResult">
+      <Column Name="PDF" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.GUARDA_DOCUMENTO" Method="GUARDA_DOCUMENTO">
+    <Parameter Name="TABLA" Parameter="tABLA" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ARCHIVO" Parameter="aRCHIVO" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" />
+    <ElementType Name="GUARDA_DOCUMENTOResult">
+      <Column Name="PDF" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.GENERA_HASH" Method="GENERA_HASH">
+    <Parameter Name="ID_DOCUMENTO" Parameter="iD_DOCUMENTO" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TABLA" Parameter="tABLA" Type="System.String" DbType="VarChar(100)" />
+    <ElementType Name="GENERA_HASHResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.CALCULA_DIAS_EFECTIVOS_VACACION" Method="CALCULA_DIAS_EFECTIVOS_VACACION">
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <ElementType Name="CALCULA_DIAS_EFECTIVOS_VACACIONResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.TRABAJADORES_GESTION_DOCUMENTOS" Method="TRABAJADORES_GESTION_DOCUMENTOS">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="TRABAJADORES_GESTION_DOCUMENTOSResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.DAR_BAJA_TRABAJADOR" Method="DAR_BAJA_TRABAJADOR">
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ID_CONTRATO" Parameter="iD_CONTRATO" Type="System.Int32" DbType="Int" />
+    <Parameter Name="USUARIO" Parameter="uSUARIO" Type="System.String" DbType="VarChar(9)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OFERTAHHEE_RELOJ" Method="OFERTAHHEE_RELOJ">
+    <Parameter Name="FECHAINICIO" Parameter="fECHAINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FECHAFIN" Parameter="fECHAFIN" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="MINUTOSHHEE" Parameter="mINUTOSHHEE" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="JORNADA" Parameter="jORNADA" Type="System.String" DbType="VarChar(20)" />
+    <ElementType Name="OFERTAHHEE_RELOJResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="JORNADA" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
+      <Column Name="MARCACION" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="HHEE" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.AUTRIZA_VACACIONES" Method="AUTRIZA_VACACIONES">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.FILTRO_FECHAS_SOLICITUDES" Method="FILTRO_FECHAS_SOLICITUDES">
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TIPO_CONSULTA" Parameter="tIPO_CONSULTA" Type="System.String" DbType="VarChar(2)" />
+    <ElementType Name="FILTRO_FECHAS_SOLICITUDESResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.LISTA_PERIODOS_VACACIONES" Method="LISTA_PERIODOS_VACACIONES">
+    <Parameter Name="RUT_TRABAJADOR" Parameter="rUT_TRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="LISTA_PERIODOS_VACACIONESResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="DIAS_EFECTIVOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.LISTA_PERIODOS_VACACIONES_INGRESO_MAUAL" Method="LISTA_PERIODOS_VACACIONES_INGRESO_MAUAL">
+    <Parameter Name="RUT_TRABAJADOR" Parameter="rUT_TRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="LISTA_PERIODOS_VACACIONES_INGRESO_MAUALResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="DIAS_EFECTIVOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.DETALLE_VACACIONES_INGRESO_MANUAL" Method="DETALLE_VACACIONES_INGRESO_MANUAL">
+    <Parameter Name="ID_PERIODO_VACACION" Parameter="iD_PERIODO_VACACION" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DETALLE_VACACIONES_INGRESO_MANUALResult">
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="DIAS_EFECTIVOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DIAS_LEGALES" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DIAS_PROGRESIVOS" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ID_PERIODO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.TRABAJADORESFINIQUITADOSPORFAENA" Method="TRABAJADORESFINIQUITADOSPORFAENA">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="TRABAJADORESFINIQUITADOSPORFAENAResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NUMCONTRATOEMPRESA" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="PERSONA" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="FTERMNO" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="FAENA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="HORDINARIAS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="APATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AMATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="DESCRIPCION1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ID1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.TRABAJADORESVIGENTESPORFAENA" Method="TRABAJADORESVIGENTESPORFAENA">
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <ElementType Name="TRABAJADORESVIGENTESPORFAENAResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NUMCONTRATOEMPRESA" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="PERSONA" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="FTERMNO" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="FAENA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="HORDINARIAS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="APATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AMATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="DESCRIPCION1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.MUESTRA_FECHA_CONTRATOS" Method="MUESTRA_FECHA_CONTRATOS">
+    <Parameter Name="IDCONTRATO" Parameter="iDCONTRATO" Type="System.Int32" DbType="Int" />
+    <ElementType Name="MUESTRA_FECHA_CONTRATOSResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.CONTRATOS_FIRMAR_EMPRESA" Method="CONTRATOS_FIRMAR_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="CONTRATOS_FIRMAR_EMPRESAResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="OBSERVACIONES" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.ANEXOS_FIRMAR_EMPRESA" Method="ANEXOS_FIRMAR_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="ANEXOS_FIRMAR_EMPRESAResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PDF" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="OBSERVACIONES" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FIRMAEMPRESA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FIRMATRABAJADOR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.BUSCA_TRABAJADOR_EMPRESA" Method="BUSCA_TRABAJADOR_EMPRESA">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="NOMBRE" Parameter="nOMBRE" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="APELLIDO" Parameter="aPELLIDO" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="RUT" Parameter="rUT" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="BUSCA_TRABAJADOR_EMPRESAResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="APATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AMATERNO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DIRECCION" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="REGION" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CIUDAD" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="COMUNA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FNACIMIENTO" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="NACIONALIDAD" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="SEXO" Type="System.String" DbType="VarChar(25)" CanBeNull="true" />
+      <Column Name="TELEFONO1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TELEFONO2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CORREO" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BANCO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TCUENTA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NCUENTA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ECIVIL" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NHIJOS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NCONTACTOEM" Type="System.String" DbType="VarChar(80) NOT NULL" CanBeNull="false" />
+      <Column Name="TCONTACTOEM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SALUD" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ADICIONALSALUD" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="PREVISION" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="APV" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="AHORRO" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="EMPRESAACTUAL" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="ESTADOCONTRATUAL" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="FOTO" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+      <Column Name="OMONTO1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OMONTO2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OMONTO3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMONTO1" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="DMONTO2" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="DMONTO3" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.LISTA_DOCUMENTOS" Method="LISTA_DOCUMENTOS">
+    <Parameter Name="DESCRIPCION" Parameter="dESCRIPCION" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="EXTENSION" Parameter="eXTENSION" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="TIPO" Parameter="tIPO" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ESTADO_VIGENCIA" Parameter="eSTADO_VIGENCIA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TRABAJADORES_VIGENTES" Parameter="tRABAJADORES_VIGENTES" Type="System.Int32" DbType="Int" />
+    <ElementType Name="LISTA_DOCUMENTOSResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DESCRIPCION" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ARCHIVO" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="EXTENSION" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="FINICIO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FTERMINO" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="FSUBIDA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="USUARIO" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="EMPRESA" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOTIFICA_TERMINO" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="S3_DIRECTORIO" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="RSOCIAL" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.MARCACIONES" Method="MARCACIONES">
+    <Parameter Name="FECHAINICIO" Parameter="fECHAINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FECHAFIN" Parameter="fECHAFIN" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="MARCACIONESResult">
+      <Column Name="RUT" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="VarChar(153) NOT NULL" CanBeNull="false" />
+      <Column Name="CARGO" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="HORA" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="MARCACION" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="HHEE" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="COORDENADA" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="MODIFICADA" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.VALIDA_HASH" Method="VALIDA_HASH">
+    <Parameter Name="HASHSTRING" Parameter="hASHSTRING" Type="System.String" DbType="NVarChar(64)" />
+    <Parameter Name="TIPO" Parameter="tIPO" Type="System.String" DbType="VarChar(1)" />
+    <Parameter Name="CLAVE" Parameter="cLAVE" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="RUT_TRABAJADOR" Parameter="rUT_TRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="VALIDA_HASHResult">
+      <Column Name="FECHA_FINAL" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TRABAJADOR" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="EMPRESA" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="HASH_FINAL" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="HASH_DOCUMENTO" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="HASH_FIRMA_TRABAJADOR" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="HASH_FIRMA_EMPRESA" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="HASH_BLOQUE" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="USUARIO_EMPRESA" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="TABLA_DOCUMENTO" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="RUT_TRABAJADOR" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="RUT_EMPRESA" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="FIRMANTE_EMPRESA" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.INFORME_MARCACIONES_EMPRESA_FINAL" Method="INFORME_MARCACIONES_EMPRESA_FINAL">
+    <Parameter Name="RUT_EMPRESA" Parameter="rUT_EMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FINICIO" Parameter="fINICIO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="FTERMINO" Parameter="fTERMINO" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TRABAJADOR" Parameter="tRABAJADOR" Type="System.String" DbType="VarChar(9)" />
+    <Parameter Name="FAENA" Parameter="fAENA" Type="System.Int32" DbType="Int" />
+    <Parameter Name="VIGENTES" Parameter="vIGENTES" Type="System.Int32" DbType="Int" />
+    <ElementType Name="INFORME_MARCACIONES_EMPRESA_FINALResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="COL1" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL2" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL3" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL4" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL5" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL6" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL7" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL8" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL9" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="COL10" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="gycsolcl_gestionAdmin.NOTIFICACIONES_PENDIENTES" Method="NOTIFICACIONES_PENDIENTES">
+    <Parameter Name="EMPRESA" Parameter="eMPRESA" Type="System.String" DbType="VarChar(9)" />
+    <ElementType Name="NOTIFICACIONES_PENDIENTESResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FECHA" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="TIPO" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OBSERVACION" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

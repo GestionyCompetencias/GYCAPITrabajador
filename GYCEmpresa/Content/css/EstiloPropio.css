@@ -1,0 +1,49 @@
+﻿.barraSuperior {
+    background-image:url("../img/topbar.png");
+    padding: 20px;
+}
+
+.sideGYC {
+      
+   }
+
+    .sideGYC span {
+        /*color: #2a9da4;*/
+        /*font-weight:800;*/
+        color: #ededed;
+    }
+
+    .sideGYC i {
+        color: #ffffff !important
+    }
+
+.imgPropia {
+    max-width: 100%;
+}
+
+hr {
+    background-color: gray;
+}
+
+.navPersonalizado {
+    margin: 2px;
+    background-color: #444444;
+}
+
+    /*.navPersonalizado:hover {
+        margin: 2px;
+        background-color: #545454;
+    }*/
+
+.imgFondo {
+    /*background-image:url("../img/Buildings.jpg");*/
+    /*background-color: #545454;*/
+    background-image: linear-gradient(#00b8ff, yellow);
+}
+
+.collapse-item {
+    background-color: #545454;
+    /*background-image: linear-gradient(to left, #c7e6e7, white);*/
+}
+
+

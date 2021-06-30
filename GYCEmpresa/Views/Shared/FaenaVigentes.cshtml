@@ -1,0 +1,32 @@
+﻿@if (System.Web.HttpContext.Current.Session["sessionTrabajador"] == "N")
+{
+    <head>
+        <link href="~/Content/css/stylesVacaciones.css" rel="stylesheet" />
+    </head>
+
+    <div class="div-style">
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <span>Faenas</span>
+                <div class="input-group mb-3">
+                    @Html.DropDownList("FAENA", ViewBag.Faenas as SelectList, htmlAttributes: new { @class = "custom-select input-borde", id = "FAENA" })
+                </div>
+            </div>
+            <div class="form-group col-lg-3">
+                <span>Estado</span>
+                <select class="custom-select input-borde" id="vigentes" name="vigentes">
+                    <option value="1">Vigentes</option>
+                    <option value="0">No vigentes</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3">
+                <span> . </span>
+                <div class="col-1">
+                    <button type="submit" id="btnejecutar" class="btnejecutar" name="CargarButton" value="Cargar"></button>
+                </div>
+            </div>
+            </div>
+        </div>
+}
+
+
