@@ -175,44 +175,44 @@ namespace GYCEmpresa.Controllers
             var nr = new List<detalle>();
             nr.Add(new detalle()
             {
-                NOMBRE = pers.NOMBRE,
-                APATERNO = pers.APATERNO,
-                AMATERNO = pers.AMATERNO,
-                FNACIMIENTO = FNACIM,
-                NACIONALIDAD = NACIONALIDADD,
-                TELEFONO1 = Convert.ToString(pers.TELEFONO1),
-                TELEFONO2 = Convert.ToString(pers.TELEFONO2),
-                CORREO = pers.CORREO,
-                DIRECCION = pers.DIRECCION,
-                REGION = REGIOND,
-                CIUDAD = CIUDADD,
-                COMUNA = COMUNAD,
-                SEXO = pers.SEXO,
-                BANCO = BANCOD,
-                TCUENTA = TCUENTAD,
-                NCUENTA = pers.NCUENTA,
-                ECIVIL = ECIVILD,
-                NHIJOS = Convert.ToString(pers.NHIJOS),
-                SALUD = SALUDD,
-                ADICIONALSALUD = Convert.ToString(pers.ADICIONALSALUD),
-                PREVISION = PREVISIOND,
-                APV = Convert.ToString(pers.APV),
-                AHORRO = Convert.ToString(pers.AHORRO),
-                EMPRESAACTUAL = pers.EMPRESAACTUAL,
-                ESTADOCONTRATUAL = pers.ESTADOCONTRATUAL,
-                FAENA = FAENAPAS,
-                TURNO = TURNOD,
-                FINICI = FINICID,
-                FTERMI = FTERMID,
-                FFERIA = FFERIAD,
-                DIAS = DIASD,
-                FSINDI = FSINDID,
-                SINDICATO = SINDICATOD,
-                RAZONSOCIAL = RAZONSOCIALD,
-                CARGO = cont.CARGO,
-                TIPOCONTRATO = TIPOCONTRATOD,
-                SUELDO = SUELDOD,
-                EXISTE = EXISTED
+                nombre = pers.NOMBRE,
+                apaterno = pers.APATERNO,
+                amaterno = pers.AMATERNO,
+                fnacimiento = FNACIM,
+                nacionalidad = NACIONALIDADD,
+                telefono1 = Convert.ToString(pers.TELEFONO1),
+                telefono2 = Convert.ToString(pers.TELEFONO2),
+                correo = pers.CORREO,
+                direccion = pers.DIRECCION,
+                region = REGIOND,
+                ciudad = CIUDADD,
+                comuna = COMUNAD,
+                sexo = pers.SEXO,
+                banco = BANCOD,
+                tcuenta = TCUENTAD,
+                ncuenta = pers.NCUENTA,
+                ecivil = ECIVILD,
+                nhijos = Convert.ToString(pers.NHIJOS),
+                salud = SALUDD,
+                adicionalsalud = Convert.ToString(pers.ADICIONALSALUD),
+                prevision = PREVISIOND,
+                apv = Convert.ToString(pers.APV),
+                ahorro = Convert.ToString(pers.AHORRO),
+                empresaactual = pers.EMPRESAACTUAL,
+                estadocontractual = pers.ESTADOCONTRATUAL,
+                faena = FAENAPAS,
+                turno = TURNOD,
+                finicio = FINICID,
+                ftermi = FTERMID,
+                fferia = FFERIAD,
+                dias = DIASD,
+                fsindi = FSINDID,
+                sindicato = SINDICATOD,
+                razonsocial = RAZONSOCIALD,
+                cargo = cont.CARGO,
+                tipocontrato = TIPOCONTRATOD,
+                sueldo = SUELDOD,
+                existe = EXISTED
             });
             return nr;
         }
@@ -535,44 +535,44 @@ namespace GYCEmpresa.Models
 
     public class detalle
         {
-            public string NOMBRE { get; set; }
-            public string APATERNO { get; set; }
-            public string AMATERNO { get; set; }
-            public string FNACIMIENTO { get; set; }
-            public string NACIONALIDAD { get; set; }
-            public string TELEFONO1 { get; set; }
-            public string TELEFONO2 { get; set; }
-            public string CORREO { get; set; }
-            public string DIRECCION { get; set; }
-            public string REGION { get; set; }
-            public string CIUDAD { get; set; }
-            public string COMUNA { get; set; }
-            public string SEXO { get; set; }
-            public string BANCO { get; set; }
-            public string TCUENTA { get; set; }
-            public string NCUENTA { get; set; }
-            public string ECIVIL { get; set; }
-            public string NHIJOS { get; set; }
-            public string SALUD { get; set; }
-            public string ADICIONALSALUD { get; set; }
-            public string PREVISION { get; set; }
-            public string APV { get; set; }
-            public string AHORRO { get; set; }
-            public string EMPRESAACTUAL { get; set; }
-            public string ESTADOCONTRATUAL { get; set; }
-            public string FAENA { get; set; }
-            public string TURNO { get; set; }
-            public string FINICI { get; set; }
-            public string FTERMI { get; set; }
-            public string FFERIA { get; set; }
-            public string DIAS { get; set; }
-            public string FSINDI { get; set; }
-            public string SINDICATO { get; set; }
-            public string RAZONSOCIAL { get; set; }
-            public string CARGO { get; set; }
-            public string TIPOCONTRATO { get; set; }
-            public string SUELDO { get; set; }
-            public string EXISTE { get; set; }
+            public string nombre { get; set; }
+            public string apaterno { get; set; }
+            public string amaterno { get; set; }
+            public string fnacimiento { get; set; }
+            public string nacionalidad { get; set; }
+            public string telefono1 { get; set; }
+            public string telefono2 { get; set; }
+            public string correo { get; set; }
+            public string direccion { get; set; }
+            public string region { get; set; }
+            public string ciudad { get; set; }
+            public string comuna { get; set; }
+            public string sexo { get; set; }
+            public string banco { get; set; }
+            public string tcuenta { get; set; }
+            public string ncuenta { get; set; }
+            public string ecivil { get; set; }
+            public string nhijos { get; set; }
+            public string salud { get; set; }
+            public string adicionalsalud { get; set; }
+            public string prevision { get; set; }
+            public string apv { get; set; }
+            public string ahorro { get; set; }
+            public string empresaactual { get; set; }
+            public string estadocontractual { get; set; }
+            public string faena { get; set; }
+            public string turno { get; set; }
+            public string finicio { get; set; }
+            public string ftermi { get; set; }
+            public string fferia { get; set; }
+            public string dias { get; set; }
+            public string fsindi { get; set; }
+            public string sindicato { get; set; }
+            public string razonsocial { get; set; }
+            public string cargo { get; set; }
+            public string tipocontrato { get; set; }
+            public string sueldo { get; set; }
+            public string existe { get; set; }
 
         }
 

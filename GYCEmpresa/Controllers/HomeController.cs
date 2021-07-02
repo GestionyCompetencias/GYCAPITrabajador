@@ -19,14 +19,14 @@ namespace GYCEmpresa.Controllers
 
         public ActionResult Index()
         {
-            JsonResult trabajador = APITrabajador.ExistePersonaDetalle("69393527");
-            return Json(new
-            {
-                trabajador
-            }, JsonRequestBehavior.AllowGet);
+            //JsonResult trabajador = APITrabajador.ExistePersonaDetalle("69393527");
+            //return Json(new
+            //{
+            //    trabajador
+            //}, JsonRequestBehavior.AllowGet);
 
 
-            //return View();
+            return View();
 
         }
     }
