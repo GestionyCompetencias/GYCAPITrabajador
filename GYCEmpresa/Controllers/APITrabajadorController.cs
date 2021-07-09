@@ -26,7 +26,6 @@ namespace GYCEmpresa.Controllers
         {
             //string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"].ToString();
             string empresa = "76895853K";
-            rut = "69393527";
             string EXISTE = "N";
             DateTime hoy = DateTime.Now.Date;
             var pers = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
@@ -98,7 +97,7 @@ namespace GYCEmpresa.Controllers
                 string FAENAD = db.FAENA.Where(x => x.ID == FAENAPAS).Select(x => x.DESCRIPCION).SingleOrDefault();
                 string SUELDOD = Convert.ToString(SUELDO);
                 string DIASD = Convert.ToString(DIAS);
-                var trabajador = new List<detalle>();
+                var trabajador = new detalle();
                 trabajador = CreaSalida(cont, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
                      BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
                      FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
@@ -156,7 +155,7 @@ namespace GYCEmpresa.Controllers
                 string SINDICATO = null;
                 string TIPOCONTRATOD = null;
                 CONTRATO contra = new CONTRATO();
-                var trabajador = new List<detalle>();
+                var trabajador = new detalle();
                 trabajador = CreaSalida(contra, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
                      BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
                      FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
@@ -164,65 +163,61 @@ namespace GYCEmpresa.Controllers
                 {
                     trabajador
                 }, JsonRequestBehavior.AllowGet);
-
             }
         }
-        public List<detalle> CreaSalida(CONTRATO cont, PERSONA pers, string FNACIM, string NACIONALIDADD, string REGIOND, string CIUDADD, string COMUNAD,
+        public detalle CreaSalida(CONTRATO cont, PERSONA pers, string FNACIM, string NACIONALIDADD, string REGIOND, string CIUDADD, string COMUNAD,
             string BANCOD, string TCUENTAD, string ECIVILD, string SALUDD, string PREVISIOND, string FAENAPAS, string TURNOD, string FINICID,
             string FTERMID, string FFERIAD, string DIASD, string FSINDID, string SINDICATOD, string RAZONSOCIALD,
             string TIPOCONTRATOD, string SUELDOD, string EXISTED)
         {
-            var nr = new List<detalle>();
-            nr.Add(new detalle()
-            {
-                NOMBRE = pers.NOMBRE,
-                APATERNO = pers.APATERNO,
-                AMATERNO = pers.AMATERNO,
-                FNACIMIENTO = FNACIM,
-                NACIONALIDAD = NACIONALIDADD,
-                TELEFONO1 = Convert.ToString(pers.TELEFONO1),
-                TELEFONO2 = Convert.ToString(pers.TELEFONO2),
-                CORREO = pers.CORREO,
-                DIRECCION = pers.DIRECCION,
-                REGION = REGIOND,
-                CIUDAD = CIUDADD,
-                COMUNA = COMUNAD,
-                SEXO = pers.SEXO,
-                BANCO = BANCOD,
-                TCUENTA = TCUENTAD,
-                NCUENTA = pers.NCUENTA,
-                ECIVIL = ECIVILD,
-                NHIJOS = Convert.ToString(pers.NHIJOS),
-                SALUD = SALUDD,
-                ADICIONALSALUD = Convert.ToString(pers.ADICIONALSALUD),
-                PREVISION = PREVISIOND,
-                APV = Convert.ToString(pers.APV),
-                AHORRO = Convert.ToString(pers.AHORRO),
-                EMPRESAACTUAL = pers.EMPRESAACTUAL,
-                ESTADOCONTRATUAL = pers.ESTADOCONTRATUAL,
-                FAENA = FAENAPAS,
-                TURNO = TURNOD,
-                FINICI = FINICID,
-                FTERMI = FTERMID,
-                FFERIA = FFERIAD,
-                DIAS = DIASD,
-                FSINDI = FSINDID,
-                SINDICATO = SINDICATOD,
-                RAZONSOCIAL = RAZONSOCIALD,
-                CARGO = cont.CARGO,
-                TIPOCONTRATO = TIPOCONTRATOD,
-                SUELDO = SUELDOD,
-                EXISTE = EXISTED
-            });
+                var nr = new detalle();
+                nr.nombre = pers.NOMBRE;
+                nr.apaterno = pers.APATERNO;
+                nr.amaterno = pers.AMATERNO;
+                nr.fnacimiento = FNACIM;
+                nr.nacionalidad = NACIONALIDADD;
+                nr.telefono1 = Convert.ToString(pers.TELEFONO1);
+                nr.telefono2 = Convert.ToString(pers.TELEFONO2);
+                nr.correo = pers.CORREO;
+                nr.direccion = pers.DIRECCION;
+                nr.region = REGIOND;
+                nr.ciudad = CIUDADD;
+                nr.comuna = COMUNAD;
+                nr.sexo = pers.SEXO;
+                nr.banco = BANCOD;
+                nr.tcuenta = TCUENTAD;
+                nr.ncuenta = pers.NCUENTA;
+                nr.ecivil = ECIVILD;
+                nr.nhijos = Convert.ToString(pers.NHIJOS);
+                nr.salud = SALUDD;
+                nr.adicionalsalud = Convert.ToString(pers.ADICIONALSALUD);
+                nr.prevision = PREVISIOND;
+                nr.apv = Convert.ToString(pers.APV);
+                nr.ahorro = Convert.ToString(pers.AHORRO);
+                nr.empresaactual = pers.EMPRESAACTUAL;
+                nr.estadocontractual = pers.ESTADOCONTRATUAL;
+                nr.faena = FAENAPAS;
+                nr.turno = TURNOD;
+                nr.finicio = FINICID;
+                nr.ftermi = FTERMID;
+                nr.fferia = FFERIAD;
+                nr.dias = DIASD;
+                nr.fsindi = FSINDID;
+                nr.sindicato = SINDICATOD;
+                nr.razonsocial = RAZONSOCIALD;
+                nr.cargo = cont.CARGO;
+                nr.tipocontrato = TIPOCONTRATOD;
+                nr.sueldo = SUELDOD;
+                nr.existe = EXISTED;
             return nr;
         }
         public virtual JsonResult MarcacionesTrabajador(string trabajador, string fechaInicio, string fechaFin)
         {
 
             string empresa = "76895853K";
-            trabajador = "69393527";
-            DateTime fecIni = Convert.ToDateTime("2021-06-01");
-            DateTime fecFin = Convert.ToDateTime("2021-06-30");
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
             var marcas = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
             return Json(new
             {
@@ -234,9 +229,9 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult SolicitudVacaciones(string trabajador, string fechaInicio, string fechaFin)
         {
 
-            trabajador = "69393527";
-            DateTime fecIni = Convert.ToDateTime("2021-06-01");
-            DateTime fecFin = Convert.ToDateTime("2021-06-30");
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
             var vacacion = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "N");
 
             return Json(new
@@ -248,7 +243,7 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult SolicitudCompensacion(string trabajador, string dias)
         {
 
-            trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             int ndias = Convert.ToInt32(dias);
             var compensacion = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "N");
 
@@ -263,7 +258,8 @@ namespace GYCEmpresa.Controllers
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
-            Trabajador = "69393527";
+ 
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             var infoPeri = db.rhueperi.Where(v => v.nrt_ruttr == Trabajador).ToList();
             var periodos = new List<GYCEmpresa.Models.rhueperi>();
             int año = 0;
@@ -345,7 +341,7 @@ namespace GYCEmpresa.Controllers
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             List<ListCuentaCorriente> cta = new List<ListCuentaCorriente>();
-            Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
 
             var ctacte = new List<ListCuentaCorriente>();
 
@@ -472,9 +468,9 @@ namespace GYCEmpresa.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Utilizados(string Trabajador)
+        public virtual JsonResult Utilizados(string Trabajador)
         {
-            Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
@@ -513,11 +509,12 @@ namespace GYCEmpresa.Controllers
                 usados
             }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
+        public virtual JsonResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
         {
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime finicio = DateTime.Now.Date.AddYears(-20);
             DateTime ftermino = DateTime.Now.Date;
             //List<LICENCIAMEDICA> Licencias = new List<LICENCIAMEDICA>();
@@ -535,44 +532,44 @@ namespace GYCEmpresa.Models
 
     public class detalle
         {
-            public string NOMBRE { get; set; }
-            public string APATERNO { get; set; }
-            public string AMATERNO { get; set; }
-            public string FNACIMIENTO { get; set; }
-            public string NACIONALIDAD { get; set; }
-            public string TELEFONO1 { get; set; }
-            public string TELEFONO2 { get; set; }
-            public string CORREO { get; set; }
-            public string DIRECCION { get; set; }
-            public string REGION { get; set; }
-            public string CIUDAD { get; set; }
-            public string COMUNA { get; set; }
-            public string SEXO { get; set; }
-            public string BANCO { get; set; }
-            public string TCUENTA { get; set; }
-            public string NCUENTA { get; set; }
-            public string ECIVIL { get; set; }
-            public string NHIJOS { get; set; }
-            public string SALUD { get; set; }
-            public string ADICIONALSALUD { get; set; }
-            public string PREVISION { get; set; }
-            public string APV { get; set; }
-            public string AHORRO { get; set; }
-            public string EMPRESAACTUAL { get; set; }
-            public string ESTADOCONTRATUAL { get; set; }
-            public string FAENA { get; set; }
-            public string TURNO { get; set; }
-            public string FINICI { get; set; }
-            public string FTERMI { get; set; }
-            public string FFERIA { get; set; }
-            public string DIAS { get; set; }
-            public string FSINDI { get; set; }
-            public string SINDICATO { get; set; }
-            public string RAZONSOCIAL { get; set; }
-            public string CARGO { get; set; }
-            public string TIPOCONTRATO { get; set; }
-            public string SUELDO { get; set; }
-            public string EXISTE { get; set; }
+            public string nombre { get; set; }
+            public string apaterno { get; set; }
+            public string amaterno { get; set; }
+            public string fnacimiento { get; set; }
+            public string nacionalidad { get; set; }
+            public string telefono1 { get; set; }
+            public string telefono2 { get; set; }
+            public string correo { get; set; }
+            public string direccion { get; set; }
+            public string region { get; set; }
+            public string ciudad { get; set; }
+            public string comuna { get; set; }
+            public string sexo { get; set; }
+            public string banco { get; set; }
+            public string tcuenta { get; set; }
+            public string ncuenta { get; set; }
+            public string ecivil { get; set; }
+            public string nhijos { get; set; }
+            public string salud { get; set; }
+            public string adicionalsalud { get; set; }
+            public string prevision { get; set; }
+            public string apv { get; set; }
+            public string ahorro { get; set; }
+            public string empresaactual { get; set; }
+            public string estadocontractual { get; set; }
+            public string faena { get; set; }
+            public string turno { get; set; }
+            public string finicio { get; set; }
+            public string ftermi { get; set; }
+            public string fferia { get; set; }
+            public string dias { get; set; }
+            public string fsindi { get; set; }
+            public string sindicato { get; set; }
+            public string razonsocial { get; set; }
+            public string cargo { get; set; }
+            public string tipocontrato { get; set; }
+            public string sueldo { get; set; }
+            public string existe { get; set; }
 
         }
 
