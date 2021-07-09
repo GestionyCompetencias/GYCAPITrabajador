@@ -26,7 +26,6 @@ namespace GYCEmpresa.Controllers
         {
             //string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"].ToString();
             string empresa = "76895853K";
-            rut = "69393527";
             string EXISTE = "N";
             DateTime hoy = DateTime.Now.Date;
             var pers = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
@@ -98,7 +97,7 @@ namespace GYCEmpresa.Controllers
                 string FAENAD = db.FAENA.Where(x => x.ID == FAENAPAS).Select(x => x.DESCRIPCION).SingleOrDefault();
                 string SUELDOD = Convert.ToString(SUELDO);
                 string DIASD = Convert.ToString(DIAS);
-                var trabajador = new List<detalle>();
+                var trabajador = new detalle();
                 trabajador = CreaSalida(cont, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
                      BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
                      FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
@@ -156,7 +155,7 @@ namespace GYCEmpresa.Controllers
                 string SINDICATO = null;
                 string TIPOCONTRATOD = null;
                 CONTRATO contra = new CONTRATO();
-                var trabajador = new List<detalle>();
+                var trabajador = new detalle();
                 trabajador = CreaSalida(contra, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
                      BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
                      FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
@@ -164,65 +163,61 @@ namespace GYCEmpresa.Controllers
                 {
                     trabajador
                 }, JsonRequestBehavior.AllowGet);
-
             }
         }
-        public List<detalle> CreaSalida(CONTRATO cont, PERSONA pers, string FNACIM, string NACIONALIDADD, string REGIOND, string CIUDADD, string COMUNAD,
+        public detalle CreaSalida(CONTRATO cont, PERSONA pers, string FNACIM, string NACIONALIDADD, string REGIOND, string CIUDADD, string COMUNAD,
             string BANCOD, string TCUENTAD, string ECIVILD, string SALUDD, string PREVISIOND, string FAENAPAS, string TURNOD, string FINICID,
             string FTERMID, string FFERIAD, string DIASD, string FSINDID, string SINDICATOD, string RAZONSOCIALD,
             string TIPOCONTRATOD, string SUELDOD, string EXISTED)
         {
-            var nr = new List<detalle>();
-            nr.Add(new detalle()
-            {
-                nombre = pers.NOMBRE,
-                apaterno = pers.APATERNO,
-                amaterno = pers.AMATERNO,
-                fnacimiento = FNACIM,
-                nacionalidad = NACIONALIDADD,
-                telefono1 = Convert.ToString(pers.TELEFONO1),
-                telefono2 = Convert.ToString(pers.TELEFONO2),
-                correo = pers.CORREO,
-                direccion = pers.DIRECCION,
-                region = REGIOND,
-                ciudad = CIUDADD,
-                comuna = COMUNAD,
-                sexo = pers.SEXO,
-                banco = BANCOD,
-                tcuenta = TCUENTAD,
-                ncuenta = pers.NCUENTA,
-                ecivil = ECIVILD,
-                nhijos = Convert.ToString(pers.NHIJOS),
-                salud = SALUDD,
-                adicionalsalud = Convert.ToString(pers.ADICIONALSALUD),
-                prevision = PREVISIOND,
-                apv = Convert.ToString(pers.APV),
-                ahorro = Convert.ToString(pers.AHORRO),
-                empresaactual = pers.EMPRESAACTUAL,
-                estadocontractual = pers.ESTADOCONTRATUAL,
-                faena = FAENAPAS,
-                turno = TURNOD,
-                finicio = FINICID,
-                ftermi = FTERMID,
-                fferia = FFERIAD,
-                dias = DIASD,
-                fsindi = FSINDID,
-                sindicato = SINDICATOD,
-                razonsocial = RAZONSOCIALD,
-                cargo = cont.CARGO,
-                tipocontrato = TIPOCONTRATOD,
-                sueldo = SUELDOD,
-                existe = EXISTED
-            });
+                var nr = new detalle();
+                nr.nombre = pers.NOMBRE;
+                nr.apaterno = pers.APATERNO;
+                nr.amaterno = pers.AMATERNO;
+                nr.fnacimiento = FNACIM;
+                nr.nacionalidad = NACIONALIDADD;
+                nr.telefono1 = Convert.ToString(pers.TELEFONO1);
+                nr.telefono2 = Convert.ToString(pers.TELEFONO2);
+                nr.correo = pers.CORREO;
+                nr.direccion = pers.DIRECCION;
+                nr.region = REGIOND;
+                nr.ciudad = CIUDADD;
+                nr.comuna = COMUNAD;
+                nr.sexo = pers.SEXO;
+                nr.banco = BANCOD;
+                nr.tcuenta = TCUENTAD;
+                nr.ncuenta = pers.NCUENTA;
+                nr.ecivil = ECIVILD;
+                nr.nhijos = Convert.ToString(pers.NHIJOS);
+                nr.salud = SALUDD;
+                nr.adicionalsalud = Convert.ToString(pers.ADICIONALSALUD);
+                nr.prevision = PREVISIOND;
+                nr.apv = Convert.ToString(pers.APV);
+                nr.ahorro = Convert.ToString(pers.AHORRO);
+                nr.empresaactual = pers.EMPRESAACTUAL;
+                nr.estadocontractual = pers.ESTADOCONTRATUAL;
+                nr.faena = FAENAPAS;
+                nr.turno = TURNOD;
+                nr.finicio = FINICID;
+                nr.ftermi = FTERMID;
+                nr.fferia = FFERIAD;
+                nr.dias = DIASD;
+                nr.fsindi = FSINDID;
+                nr.sindicato = SINDICATOD;
+                nr.razonsocial = RAZONSOCIALD;
+                nr.cargo = cont.CARGO;
+                nr.tipocontrato = TIPOCONTRATOD;
+                nr.sueldo = SUELDOD;
+                nr.existe = EXISTED;
             return nr;
         }
         public virtual JsonResult MarcacionesTrabajador(string trabajador, string fechaInicio, string fechaFin)
         {
 
             string empresa = "76895853K";
-            trabajador = "69393527";
-            DateTime fecIni = Convert.ToDateTime("2021-06-01");
-            DateTime fecFin = Convert.ToDateTime("2021-06-30");
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
             var marcas = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
             return Json(new
             {
@@ -234,9 +229,9 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult SolicitudVacaciones(string trabajador, string fechaInicio, string fechaFin)
         {
 
-            trabajador = "69393527";
-            DateTime fecIni = Convert.ToDateTime("2021-06-01");
-            DateTime fecFin = Convert.ToDateTime("2021-06-30");
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
             var vacacion = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "N");
 
             return Json(new
@@ -248,7 +243,7 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult SolicitudCompensacion(string trabajador, string dias)
         {
 
-            trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             int ndias = Convert.ToInt32(dias);
             var compensacion = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "N");
 
@@ -263,7 +258,8 @@ namespace GYCEmpresa.Controllers
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
-            Trabajador = "69393527";
+ 
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             var infoPeri = db.rhueperi.Where(v => v.nrt_ruttr == Trabajador).ToList();
             var periodos = new List<GYCEmpresa.Models.rhueperi>();
             int año = 0;
@@ -345,7 +341,7 @@ namespace GYCEmpresa.Controllers
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             List<ListCuentaCorriente> cta = new List<ListCuentaCorriente>();
-            Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
 
             var ctacte = new List<ListCuentaCorriente>();
 
@@ -472,9 +468,9 @@ namespace GYCEmpresa.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Utilizados(string Trabajador)
+        public virtual JsonResult Utilizados(string Trabajador)
         {
-            Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
@@ -513,11 +509,12 @@ namespace GYCEmpresa.Controllers
                 usados
             }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
+        public virtual JsonResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
         {
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             Trabajador = "69393527";
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime finicio = DateTime.Now.Date.AddYears(-20);
             DateTime ftermino = DateTime.Now.Date;
             //List<LICENCIAMEDICA> Licencias = new List<LICENCIAMEDICA>();

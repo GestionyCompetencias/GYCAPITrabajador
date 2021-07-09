@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using System.Web.Http;
 
 namespace GYCEmpresa.Controllers
 {
@@ -17,19 +18,27 @@ namespace GYCEmpresa.Controllers
         Funciones f = new Funciones();
         private APITrabajadorController APITrabajador = new APITrabajadorController();
 
-        public ActionResult Index()
+            public virtual JsonResult Index(solpersonal entrada)
         {
-            //JsonResult trabajador = APITrabajador.ExistePersonaDetalle("69393527");
-            //return Json(new
-            //{
-            //    trabajador
-            //}, JsonRequestBehavior.AllowGet);
+            string RUT = entrada.rut;
+
+            if (RUT == null) return Json(new
+            {
+                mensaje="Falta parámetro"
+            }, JsonRequestBehavior.AllowGet);
 
 
-            return View();
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            JsonResult trabajador = APITrabajador.ExistePersonaDetalle(RUT);
+            //var trabajador = APITrabajador.ExistePersonaDetalle(RUT);
+            return Json(new
+            {
+                trabajador
+            }, JsonRequestBehavior.AllowGet);
+
+
+            //return View();
 
         }
     }
-
-
 }
