@@ -21,19 +21,18 @@ namespace GYCEmpresa.Controllers
         dbgyc2DataContext db2 = new dbgyc2DataContext();
         Funciones f = new Funciones();
         private rhuecalc rhuecalc = new rhuecalc();
+        private ControlAsistenciaController Asistencia= new ControlAsistenciaController();
+        private AsAdministController Permiso = new AsAdministController();
 
         public virtual JsonResult ExistePersonaDetalle(string rut)
         {
-            //string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"].ToString();
-            string empresa = "76895853K";
             string EXISTE = "N";
             DateTime hoy = DateTime.Now.Date;
             var pers = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
             int DIAS;
             string CODIGO;
             DateTime FFERIADO, FSINDICATO;
-            var empr = (db.EMPRESA.Where(x => x.RUT == empresa)).SingleOrDefault();
-            string RAZONSOCIAL = empr.RSOCIAL;
+            string RAZONSOCIAL=null;
             if (pers != null)
             {
 
@@ -43,6 +42,9 @@ namespace GYCEmpresa.Controllers
                 var ciud = (db.CIUDAD.Where(x => x.ID == pers.CIUDAD)).SingleOrDefault();
                 var turn = (db.TurnoTrabajador.Where(x => x.RutTrabajador == rut && hoy >= x.FechaInicioTurno && x.FechaTerminoTurno >= hoy)).ToList();
                 int TURNO = 1;
+                string empresa = cont.EMPRESA;
+                var empr = (db.EMPRESA.Where(x => x.RUT == empresa)).SingleOrDefault();
+                RAZONSOCIAL = empr.RSOCIAL;
                 if (turn == null)
                 {
                     foreach (var t in turn)
@@ -214,10 +216,12 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult MarcacionesTrabajador(string trabajador, string fechaInicio, string fechaFin)
         {
 
-            string empresa = "76895853K";
             string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            string empresa = cont.EMPRESA;
             var marcas = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
             return Json(new
             {
@@ -255,8 +259,6 @@ namespace GYCEmpresa.Controllers
         }
         public virtual JsonResult Periodos(string Trabajador)
         {
-            string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
-            string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
  
             string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
@@ -264,7 +266,8 @@ namespace GYCEmpresa.Controllers
             var periodos = new List<GYCEmpresa.Models.rhueperi>();
             int año = 0;
             DateTime hoy = DateTime.Now;
-            CONTRATO con = db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO > hoy).SingleOrDefault();
+            var con = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            string empresa = con.EMPRESA;
             DateTime ingreso = con.FINICIO;
             string horario = "ADM";
             rhuedias dias = db.rhuedias.Where(x => x.cod_horar == horario).SingleOrDefault();
@@ -338,8 +341,6 @@ namespace GYCEmpresa.Controllers
         }
         public virtual JsonResult CtaCte(string Trabajador)
         {
-            string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
-            string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             List<ListCuentaCorriente> cta = new List<ListCuentaCorriente>();
             string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
 
@@ -511,9 +512,6 @@ namespace GYCEmpresa.Controllers
         }
         public virtual JsonResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
         {
-            string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
-            string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
-            Trabajador = "69393527";
             string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime finicio = DateTime.Now.Date.AddYears(-20);
             DateTime ftermino = DateTime.Now.Date;
@@ -524,6 +522,80 @@ namespace GYCEmpresa.Controllers
                 licencias
             }, JsonRequestBehavior.AllowGet);
         }
+        public virtual JsonResult Registro(string Trabajador, DateTime finicio, DateTime ffinal)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            int holguraent;
+            remepage dettiemp = new remepage();
+            var infoferia = new List<GYCEmpresa.Models.remepage>();
+            infoferia = db.remepage.Where(x => x.nom_tabla == "FERIADOS" && x.fec_param >= finicio && x.fec_param <= ffinal).ToList();
+            var infoTiemp = new List<GYCEmpresa.Models.remepage>();
+            infoTiemp = db.remepage.Where(x => x.nom_tabla == "TIEMPO" && x.rut_empr == empresa).ToList();
+            dettiemp = infoTiemp.Where(x => "1         " == x.cod_param).SingleOrDefault();
+            holguraent = 0;
+            if (dettiemp != null)
+                holguraent = Convert.ToInt32(dettiemp.val_param);
+
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            var registro = Asistencia.InformeIndividual(empresa,Trabajador, finicio, ffinal, faena);
+            return Json(new
+            {
+                registro
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public virtual JsonResult Cabezera(string Trabajador, DateTime finicio, DateTime ffinal)
+        {
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+            var registro = Asistencia.CabezeraInforme(empresa, Trabajador, finicio, finicio);
+            return Json(new
+            {
+                registro
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public virtual JsonResult SolicitudPermiso(string Trabajador, string fechaInicio, string fechaFin, string hora1, string hora2)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
+            var permiso = Permiso.SolicitudPermisoInasistencia(Trabajador, fechaInicio, fechaFin, "0","0",empresa);
+
+            return Json(new
+            {
+                permiso
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public virtual JsonResult ConsultaPermiso(string Trabajador, string fechaInicio, string fechaFin)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
+            DateTime fecIni = Convert.ToDateTime(fechaInicio);
+            DateTime fecFin = Convert.ToDateTime(fechaFin);
+            var consulta = Permiso.ConsultaPermisoInasistencia(Trabajador, fecIni, fecFin, empresa);
+
+            return Json(new
+            {
+                consulta
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }
 
@@ -574,3 +646,11 @@ namespace GYCEmpresa.Models
         }
 
     }
+namespace GYCEmpresa.Models
+{
+
+    public class respuesta
+    {
+        public string mensaje { get; set; }
+    }
+}

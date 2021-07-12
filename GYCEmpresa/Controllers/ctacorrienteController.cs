@@ -20,9 +20,14 @@ namespace GYCEmpresa.Controllers
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public string[] Get()
+        public JsonResult Get()
         {
-            return new string[] { "Hola ", "Cuenta corriente vacaciones" };
+            respuesta respuesta = new respuesta();
+            respuesta.mensaje = "Cuenta corriente vacaciones";
+            return Json(new
+            {
+                respuesta
+            }, JsonRequestBehavior.AllowGet);
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]

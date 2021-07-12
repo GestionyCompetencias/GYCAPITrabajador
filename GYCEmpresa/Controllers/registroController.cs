@@ -8,14 +8,13 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/compensacion")]
+    [Route("api/registro")]
 
     //[ApiController]
-    public class compensacionController : Controller
+    public class registroController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,7 +22,7 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Solicitud de compensación";
+            respuesta.mensaje = "Registro de asistencia";
             return Json(new
             {
                 respuesta
@@ -31,12 +30,15 @@ namespace GYCEmpresa.Controllers
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solregistro data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.ndias);
+            DateTime fec1 = Convert.ToDateTime(data.fecha1);
+            DateTime fec2 = Convert.ToDateTime(data.fecha2);
+            JsonResult cabezera = APITrabajador.Cabezera(data.rut, fec1, fec2);
+            JsonResult asistencia = APITrabajador.Registro(data.rut, fec1,fec2);
             return Json(new
-            {
-                compensacion
+            {   cabezera,
+                asistencia
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -46,9 +48,10 @@ namespace GYCEmpresa.Controllers
 namespace GYCEmpresa.Models
 {
 
-    public class solcompensacion
+    public class solregistro
     {
         public string rut { get; set; }
-        public string ndias { get; set; }
+        public string fecha1 { get; set; }
+        public string fecha2 { get; set; }
     }
 }

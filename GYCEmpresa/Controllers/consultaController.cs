@@ -12,10 +12,10 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/compensacion")]
+    [Route("api/consultapermiso")]
 
     //[ApiController]
-    public class compensacionController : Controller
+    public class consultaController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,7 +23,7 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Solicitud de compensación";
+            respuesta.mensaje = "Consulta de permiso";
             return Json(new
             {
                 respuesta
@@ -31,12 +31,12 @@ namespace GYCEmpresa.Controllers
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solconsulta data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.ndias);
+            JsonResult consulta = APITrabajador.ConsultaPermiso(data.rut, data.fecha1, data.fecha2);
             return Json(new
             {
-                compensacion
+                consulta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -46,9 +46,10 @@ namespace GYCEmpresa.Controllers
 namespace GYCEmpresa.Models
 {
 
-    public class solcompensacion
+    public class solconsulta
     {
         public string rut { get; set; }
-        public string ndias { get; set; }
+        public string fecha1 { get; set; }
+        public string fecha2 { get; set; }
     }
 }

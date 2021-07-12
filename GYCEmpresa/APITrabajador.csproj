@@ -290,7 +290,9 @@
     <Compile Include="App_Start\Funciones.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\APITrabajadorController.cs" />
+    <Compile Include="Controllers\AsAdministController.cs" />
     <Compile Include="Controllers\compensacionController.cs" />
+    <Compile Include="Controllers\ControlAsistenciaController.cs" />
     <Compile Include="Controllers\ctacorrienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\licenciaController.cs" />
@@ -298,7 +300,10 @@
     <Compile Include="Controllers\marcacionController.cs" />
     <Compile Include="Controllers\periodosController.cs" />
     <Compile Include="Controllers\personalController.cs" />
+    <Compile Include="Controllers\registroController.cs" />
     <Compile Include="Controllers\rhuecalc.cs" />
+    <Compile Include="Controllers\permisoController.cs" />
+    <Compile Include="Controllers\consultaController.cs" />
     <Compile Include="Controllers\utilizadosController.cs" />
     <Compile Include="Controllers\utilPdf.cs" />
     <Compile Include="Controllers\vacacionController.cs" />
@@ -3616,6 +3621,9 @@
     <Folder Include="Views\marcacion\" />
     <Folder Include="Views\periodos\" />
     <Folder Include="Views\personal\" />
+    <Folder Include="Views\registro\" />
+    <Folder Include="Views\SolicitudPermiso\" />
+    <Folder Include="Views\solicitud\" />
     <Folder Include="Views\utilizados\" />
     <Folder Include="Views\vacacion\" />
   </ItemGroup>
