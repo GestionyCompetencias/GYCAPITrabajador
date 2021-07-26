@@ -2516,14 +2516,6 @@ namespace GYCEmpresa.Controllers
                 var persona = (db.PERSONA.Where(x => x.RUT == RUT)).SingleOrDefault();
                 string nom = persona.APATERNO + " " + persona.AMATERNO + " " + persona.NOMBRE;
 
-
-
-            //DateTime FINICIO = new DateTime(annoInicio, mesInicio, 1);
-            //DateTime FTERMINO = new DateTime(annoTermino, mesTermino, 1);
-            //FTERMINO = FTERMINO.AddMonths(1);
-            //FTERMINO = new DateTime(FTERMINO.Year, FTERMINO.Month, 1, 0, 0, 0, FTERMINO.Kind);
-
-
                 var querySolicitudes = (from spi in db.SOLICITUDPERMISOINASISTENCIA
                                         where spi.EMPRESA == empresa && ((spi.FINICIO >= FINICIO && spi.FINICIO < FTERMINO) || (spi.FTERMINO >= FINICIO && spi.FTERMINO < FTERMINO))
                                         join per in db.PERSONA on spi.TRABAJADOR equals per.RUT

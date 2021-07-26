@@ -8,14 +8,14 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+//using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/compensacion")]
+    [Route("api/cambioclave")]
 
     //[ApiController]
-    public class compensacionController : Controller
+    public class cambioclaveController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,7 +23,7 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Solicitud de compensación";
+            respuesta.mensaje = "Cambio de clave";
             return Json(new
             {
                 respuesta
@@ -31,12 +31,15 @@ namespace GYCEmpresa.Controllers
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcambio data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.dias);
+            int clave = APITrabajador.CambioClave(data);
+            respuesta respuesta = new respuesta();
+            respuesta.mensaje = "Contraseña modificada exitosamente";
+            if(clave==0)respuesta.mensaje = "No se pudo modicar contraseña";
             return Json(new
             {
-                compensacion
+               respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -46,9 +49,10 @@ namespace GYCEmpresa.Controllers
 namespace GYCEmpresa.Models
 {
 
-    public class solcompensacion
+    public class solcambio
     {
         public string rut { get; set; }
-        public string dias { get; set; }
+        public string antigua { get; set; }
+        public string nueva { get; set; }
     }
 }

@@ -1739,6 +1739,19 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.dbo.SERVICIOEMPRESA' no tien
           <Property Name="ANHO" Type="int" Nullable="false" />
           <Property Name="EMPRESA" Type="varchar" MaxLength="9" Nullable="false" />
         </EntityType>
+        <EntityType Name="DISPOSITIVO_ANDROID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID_DISPOSITIVO" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="MONITOREADO" Type="nchar" MaxLength="1" />
+          <Property Name="TIEMPO_MONITOR" Type="int" Nullable="false" />
+          <Property Name="ULTIMO_PING" Type="datetime" />
+          <Property Name="NOTIFICAR" Type="bit" Nullable="false" />
+          <Property Name="PENULTIMO_PING" Type="datetime" />
+        </EntityType>
         <EntityType Name="DOCUMENTOS_CLOUD">
           <Key>
             <PropertyRef Name="ID" />
@@ -1834,6 +1847,15 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.dbo.SERVICIOEMPRESA' no tien
           <Property Name="ID_DOCUMENTO" Type="int" Nullable="false" />
           <Property Name="OBSERVACION" Type="text" />
         </EntityType>
+        <EntityType Name="LOGTRABAJADOR">
+          <Key>
+            <PropertyRef Name="Correl" />
+          </Key>
+          <Property Name="Correl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RUT" Type="nchar" MaxLength="9" Nullable="false" />
+          <Property Name="VENCIMIENTO" Type="datetime" Nullable="false" />
+          <Property Name="TOKEN" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="PERFILTRABAJADOR">
           <Key>
             <PropertyRef Name="ID" />
@@ -1853,6 +1875,20 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.dbo.SERVICIOEMPRESA' no tien
           <Property Name="RUT" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="EMPRESA" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="SERVICIO" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SOLICITUD_ANDROID">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="correl" Type="int" Nullable="false" />
+          <Property Name="nrt_ruttr" Type="nchar" MaxLength="9" Nullable="false" />
+          <Property Name="flg_tipo" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="fec_desde" Type="datetime" Nullable="false" />
+          <Property Name="fec_hasta" Type="datetime" />
+          <Property Name="nro_dias" Type="int" />
+          <Property Name="fec_proce" Type="datetime" Nullable="false" />
+          <Property Name="flg_estado" Type="nchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPO_BUCKET">
           <Key>
@@ -1905,6 +1941,19 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.dbo.SERVICIOEMPRESA' no tien
           <Property Name="MinutosSemana" Type="int" />
           <Property Name="FechaCreacion" Type="datetime" />
           <Property Name="EsVigente" Type="bit" />
+        </EntityType>
+        <EntityType Name="USUARIO_ANDROID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RUT" Type="nchar" MaxLength="9" Nullable="false" />
+          <Property Name="CONTRASEÑA" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="DISPOSITIVO" Type="int" />
+          <Property Name="TOKEN" Type="nchar" MaxLength="50" />
+          <Property Name="ESTADO" Type="int" Nullable="false" />
+          <Property Name="TIPO" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="TOUCHLESS" Type="bit" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.dbo.ANEXOSPENDIENTES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -3930,18 +3979,22 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.gycsolcl_gestionAdmin.CERTIF
           <EntitySet Name="VACACIONES" EntityType="Self.VACACIONES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VALIDACIONES" EntityType="Self.VALIDACIONES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICULO" EntityType="Self.VEHICULO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DISPOSITIVO_ANDROID" EntityType="Self.DISPOSITIVO_ANDROID" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOS_CLOUD" EntityType="Self.DOCUMENTOS_CLOUD" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="DOMINGOSTRABAJADOS" EntityType="Self.DOMINGOSTRABAJADOS" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="HASH_DOCUMENTOS" EntityType="Self.HASH_DOCUMENTOS" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="LOG_ACCESO" EntityType="Self.LOG_ACCESO" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="LOG_ACEPTATIEMPO" EntityType="Self.LOG_ACEPTATIEMPO" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="LOG_DOCUMENTOS_VALIDACION" EntityType="Self.LOG_DOCUMENTOS_VALIDACION" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
+          <EntitySet Name="LOGTRABAJADOR" EntityType="Self.LOGTRABAJADOR" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="PERFILTRABAJADOR" EntityType="Self.PERFILTRABAJADOR" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="PERMISO_V2" EntityType="Self.PERMISO_V2" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
+          <EntitySet Name="SOLICITUD_ANDROID" EntityType="Self.SOLICITUD_ANDROID" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="TIPO_BUCKET" EntityType="Self.TIPO_BUCKET" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="Turno" EntityType="Self.Turno" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="TurnoDetalle" EntityType="Self.TurnoDetalle" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="TurnoTrabajador" EntityType="Self.TurnoTrabajador" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
+          <EntitySet Name="USUARIO_ANDROID" EntityType="Self.USUARIO_ANDROID" Schema="gycsolcl_gestionAdmin" store:Type="Tables" />
           <EntitySet Name="SERVICIOEMPRESA" EntityType="Self.SERVICIOEMPRESA" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SERVICIOEMPRESA].[ID] AS [ID], 
@@ -6376,6 +6429,10 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.gycsolcl_gestionAdmin.CERTIF
           </FunctionImport>
           <EntitySet Name="PERFILTRABAJADOR" EntityType="dbgycModel.PERFILTRABAJADOR" />
           <EntitySet Name="DOMINGOSTRABAJADOS" EntityType="dbgycModel.DOMINGOSTRABAJADOS" />
+          <EntitySet Name="LOGTRABAJADOR" EntityType="dbgycModel.LOGTRABAJADOR" />
+          <EntitySet Name="USUARIO_ANDROID" EntityType="dbgycModel.USUARIO_ANDROID" />
+          <EntitySet Name="DISPOSITIVO_ANDROID" EntityType="dbgycModel.DISPOSITIVO_ANDROID" />
+          <EntitySet Name="SOLICITUD_ANDROID" EntityType="dbgycModel.SOLICITUD_ANDROID" />
 
 
           </EntityContainer>
@@ -9368,6 +9425,55 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.gycsolcl_gestionAdmin.CERTIF
           <Property Name="usuario" Type="String" MaxLength="9" FixedLength="true" Unicode="true" />
           <Property Name="fec_autori" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="LOGTRABAJADOR">
+          <Key>
+            <PropertyRef Name="Correl" />
+          </Key>
+          <Property Name="Correl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RUT" Type="String" Nullable="false" MaxLength="9" FixedLength="true" Unicode="true" />
+          <Property Name="VENCIMIENTO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TOKEN" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="USUARIO_ANDROID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RUT" Type="String" Nullable="false" MaxLength="9" FixedLength="true" Unicode="true" />
+          <Property Name="CONTRASEÑA" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="DISPOSITIVO" Type="Int32" />
+          <Property Name="TOKEN" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ESTADO" Type="Int32" Nullable="false" />
+          <Property Name="TIPO" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="TOUCHLESS" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="DISPOSITIVO_ANDROID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPCION" Type="String" Nullable="false" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="ID_DISPOSITIVO" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="MONITOREADO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="TIEMPO_MONITOR" Type="Int32" Nullable="false" />
+          <Property Name="ULTIMO_PING" Type="DateTime" Precision="3" />
+          <Property Name="NOTIFICAR" Type="Boolean" Nullable="false" />
+          <Property Name="PENULTIMO_PING" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SOLICITUD_ANDROID">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="correl" Type="Int32" Nullable="false" />
+          <Property Name="nrt_ruttr" Type="String" Nullable="false" MaxLength="9" FixedLength="true" Unicode="true" />
+          <Property Name="flg_tipo" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="fec_desde" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fec_hasta" Type="DateTime" Precision="3" />
+          <Property Name="nro_dias" Type="Int32" />
+          <Property Name="fec_proce" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="flg_estado" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+        </EntityType>
 
         </Schema>
     </edmx:ConceptualModels>
@@ -11738,6 +11844,59 @@ advertencia 6002: La tabla o vista 'gycsolcl_dbgycP.gycsolcl_gestionAdmin.CERTIF
                 <ScalarProperty Name="nrt_ruttr" ColumnName="nrt_ruttr" />
                 <ScalarProperty Name="nro_solici" ColumnName="nro_solici" />
                 <ScalarProperty Name="correl" ColumnName="correl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOGTRABAJADOR">
+            <EntityTypeMapping TypeName="dbgycModel.LOGTRABAJADOR">
+              <MappingFragment StoreEntitySet="LOGTRABAJADOR">
+                <ScalarProperty Name="TOKEN" ColumnName="TOKEN" />
+                <ScalarProperty Name="VENCIMIENTO" ColumnName="VENCIMIENTO" />
+                <ScalarProperty Name="RUT" ColumnName="RUT" />
+                <ScalarProperty Name="Correl" ColumnName="Correl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO_ANDROID">
+            <EntityTypeMapping TypeName="dbgycModel.USUARIO_ANDROID">
+              <MappingFragment StoreEntitySet="USUARIO_ANDROID">
+                <ScalarProperty Name="TOUCHLESS" ColumnName="TOUCHLESS" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="TOKEN" ColumnName="TOKEN" />
+                <ScalarProperty Name="DISPOSITIVO" ColumnName="DISPOSITIVO" />
+                <ScalarProperty Name="CONTRASEÑA" ColumnName="CONTRASEÑA" />
+                <ScalarProperty Name="RUT" ColumnName="RUT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DISPOSITIVO_ANDROID">
+            <EntityTypeMapping TypeName="dbgycModel.DISPOSITIVO_ANDROID">
+              <MappingFragment StoreEntitySet="DISPOSITIVO_ANDROID">
+                <ScalarProperty Name="PENULTIMO_PING" ColumnName="PENULTIMO_PING" />
+                <ScalarProperty Name="NOTIFICAR" ColumnName="NOTIFICAR" />
+                <ScalarProperty Name="ULTIMO_PING" ColumnName="ULTIMO_PING" />
+                <ScalarProperty Name="TIEMPO_MONITOR" ColumnName="TIEMPO_MONITOR" />
+                <ScalarProperty Name="MONITOREADO" ColumnName="MONITOREADO" />
+                <ScalarProperty Name="ID_DISPOSITIVO" ColumnName="ID_DISPOSITIVO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SOLICITUD_ANDROID">
+            <EntityTypeMapping TypeName="dbgycModel.SOLICITUD_ANDROID">
+              <MappingFragment StoreEntitySet="SOLICITUD_ANDROID">
+                <ScalarProperty Name="flg_estado" ColumnName="flg_estado" />
+                <ScalarProperty Name="fec_proce" ColumnName="fec_proce" />
+                <ScalarProperty Name="nro_dias" ColumnName="nro_dias" />
+                <ScalarProperty Name="fec_hasta" ColumnName="fec_hasta" />
+                <ScalarProperty Name="fec_desde" ColumnName="fec_desde" />
+                <ScalarProperty Name="flg_tipo" ColumnName="flg_tipo" />
+                <ScalarProperty Name="nrt_ruttr" ColumnName="nrt_ruttr" />
+                <ScalarProperty Name="correl" ColumnName="correl" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

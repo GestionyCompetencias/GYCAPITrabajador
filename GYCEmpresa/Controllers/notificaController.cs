@@ -8,14 +8,14 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+//using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/compensacion")]
+    [Route("api/notifica")]
 
     //[ApiController]
-    public class compensacionController : Controller
+    public class notificaController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,7 +23,7 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Solicitud de compensación";
+            respuesta.mensaje = "Informacion de notificaciones";
             return Json(new
             {
                 respuesta
@@ -31,24 +31,15 @@ namespace GYCEmpresa.Controllers
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpersonal data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.dias);
+            JsonResult notificacion = APITrabajador.Notificaciones(data.rut);
             return Json(new
             {
-                compensacion
+                notificacion
             }, JsonRequestBehavior.AllowGet);
 
         }
     }
 
-}
-namespace GYCEmpresa.Models
-{
-
-    public class solcompensacion
-    {
-        public string rut { get; set; }
-        public string dias { get; set; }
-    }
 }

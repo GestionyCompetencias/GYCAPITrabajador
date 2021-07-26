@@ -23,9 +23,65 @@ namespace GYCEmpresa.Controllers
         private rhuecalc rhuecalc = new rhuecalc();
         private ControlAsistenciaController Asistencia= new ControlAsistenciaController();
         private AsAdministController Permiso = new AsAdministController();
+        public Reply acceso(string trabajador, string clave,string ID_DISPOSITIVO)
+        {
+            Reply oR = new Reply();
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            string empresa = cont.EMPRESA;
+            if(cont != null)
+            {
+                //var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave && x.HABILITADO == true)).SingleOrDefault();
+                var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave )).SingleOrDefault();
+                if(lst != null)
+                {
+                    InfoRegistraDispositivo Info = RegistraDispositivo(ID_DISPOSITIVO);
+
+                    if (Info.Token != "Error")
+                    {
+                        //USUARIO_ANDROID usuarioToken = lst.First();
+                        USUARIO_ANDROID usuarioToken = lst;
+                        usuarioToken.TOKEN = Info.Token;
+                        usuarioToken.DISPOSITIVO = Info.Id_dispositivo;
+                        db.Entry(usuarioToken).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        oR.result = 1;
+                        string mensaje = "Token:" + Info.Token + "#Tipo:" + lst.TIPO.ToString();
+
+                        int id_trabajador = db.CONTRATO.Where(x => x.PERSONA == trabajador).Select(x => x.ID).SingleOrDefault();
+                        mensaje = mensaje + "#IdTrabajador:" + id_trabajador + "#Touchless:" + usuarioToken.TOUCHLESS;
+
+                        InfoLogin Respuesta = new InfoLogin();
+                        Respuesta.token = Info.Token;
+                        //Respuesta.modo = lst.FirstOrDefault().TIPO.ToString();
+                        Respuesta.modo = lst.TIPO.ToString();
+                        Respuesta.idTrabajador = id_trabajador.ToString();
+                        Respuesta.touchless = usuarioToken.TOUCHLESS.ToString();
+                        Respuesta.urlLogo = "https://logosgycsol.s3-sa-east-1.amazonaws.com/GYCSolLogo.png";
+
+                        oR.data = mensaje;
+                        oR.data2 = Respuesta;
+                        oR.message = "Acceso Correcto";
+
+
+                    }
+                    else
+                    {
+                        oR.message = "Credenciales incorrectas";
+                    }
+
+                }
+
+
+            }
+            return oR;
+
+        }
 
         public virtual JsonResult ExistePersonaDetalle(string rut)
         {
+            Reply oR = new Reply();
             string EXISTE = "N";
             DateTime hoy = DateTime.Now.Date;
             var pers = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
@@ -216,7 +272,6 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult MarcacionesTrabajador(string trabajador, string fechaInicio, string fechaFin)
         {
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
             DateTime hoy = DateTime.Now.Date;
@@ -233,23 +288,159 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult SolicitudVacaciones(string trabajador, string fechaInicio, string fechaFin)
         {
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
-            var vacacion = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "N");
-
-            return Json(new
+            var vaca = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "N");
+            var vacacion = new List<GYCEmpresa.Models.detvacacion>();
+            DateTime hoy = DateTime.Now.Date;
+            int idsolicitud,nrosol;
+            if (vaca.Count() != 0)
             {
-                vacacion
+                SOLICITUD_ANDROID newsol = new SOLICITUD_ANDROID();
+                SOLICITUD_ANDROID ultsol = new SOLICITUD_ANDROID();
+                var todas = db.SOLICITUD_ANDROID.OrderBy(x => x.correl).ToList();
+                if (todas.Count == 0)
+                {
+                    nrosol = 1;
+                }
+                else
+                {
+                    ultsol = todas.Last();
+                    nrosol = ultsol.correl++;
+                }
+                foreach (var v in vaca)
+                {
+                    vacacion.Add(new detvacacion
+                    {
+                        nrt_ruttr = v.nrt_ruttr,
+                        nro_periodo = v.nro_periodo,
+                        fec_inivac = v.fec_inivac.ToString("dd'-'MM'-'yyyy"),
+                        fec_finvac = v.fec_finvac.ToString("dd'-'MM'-'yyyy"),
+                        dias_habil = Convert.ToString(v.dias_habil),
+                        dias_corri = Convert.ToString(v.dias_corri),
+                        ano_inicio = Convert.ToString(v.año_inicio),
+                        ano_termino = Convert.ToString(v.año_termino),
+                        tip_uso = Convert.ToString(v.tip_uso),
+                        nro_solici = Convert.ToString(v.nro_solici),
+                        dias_legal = Convert.ToString(v.dias_legal),
+                        dias_progr = Convert.ToString(v.dias_progr),
+                        dias_contr = Convert.ToString(v.dias_contr),
+                        dias_admin = Convert.ToString(v.dias_admin),
+                        dias_faena = Convert.ToString(v.dias_faena),
+                        dias_especi = Convert.ToString(v.dias_especi),
+                        dias_otros = Convert.ToString(v.dias_otros),
+                        idsolicitud = Convert.ToString(nrosol)
+                    }); ;
+            }
+                newsol.correl = nrosol;
+                newsol.nrt_ruttr = trabajador;
+                newsol.flg_tipo = "V";
+                newsol.fec_desde = fecIni.Date;
+                newsol.fec_hasta = fecFin.Date;
+                newsol.nro_dias = 0;
+                newsol.fec_proce = hoy;
+                newsol.flg_estado = "S";
+                db.SOLICITUD_ANDROID.Add(newsol);
+                db.SaveChanges();
+                idsolicitud = newsol.correl;
+            }
+            return Json(new
+            {  
+               vacacion
             }, JsonRequestBehavior.AllowGet);
         }
 
         public virtual JsonResult SolicitudCompensacion(string trabajador, string dias)
         {
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             int ndias = Convert.ToInt32(dias);
-            var compensacion = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "N");
+            var comp = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "N");
+            var compensacion = new List<GYCEmpresa.Models.detvacacion>();
+            DateTime hoy = DateTime.Now.Date;
+            DateTime feci = hoy;
+            DateTime fecf = hoy; ;
+            int idsolicitud, nrosol;
+            if (comp.Count() != 0)
+            {
+                SOLICITUD_ANDROID newsol = new SOLICITUD_ANDROID();
+                SOLICITUD_ANDROID ultsol = new SOLICITUD_ANDROID();
+                var todas = db.SOLICITUD_ANDROID.OrderBy(x => x.correl).ToList();
+                if (todas.Count == 0)
+                {
+                    nrosol = 1;
+                }
+                else
+                {
+                    ultsol = todas.Last();
+                    nrosol = ultsol.correl;
+                    nrosol++;
+                }
+                foreach (var v in comp)
+                {
+                compensacion.Add(new detvacacion
+                {
+                    nrt_ruttr = v.nrt_ruttr,
+                    nro_periodo = v.nro_periodo,
+                    fec_inivac = v.fec_inivac.ToString("dd'-'MM'-'yyyy"),
+                    fec_finvac = v.fec_finvac.ToString("dd'-'MM'-'yyyy"),
+                    dias_habil = Convert.ToString(v.dias_habil),
+                    dias_corri = Convert.ToString(v.dias_corri),
+                    ano_inicio = Convert.ToString(v.año_inicio),
+                    ano_termino = Convert.ToString(v.año_termino),
+                    tip_uso = Convert.ToString(v.tip_uso),
+                    nro_solici = Convert.ToString(v.nro_solici),
+                    dias_legal = Convert.ToString(v.dias_legal),
+                    dias_progr = Convert.ToString(v.dias_progr),
+                    dias_contr = Convert.ToString(v.dias_contr),
+                    dias_admin = Convert.ToString(v.dias_admin),
+                    dias_faena = Convert.ToString(v.dias_faena),
+                    dias_especi = Convert.ToString(v.dias_especi),
+                    dias_otros = Convert.ToString(v.dias_otros),
+                    idsolicitud = Convert.ToString(nrosol)
+                });
+                    feci = v.fec_inivac;
+                    fecf = v.fec_finvac;
+                }
+                newsol.correl = nrosol;
+                newsol.nrt_ruttr = trabajador;
+                newsol.flg_tipo = "C";
+                newsol.fec_desde = feci;
+                newsol.fec_hasta = fecf;
+                newsol.nro_dias = ndias;
+                newsol.fec_proce = hoy;
+                newsol.flg_estado = "S";
+                db.SOLICITUD_ANDROID.Add(newsol);
+                db.SaveChanges();
+                idsolicitud = newsol.correl;
+
+            }
+
+            return Json(new
+            {
+                compensacion
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+        public virtual JsonResult ConfirmaSolicitud(string trabajador, string idsol)
+        {
+            var compensacion = new List<GYCEmpresa.Models.detvacacion>();
+
+            int solic = Convert.ToInt32(idsol);
+            var solicitud = db.SOLICITUD_ANDROID.Where(x => x.correl == solic).SingleOrDefault();
+            if (solicitud != null)
+            { 
+                if(solicitud.flg_tipo == "C")
+                {
+                int ndias = (int) solicitud.nro_dias;
+                var comp = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "S");
+                }
+                if (solicitud.flg_tipo == "V")
+                {
+                    DateTime fecIni = (DateTime) solicitud.fec_desde;
+                    DateTime fecFin = (DateTime)solicitud.fec_hasta;
+                    var vaca = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "S");
+                }
+            }
 
             return Json(new
             {
@@ -261,9 +452,9 @@ namespace GYCEmpresa.Controllers
         {
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
  
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             var infoPeri = db.rhueperi.Where(v => v.nrt_ruttr == Trabajador).ToList();
-            var periodos = new List<GYCEmpresa.Models.rhueperi>();
+            var periodos = new List<GYCEmpresa.Models.detperiodo>();
+            var rhueperi = new List<GYCEmpresa.Models.rhueperi>();
             int año = 0;
             DateTime hoy = DateTime.Now;
             var con = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
@@ -282,7 +473,7 @@ namespace GYCEmpresa.Controllers
             {
                 foreach (var p in infoPeri)
                 {
-                    periodos.Add(p);
+                    rhueperi.Add(p);
                     año = p.ano_termino;
                 }
                 if (año == 0)
@@ -318,7 +509,7 @@ namespace GYCEmpresa.Controllers
                 if (propor > dias.dias_otros)
                 { otros = (int)dias.dias_otros; propor = propor - (int)dias.dias_otros; }
                 else { otros = propor; propor = 0; }
-                periodos.Add(new rhueperi
+                periodos.Add(new detperiodo
                 {
                     nrt_ruttr = Trabajador,
                     ano_inicio = año,
@@ -330,7 +521,7 @@ namespace GYCEmpresa.Controllers
                     dias_faena = dfaena,
                     dias_especi = especi,
                     dias_otros = otros,
-                    fec_trans = DateTime.Now,
+                    fec_trans = DateTime.Now.Date.ToString("dd'-'MM'-'yyyy"),
                     rut_empr = empresa
                 });
             }
@@ -342,7 +533,6 @@ namespace GYCEmpresa.Controllers
         public virtual JsonResult CtaCte(string Trabajador)
         {
             List<ListCuentaCorriente> cta = new List<ListCuentaCorriente>();
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
 
             var ctacte = new List<ListCuentaCorriente>();
 
@@ -471,24 +661,23 @@ namespace GYCEmpresa.Controllers
 
         public virtual JsonResult Utilizados(string Trabajador)
         {
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
             var infoUsos = new List<GYCEmpresa.Models.rhueusos>();
             infoUsos = db.rhueusos.Where(i => i.nrt_ruttr == Trabajador && i.tip_uso == "V").ToList();
-            var usados = new List<rhueusos>();
+            var usados = new List<detusados>();
             foreach (var p in infoUsos)
             {
                 var sol = (db.rhuesolv.Where(x => x.nrt_ruttr == p.nrt_ruttr && x.nro_solici == p.nro_solici)).SingleOrDefault();
                 if (sol.est_solici.Substring(0, 2) == "Ac")
                 {
-                    usados.Add(new rhueusos()
+                    usados.Add(new detusados()
                     {
                         nrt_ruttr = p.nrt_ruttr,
-                        fec_inivac = p.fec_inivac,
-                        fec_tervac = p.fec_tervac,
-                        fec_transa = p.fec_transa,
+                        fec_inivac = p.fec_inivac.ToString("dd'-'MM'-'yyyy"),
+                        fec_tervac = p.fec_tervac.ToString("dd'-'MM'-'yyyy"),
+                        fec_transa = p.fec_transa.ToString("dd'-'MM'-'yyyy"),
                         ano_inicio = p.ano_inicio,
                         ano_termino = p.ano_termino,
                         tip_uso = p.tip_uso,
@@ -512,13 +701,35 @@ namespace GYCEmpresa.Controllers
         }
         public virtual JsonResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
         {
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
-            DateTime finicio = DateTime.Now.Date.AddYears(-20);
-            DateTime ftermino = DateTime.Now.Date;
+            int resultado = 0;
+            DateTime finicio = Convert.ToDateTime(fecini);
+            DateTime ftermino = Convert.ToDateTime(fecfin);
             //List<LICENCIAMEDICA> Licencias = new List<LICENCIAMEDICA>();
-            var licencias = db.LICENCIAMEDICA.Where(x => x.TRABAJADOR == Trabajador && x.FINICIO >= finicio && x.FINICIO <= ftermino).ToList();
-            return Json(new
+            db.Configuration.ProxyCreationEnabled = false;
+            var licen = db.LICENCIAMEDICA.Where(x => x.TRABAJADOR == Trabajador && x.FINICIO >= finicio && x.FINICIO <= ftermino).ToList();
+            var licencias = new List<detlicencia>();
+
+            if (licen.Count != 0)
             {
+                resultado = 1;
+                foreach (var l in licen)
+                {
+                    licencias.Add(new detlicencia()
+                    {
+                        TRABAJADOR = l.TRABAJADOR,
+                        CODIGO_LICENCIA = l.CODIGO_LICENCIA,
+                        FINICIO = l.FINICIO.ToString("dd'-'MM'-'yyyy"),
+                        FTERMINO = l.FTERMINO.ToString("dd'-'MM'-'yyyy"),
+                        DIAS = l.DIAS,
+                        //PDF = l.PDF,
+                        TIPOLICENCIASMEDICAS = l.TIPOLICENCIASMEDICAS,
+                        COMENTARIO = l.COMENTARIO
+                    });
+
+                }
+            }
+            return Json(new
+            {   resultado,
                 licencias
             }, JsonRequestBehavior.AllowGet);
         }
@@ -540,7 +751,6 @@ namespace GYCEmpresa.Controllers
             if (dettiemp != null)
                 holguraent = Convert.ToInt32(dettiemp.val_param);
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             var registro = Asistencia.InformeIndividual(empresa,Trabajador, finicio, ffinal, faena);
             return Json(new
             {
@@ -549,7 +759,6 @@ namespace GYCEmpresa.Controllers
         }
         public virtual JsonResult Cabezera(string Trabajador, DateTime finicio, DateTime ffinal)
         {
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -567,7 +776,6 @@ namespace GYCEmpresa.Controllers
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
             var permiso = Permiso.SolicitudPermisoInasistencia(Trabajador, fechaInicio, fechaFin, "0","0",empresa);
@@ -584,16 +792,266 @@ namespace GYCEmpresa.Controllers
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
-            var consulta = Permiso.ConsultaPermisoInasistencia(Trabajador, fecIni, fecFin, empresa);
+            var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
+            string nom = persona.APATERNO + " " + persona.AMATERNO + " " + persona.NOMBRE;
+
+            var querySolicitudes = (from spi in db.SOLICITUDPERMISOINASISTENCIA
+                                    where spi.EMPRESA == empresa && spi.TRABAJADOR==Trabajador && ((spi.FINICIO >= fecIni && spi.FINICIO < fecFin) || (spi.FTERMINO >= fecIni && spi.FTERMINO < fecFin))
+                                    join per in db.PERSONA on spi.TRABAJADOR equals per.RUT
+                                    select new
+                                    {
+                                        ID = spi.ID,
+                                        FECHA = spi.FECHA,
+                                        FINICIO = spi.FINICIO,
+                                        FTERMINO = spi.FTERMINO,
+                                        AUTORIZAEMPRESA = spi.AUTORIZAEMPRESA,
+                                        AUTORIZATRABAJADOR = spi.AUTORIZATRABAJADOR,
+                                        COMPENSADO = spi.COMPENSADO,
+                                        TRABAJADOR = per.NOMBRE + " " + per.APATERNO + " " + per.AMATERNO,
+                                        MOTIVO = spi.OBSERVACION
+                                    }).ToList();
+
+            List<detconsulta> consulta = new List<detconsulta>();
+            foreach (var v in querySolicitudes)
+            {
+                consulta.Add(new detconsulta()
+                {
+                    ID = v.ID,
+                    FECHA = v.FECHA.ToString("dd'-'MM'-'yyyy"),
+                    FINICIO = v.FINICIO.ToString("dd'-'MM'-'yyyy"),
+                    FTERMINO = v.FTERMINO.ToString("dd'-'MM'-'yyyy"),
+                    AUTORIZAEMPRESA = v.AUTORIZAEMPRESA,
+                    AUTORIZATRABAJADOR = v.AUTORIZATRABAJADOR,
+                    COMPENSADO = v.COMPENSADO,
+                    TRABAJADOR = v.TRABAJADOR,
+                    MOTIVO = v.MOTIVO
+
+                });
+            }
 
             return Json(new
             {
                 consulta
             }, JsonRequestBehavior.AllowGet);
         }
+        private InfoRegistraDispositivo RegistraDispositivo(string Id_Dispositivo)
+        {
+            {
+                try
+                {
+
+
+                    var infoDisp = db.DISPOSITIVO_ANDROID.Where(x => x.ID_DISPOSITIVO == Id_Dispositivo).ToList();
+                    DISPOSITIVO_ANDROID Dispositivo = new DISPOSITIVO_ANDROID();
+
+                    if (infoDisp.Count > 0)
+                    {
+                        Dispositivo = infoDisp.First();
+                        Dispositivo.ID_DISPOSITIVO = Id_Dispositivo;
+                    }
+                    else
+                    {
+                        //Dispositivo.DESCRIPCION = "Equipo agregado el " + DateTime.Now.AddHours(AjusteHora());
+                        Dispositivo.DESCRIPCION = "Equipo agregado el " + DateTime.Now.AddHours(3);
+                        Dispositivo.ID_DISPOSITIVO = Id_Dispositivo;
+                        db.DISPOSITIVO_ANDROID.Add(Dispositivo);
+                    }
+
+                    db.SaveChanges();
+
+                    InfoRegistraDispositivo info = new InfoRegistraDispositivo();
+                    info.Token = Guid.NewGuid().ToString();
+                    info.Id_dispositivo = Dispositivo.ID;
+                    return info;
+
+                }
+                catch (Exception)
+                {
+                    InfoRegistraDispositivo info = new InfoRegistraDispositivo();
+                    info.Token = "Error";
+                    info.Id_dispositivo = 0;
+                    return info;
+                }
+            }
+        }
+        public virtual JsonResult BuscaDocumentos(string Trabajador)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            var lstdocumento = (db.DOCUMENTOS_CLOUD.Where(x => x.TRABAJADOR == Trabajador && x.EMPRESA == empresa)).ToList();
+            var per = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
+            string nom = per.APATERNO + " " + per.AMATERNO + " " + per.NOMBRE;
+            var documentos = new List<detdoc>();
+            foreach (var p in lstdocumento)
+            {
+                DateTime fec1 = (DateTime) p.FINICIO;
+                DateTime fec2 = (DateTime) p.FTERMINO;
+                documentos.Add(new detdoc()
+                {
+                    trabajador = p.TRABAJADOR,
+                    nombre = nom,
+                    tipo = p.S3_DIRECTORIO,
+                    descripcion = p.DESCRIPCION,
+                    inicio = fec1.ToString("dd'-'MM'-'yyyy"),
+                    termino = fec2.ToString("dd'-'MM'-'yyyy"),
+                    archivo = p.ARCHIVO
+                });
+            }
+
+
+            return Json(new
+            {
+                documentos
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public int CambioClave(solcambio data)
+        {
+            int existe = 0;
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == data.rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            var claves = (db.USUARIO_ANDROID.Where(x => x.RUT == data.rut)).ToList();
+            if(claves.Count != 0)
+            {
+            USUARIO_ANDROID ele = new USUARIO_ANDROID();
+            ele = claves.First();
+            string clave = data.antigua+"                                                                                                        ";
+            clave = clave.Substring(0, 100);
+            if(clave== ele.CONTRASEÑA)
+            {
+                ele.CONTRASEÑA = data.nueva;
+
+                string comando = "SET [CONTRASEÑA] = '" + data.nueva + "' WHERE [RUT] = '" + data.rut + "'";
+                db.Database.ExecuteSqlCommand("UPDATE USUARIO_ANDROID " + comando);
+                existe = 1;
+            }
+            }
+            return existe;
+        }
+        public virtual JsonResult MotivoPermiso(string rut)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+            var Tipper = db.remepage.Where(x => x.nom_tabla == "PERMISO" && x.rut_empr == empresa).Select(x => new { Id = x.cod_param, Descripcion = x.gls_param }).ToList().OrderBy(x => x.Descripcion);
+
+            return Json(new
+            {
+                Tipper
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public virtual JsonResult Notificaciones(string rut)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+            var noti = new List<GYCEmpresa.Models.NOTIFICACION>();
+            db.Configuration.ProxyCreationEnabled = false;
+            noti = db.NOTIFICACION.Where(item => item.EMPRESA == empresa && item.VISTO == false && item.NOTIFTRABAJADOR == true && item.TRABAJADOR == rut).ToList();
+            var notifica = new List<detnotifica>();
+            foreach (var n in noti)
+            {
+
+                    notifica.Add(new detnotifica()
+                    {
+                    ID=n.ID,
+                    TIPO =n.TIPO,
+                    FECHA=n.FECHA.ToString("dd'-'MM'-'yyyy"),
+                    OBSERVACION=n.OBSERVACION,
+                    GYC = n.GYC,
+                    NOTIFTRABAJADOR = n.NOTIFTRABAJADOR,
+                    NOTIFEMPRESA = n.NOTIFEMPRESA,
+                    TRABAJADOR =n.TRABAJADOR,
+                    EMPRESA = n.EMPRESA,
+                    USUARIO =n.USUARIO,
+                    TABLA = n.TABLA,
+                    IDTABLA = n.IDTABLA,
+                    ESTADO = n.ESTADO,
+                    VISTO = n.VISTO,
+                    USUARIO1 = n.USUARIO1
+                    });
+            }
+            return Json(new
+            {
+                notifica
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public virtual JsonResult TipoDocumento(string rut)
+        {
+            DateTime hoy = DateTime.Now.Date;
+            int[] tipo = new int[1000];
+            string[] desc = new string[1000];
+            int ind;
+            for (ind = 0; ind < 1000; ind++)
+            { tipo[ind] = 0;
+                desc[ind] = null;
+            }
+
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+
+            var lstdocumento = (db.DOCUMENTOS_CLOUD.Where(x => x.TRABAJADOR == rut && x.EMPRESA == empresa)).ToList();
+            var per = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
+            string nom = per.APATERNO + " " + per.AMATERNO + " " + per.NOMBRE;
+            var documentos = new List<detdoc>();
+            var TipoBucket = db.TIPO_BUCKET.Select(x => new { x.ID, x.DESCRIPCION }).ToList();
+            foreach(var t in TipoBucket)
+            {
+                ind = t.ID;
+                if (ind < 1000)
+                {
+                    desc[ind] = t.DESCRIPCION;
+                }
+            }
+            int indb;
+            foreach (var p in lstdocumento)
+            {
+                indb = 0;
+                for (ind = 0; ind < 1000; ind++)
+                {
+                    if(p.S3_DIRECTORIO== desc[ind])
+                    {
+                        indb = ind;
+                        ind = 1000;
+                    }
+                }
+                tipo[indb] = 1;
+            }
+            var tipodocum = new List<tipodoc>();
+            for (ind = 0; ind < 999; ind++)
+            {
+              if(tipo[ind]!= 0)
+                {
+
+                tipodocum.Add(new tipodoc()
+                {
+                    id= Convert.ToString(ind),
+                    descripcion= desc[ind]
+                });
+                }
+            }
+            return Json(new
+            {
+                tipodocum
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+ private class InfoRegistraDispositivo
+{
+    public int Id_dispositivo { get; set; }
+    public string Token { get; set; }
+}
 
 
     }
@@ -652,5 +1110,172 @@ namespace GYCEmpresa.Models
     public class respuesta
     {
         public string mensaje { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    internal class InfoLogin
+    {
+        public string token { get; set; }
+        public string modo { get; set; }
+        public string idTrabajador { get; set; }
+        public string touchless { get; set; }
+        public string urlLogo { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detdoc
+    {
+        public string trabajador { get; set; }
+        public string nombre { get; set; }
+        public string tipo { get; set; }
+        public string descripcion { get; set; }
+        public object inicio { get; set; }
+        public string termino { get; set; }
+        public object archivo { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class Reply
+    {
+        public int result { get; set; }
+        public object data { get; set; }
+        public string message { get; set; }
+        public object data2 { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+
+    public class tipodoc
+    {
+        public string id { get; set; }
+        public string descripcion { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detvacacion
+    {
+        public string nrt_ruttr { get; set; }
+        public string nro_periodo { get; set; }
+        public string fec_inivac { get; set; }
+        public string fec_finvac { get; set; }
+        public string dias_habil { get; set; }
+        public string dias_corri { get; set; }
+        public string ano_inicio { get; set; }
+        public string ano_termino { get; set; }
+        public string tip_uso { get; set; }
+        public string nro_solici { get; set; }
+        public string dias_legal { get; set; }
+        public string dias_progr { get; set; }
+        public string dias_contr { get; set; }
+        public string dias_admin { get; set; }
+        public string dias_faena { get; set; }
+        public string dias_especi { get; set; }
+        public string dias_otros { get; set; }
+        public string idsolicitud { get; set; }
+    }
+}
+
+namespace GYCEmpresa.Models
+{
+    public class detperiodo
+    {
+        public int correl { get; set; }
+        public string nrt_ruttr { get; set; }
+        public int ano_inicio { get; set; }
+        public int ano_termino { get; set; }
+        public int dias_legal { get; set; }
+        public Nullable<int> dias_progr { get; set; }
+        public Nullable<int> dias_contr { get; set; }
+        public Nullable<int> dias_admin { get; set; }
+        public Nullable<int> dias_faena { get; set; }
+        public Nullable<int> dias_especi { get; set; }
+        public Nullable<int> dias_otros { get; set; }
+        public string fec_trans { get; set; }
+        public string rut_empr { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detusados
+    {
+        public int correl { get; set; }
+        public string nrt_ruttr { get; set; }
+        public int ano_inicio { get; set; }
+        public int ano_termino { get; set; }
+        public string tip_uso { get; set; }
+        public string fec_inivac { get; set; }
+        public string fec_tervac { get; set; }
+        public int nro_solici { get; set; }
+        public int dias_corri { get; set; }
+        public Nullable<int> dias_legal { get; set; }
+        public Nullable<int> dias_progr { get; set; }
+        public Nullable<int> dias_contr { get; set; }
+        public Nullable<int> dias_admin { get; set; }
+        public Nullable<int> dias_faena { get; set; }
+        public Nullable<int> dias_especi { get; set; }
+        public Nullable<int> dias_otros { get; set; }
+        public string fec_transa { get; set; }
+        public string rut_empr { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detconsulta
+    {
+        public int ID { get; set; }
+        public string FECHA { get; set; }
+        public string FINICIO { get; set; }
+        public string FTERMINO { get; set; }
+        public bool? AUTORIZAEMPRESA { get; set; }
+        public bool? AUTORIZATRABAJADOR { get; set; }
+        public int? COMPENSADO { get; set; }
+        public string TRABAJADOR { get; set; }
+        public string MOTIVO { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detlicencia
+    {
+        public int ID { get; set; }
+        public string CODIGO_LICENCIA { get; set; }
+        public string TRABAJADOR { get; set; }
+        public string FINICIO { get; set; }
+        public string FTERMINO { get; set; }
+        public Nullable<int> DIAS { get; set; }
+        public int TIPO_LICENCIA { get; set; }
+        public string COMENTARIO { get; set; }
+        public Nullable<int> TIPO_MEDICO { get; set; }
+        public byte[] PDF { get; set; }
+
+        public virtual TIPOLICENCIASMEDICAS TIPOLICENCIASMEDICAS { get; set; }
+        public virtual TIPOMEDICO TIPOMEDICO { get; set; }
+        public virtual PERSONA PERSONA { get; set; }
+    }
+}
+namespace GYCEmpresa.Models
+{
+    public class detnotifica
+    {
+        public int ID { get; set; }
+        public string TIPO { get; set; }
+        public string FECHA { get; set; }
+        public string OBSERVACION { get; set; }
+        public Nullable<bool> GYC { get; set; }
+        public Nullable<bool> NOTIFTRABAJADOR { get; set; }
+        public Nullable<bool> NOTIFEMPRESA { get; set; }
+        public string TRABAJADOR { get; set; }
+        public string EMPRESA { get; set; }
+        public string USUARIO { get; set; }
+        public string TABLA { get; set; }
+        public int IDTABLA { get; set; }
+        public Nullable<int> ESTADO { get; set; }
+        public Nullable<bool> VISTO { get; set; }
+        public virtual USUARIO USUARIO1 { get; set; }
     }
 }

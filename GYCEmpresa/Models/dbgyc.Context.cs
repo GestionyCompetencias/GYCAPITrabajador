@@ -178,6 +178,10 @@ namespace GYCEmpresa.Models
         public virtual DbSet<SINDICATOTRABAJADOR> SINDICATOTRABAJADOR { get; set; }
         public virtual DbSet<PERFILTRABAJADOR> PERFILTRABAJADOR { get; set; }
         public virtual DbSet<DOMINGOSTRABAJADOS> DOMINGOSTRABAJADOS { get; set; }
+        public virtual DbSet<LOGTRABAJADOR> LOGTRABAJADOR { get; set; }
+        public virtual DbSet<USUARIO_ANDROID> USUARIO_ANDROID { get; set; }
+        public virtual DbSet<DISPOSITIVO_ANDROID> DISPOSITIVO_ANDROID { get; set; }
+        public virtual DbSet<SOLICITUD_ANDROID> SOLICITUD_ANDROID { get; set; }
     
         public virtual ObjectResult<PERMISO_USUARIO_Result> PERMISO_USUARIO(string eMPRESA, string uSUARIO)
         {

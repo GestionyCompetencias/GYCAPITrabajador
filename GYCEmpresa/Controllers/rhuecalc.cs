@@ -529,7 +529,9 @@ namespace GYCEmpresa.Controllers
             int ind, dif, habil;
             DateTime feccal;
             string feci, fecf, sep;
-            string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
+            DateTime hoy = DateTime.Now.Date;
+            var con = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            string empresa = con.EMPRESA;
             var perical = new List<periodoscalc>();
 
 
@@ -546,8 +548,8 @@ namespace GYCEmpresa.Controllers
                     usos.ano_inicio = peri_tra[ind].ini;
                     usos.ano_termino = peri_tra[ind].fin;
                     usos.tip_uso = tipo;
-                    usos.fec_inivac = fechai;
-                    usos.fec_tervac = feccal;
+                    usos.fec_inivac = fechai.Date;
+                    usos.fec_tervac = feccal.Date;
                     usos.nro_solici = soli;
                     usos.dias_corri = corrp;
                     usos.dias_legal = peri_tra[ind].uleg;

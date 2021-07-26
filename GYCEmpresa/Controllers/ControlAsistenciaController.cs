@@ -663,10 +663,10 @@ namespace GYCEmpresa.Controllers
             cabeza.empresa = razon;
             cabeza.cargo = cargo;
             cabeza.nombre = nombre;
-            cabeza.ingreso = feci;
+            cabeza.ingreso = feci.ToString("dd'-'MM'-'yyyy");
             cabeza.rut = trabajador;
-            cabeza.desde = finicio;
-            cabeza.hasta = ffinal;
+            cabeza.desde = finicio.ToString("dd'-'MM'-'yyyy");
+            cabeza.hasta = ffinal.ToString("dd'-'MM'-'yyyy");
 
 
             return cabeza;
@@ -3808,8 +3808,8 @@ namespace GYCEmpresa.Models
         public string cargo { get; set; }
         public string rut { get; set; }
         public string nombre { get; set; }
-        public DateTime ingreso { get; set; }
-        public DateTime desde { get; set; }
-        public DateTime hasta { get; set; }
+        public string ingreso { get; set; }
+        public string desde { get; set; }
+        public string hasta { get; set; }
     }
 }

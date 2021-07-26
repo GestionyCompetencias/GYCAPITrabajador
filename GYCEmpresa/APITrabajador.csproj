@@ -291,25 +291,35 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\APITrabajadorController.cs" />
     <Compile Include="Controllers\AsAdministController.cs" />
+    <Compile Include="Controllers\cambioclaveController.cs" />
     <Compile Include="Controllers\compensacionController.cs" />
+    <Compile Include="Controllers\confirmaController.cs" />
     <Compile Include="Controllers\ControlAsistenciaController.cs" />
     <Compile Include="Controllers\ctacorrienteController.cs" />
+    <Compile Include="Controllers\documentosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\inicioController.cs" />
     <Compile Include="Controllers\licenciaController.cs" />
     <Compile Include="Controllers\MaestrosController.cs" />
     <Compile Include="Controllers\marcacionController.cs" />
+    <Compile Include="Controllers\motivoController.cs" />
+    <Compile Include="Controllers\notificaController.cs" />
     <Compile Include="Controllers\periodosController.cs" />
     <Compile Include="Controllers\personalController.cs" />
     <Compile Include="Controllers\registroController.cs" />
     <Compile Include="Controllers\rhuecalc.cs" />
     <Compile Include="Controllers\permisoController.cs" />
     <Compile Include="Controllers\consultaController.cs" />
+    <Compile Include="Controllers\tipoController.cs" />
     <Compile Include="Controllers\utilizadosController.cs" />
     <Compile Include="Controllers\utilPdf.cs" />
     <Compile Include="Controllers\vacacionController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Models\ComplementoRemuneracion.cs" />
     <Compile Include="Models\ContratoPDF.cs" />
+    <Compile Include="Models\DISPOSITIVO_ANDROID.cs">
+      <DependentUpon>dbgyc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DOMINGOSTRABAJADOS.cs">
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
@@ -549,6 +559,9 @@
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ListPapeleta.cs" />
+    <Compile Include="Models\LOGTRABAJADOR.cs">
+      <DependentUpon>dbgyc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NOTIFICACIONES_PENDIENTES_TRABAJADOR_Result.cs">
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
@@ -565,6 +578,9 @@
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SINDICATOTRABAJADOR.cs">
+      <DependentUpon>dbgyc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SOLICITUD_ANDROID.cs">
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TrabajadoresFaena.cs" />
@@ -800,6 +816,9 @@
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\USUARIO.cs">
+      <DependentUpon>dbgyc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\USUARIO_ANDROID.cs">
       <DependentUpon>dbgyc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VACACIONES.cs">
@@ -3615,15 +3634,22 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Access\" />
+    <Folder Include="Views\cambioclave\" />
     <Folder Include="Views\compensacion\" />
+    <Folder Include="Views\confirma\" />
     <Folder Include="Views\ctacorriente\" />
+    <Folder Include="Views\documentos\" />
+    <Folder Include="Views\inicio\" />
     <Folder Include="Views\licencia\" />
     <Folder Include="Views\marcacion\" />
+    <Folder Include="Views\motivo\" />
+    <Folder Include="Views\notifica\" />
     <Folder Include="Views\periodos\" />
     <Folder Include="Views\personal\" />
     <Folder Include="Views\registro\" />
     <Folder Include="Views\SolicitudPermiso\" />
     <Folder Include="Views\solicitud\" />
+    <Folder Include="Views\tipo\" />
     <Folder Include="Views\utilizados\" />
     <Folder Include="Views\vacacion\" />
   </ItemGroup>

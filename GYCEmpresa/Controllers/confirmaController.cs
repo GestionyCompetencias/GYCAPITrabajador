@@ -8,14 +8,14 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+//using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/compensacion")]
+    [Route("api/confirma")]
 
     //[ApiController]
-    public class compensacionController : Controller
+    public class confirmaController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,20 +23,20 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Solicitud de compensación";
+            respuesta.mensaje = "Confirma solicitud";
             return Json(new
             {
                 respuesta
             }, JsonRequestBehavior.AllowGet);
         }
-        // Get Api Id
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
+        //Get Api Id
+       [Microsoft.AspNetCore.Mvc.HttpPost]
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solconfirma data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.dias);
+            JsonResult respuesta = APITrabajador.ConfirmaSolicitud(data.rut, data.idsol);
             return Json(new
             {
-                compensacion
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -46,9 +46,9 @@ namespace GYCEmpresa.Controllers
 namespace GYCEmpresa.Models
 {
 
-    public class solcompensacion
+    public class solconfirma
     {
         public string rut { get; set; }
-        public string dias { get; set; }
+        public string idsol { get; set; }
     }
 }
