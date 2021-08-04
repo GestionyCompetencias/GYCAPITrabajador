@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] soldocumento data)
         {
-            JsonResult documentos = APITrabajador.BuscaDocumentos(data.rut);
+            Reply respuesta = APITrabajador.BuscaDocumentos(data.token,data.rut);
             return Json(new
             {
-                documentos
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class soldocumento
     {
+        public string token { get; set; }
         public string rut { get; set; }
     }
 }

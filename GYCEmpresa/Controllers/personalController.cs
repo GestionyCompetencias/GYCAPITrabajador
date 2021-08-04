@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpersonal data)
         {
-            JsonResult trabajador = APITrabajador.ExistePersonaDetalle(data.rut);
+            Reply respuesta = APITrabajador.ExistePersonaDetalle(data.rut,data.token);
             return Json(new
             {
-                trabajador
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,8 @@ namespace GYCEmpresa.Models
 
     public class solpersonal
     {
+        public string token { get; set; }
+
         public string rut { get; set; }
     }
 }

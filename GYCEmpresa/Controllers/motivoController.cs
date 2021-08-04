@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solmotivo data)
         {
-            JsonResult motivo = APITrabajador.MotivoPermiso(data.rut);
+            Reply respuesta = APITrabajador.MotivoPermiso(data.token,data.rut);
             return Json(new
             {
-                motivo
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solmotivo
     {
+        public string token { get; set; }
         public string rut { get; set; }
     }
 }

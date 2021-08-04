@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] sollicencia data)
         {
-            JsonResult licencias = APITrabajador.LicenciasMedicas(data.rut, data.fecha1, data.fecha2);
+            Reply respuesta = APITrabajador.LicenciasMedicas(data.token,data.rut, data.fecha1, data.fecha2);
             return Json(new
             {
-               licencias
+               respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class sollicencia
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string fecha1 { get; set; }
         public string fecha2 { get; set; }

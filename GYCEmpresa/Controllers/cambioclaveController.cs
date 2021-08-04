@@ -33,10 +33,7 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcambio data)
         {
-            int clave = APITrabajador.CambioClave(data);
-            respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Contraseña modificada exitosamente";
-            if(clave==0)respuesta.mensaje = "No se pudo modicar contraseña";
+            Reply respuesta = APITrabajador.CambioClave(data);
             return Json(new
             {
                respuesta
@@ -51,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solcambio
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string antigua { get; set; }
         public string nueva { get; set; }

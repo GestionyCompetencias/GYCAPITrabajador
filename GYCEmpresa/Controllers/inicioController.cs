@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] sollogin data)
         {
-            Reply token = APITrabajador.acceso(data.rut,data.clave,data.dispositivo);
+            Reply respuesta = APITrabajador.acceso(data.rut,data.clave,data.dispositivo);
             return Json(new
             {
-                token
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }

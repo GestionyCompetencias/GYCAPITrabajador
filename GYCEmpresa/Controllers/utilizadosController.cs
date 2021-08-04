@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solusados data)
         {
-            JsonResult usados = APITrabajador.Utilizados(data.rut);
+            Reply respuesta = APITrabajador.Utilizados(data.token,data.rut);
             return Json(new
             {
-                usados
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solusados
     {
+        public string token { get; set; }
         public string rut { get; set; }
     }
 }

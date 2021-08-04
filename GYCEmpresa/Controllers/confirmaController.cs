@@ -33,7 +33,7 @@ namespace GYCEmpresa.Controllers
        [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solconfirma data)
         {
-            JsonResult respuesta = APITrabajador.ConfirmaSolicitud(data.rut, data.idsol);
+            Reply respuesta = APITrabajador.ConfirmaSolicitud(data.token,data.rut, data.idsol);
             return Json(new
             {
                 respuesta
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solconfirma
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string idsol { get; set; }
     }

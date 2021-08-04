@@ -11,6 +11,7 @@ using System.Net.Mail;
 using Microsoft.Ajax.Utilities;
 using System.Reflection.Emit;
 using SpreadsheetLight;
+using System.Net;
 
 namespace GYCEmpresa.Controllers
 {
@@ -26,11 +27,21 @@ namespace GYCEmpresa.Controllers
         public Reply acceso(string trabajador, string clave,string ID_DISPOSITIVO)
         {
             Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "Usuario no registrado";
             DateTime hoy = DateTime.Now.Date;
+            DateTime finicio = f.PrimerDia(hoy);
+            DateTime ffinal = f.UltimoDia(hoy);
+            if (ffinal > hoy) ffinal = hoy;
+            int dias_vac=0, dias_per=0, dias_lic=0, dias_ina=0, dias_des=0;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            string empresa = cont.EMPRESA;
             if(cont != null)
             {
+                oR.message = "Clave invalida";
+
+                string empresa = cont.EMPRESA;
                 //var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave && x.HABILITADO == true)).SingleOrDefault();
                 var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave )).SingleOrDefault();
                 if(lst != null)
@@ -41,6 +52,7 @@ namespace GYCEmpresa.Controllers
                     {
                         //USUARIO_ANDROID usuarioToken = lst.First();
                         USUARIO_ANDROID usuarioToken = lst;
+                        DateTime hoydia = DateTime.Now.Date;
                         usuarioToken.TOKEN = Info.Token;
                         usuarioToken.DISPOSITIVO = Info.Id_dispositivo;
                         db.Entry(usuarioToken).State = System.Data.Entity.EntityState.Modified;
@@ -49,9 +61,19 @@ namespace GYCEmpresa.Controllers
                         oR.result = 1;
                         string mensaje = "Token:" + Info.Token + "#Tipo:" + lst.TIPO.ToString();
 
-                        int id_trabajador = db.CONTRATO.Where(x => x.PERSONA == trabajador).Select(x => x.ID).SingleOrDefault();
+                        int id_trabajador = db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FIRMAEMPRESA== true && x.FIRMATRABAJADOR== true && x.RECHAZADO== false && x.FTERMNO >=hoydia ).Select(x => x.ID).SingleOrDefault();
                         mensaje = mensaje + "#IdTrabajador:" + id_trabajador + "#Touchless:" + usuarioToken.TOUCHLESS;
+                        List<InformeFinal> asistencia = new List<InformeFinal>();
+                        asistencia = Registro(trabajador, finicio, ffinal);
+                        foreach(var d in asistencia)
+                        {
+                            if (d.inasistencia == "") dias_ina = dias_ina + 1;
+                            if (d.inasistencia == "DESCANSO" || d.inasistencia == "FERIADO") dias_des = dias_des + 1;
+                            if (d.inasistencia == "PERMISO") dias_per = dias_per + 1;
+                            if (d.inasistencia == "LICENCIA") dias_lic = dias_lic + 1;
+                            if (d.inasistencia == "VACACION") dias_vac = dias_vac + 1;
 
+                        }
                         InfoLogin Respuesta = new InfoLogin();
                         Respuesta.token = Info.Token;
                         //Respuesta.modo = lst.FirstOrDefault().TIPO.ToString();
@@ -59,7 +81,11 @@ namespace GYCEmpresa.Controllers
                         Respuesta.idTrabajador = id_trabajador.ToString();
                         Respuesta.touchless = usuarioToken.TOUCHLESS.ToString();
                         Respuesta.urlLogo = "https://logosgycsol.s3-sa-east-1.amazonaws.com/GYCSolLogo.png";
-
+                        Respuesta.diaslicencia = Convert.ToString(dias_lic);
+                        Respuesta.diaspermiso = Convert.ToString(dias_per);
+                        Respuesta.diasvacacion = Convert.ToString(dias_vac);
+                        Respuesta.diasfalla = Convert.ToString(dias_ina);
+                        Respuesta.diasdescanso = Convert.ToString(dias_des);
                         oR.data = mensaje;
                         oR.data2 = Respuesta;
                         oR.message = "Acceso Correcto";
@@ -78,10 +104,25 @@ namespace GYCEmpresa.Controllers
             return oR;
 
         }
-
-        public virtual JsonResult ExistePersonaDetalle(string rut)
+        public int ValidaToken(string rut, string token)
+        {
+            int valido = 0;
+            var usua = (db.USUARIO_ANDROID.Where(x => x.RUT == rut && x.TOKEN == token)).SingleOrDefault();
+            if (usua != null) valido = 1;
+            return valido;
+        }
+        public Reply ExistePersonaDetalle(string rut, string token)
         {
             Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(rut, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
             string EXISTE = "N";
             DateTime hoy = DateTime.Now.Date;
             var pers = (db.PERSONA.Where(x => x.RUT == rut)).SingleOrDefault();
@@ -159,68 +200,16 @@ namespace GYCEmpresa.Controllers
                 trabajador = CreaSalida(cont, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
                      BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
                      FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
-                return Json(new
-                {
-                    trabajador
-                }, JsonRequestBehavior.AllowGet);
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = trabajador;
+                oR.message = "Consulta exitosa";
+                return oR;
             }
             else
             {
-                PERSONA pers1 = new PERSONA();
-                pers1.NOMBRE = null;
-                pers1.APATERNO = null;
-                pers1.AMATERNO = null;
-                string FNACIM = null;
-                pers1.NACIONALIDAD = null;
-                pers1.TELEFONO1 = 0;
-                pers1.TELEFONO2 = 0;
-                pers1.CORREO = null;
-                pers1.DIRECCION = null;
-                pers1.REGION = 0;
-                pers1.CIUDAD = 0;
-                pers1.COMUNA = 0;
-                pers1.SEXO = null;
-                pers1.BANCO = 0;
-                pers1.TCUENTA = 0;
-                pers1.NCUENTA = null;
-                pers1.ECIVIL = 0;
-                pers1.NHIJOS = 0;
-                pers1.SALUD = 0;
-                pers1.ADICIONALSALUD = 0;
-                pers1.PREVISION = 0;
-                pers1.APV = 0;
-                pers1.AHORRO = 0;
-                pers1.EMPRESAACTUAL = null;
-                pers1.ESTADOCONTRATUAL = null;
-                string FINICI = hoy.ToString("yyyy'-'MM'-'dd");
-                string FTERMI = "2099-12-31";
-                string FFERIA = hoy.ToString("yyyy'-'MM'-'dd");
-                DIAS = 0;
-                string FSINDI = hoy.ToString("yyyy'-'MM'-'dd");
-                String SUELDOD = "0";
-                string NACIONALIDADD = null;
-                string DIASD = null;
-                string FAENAD = null;
-                string REGIOND = null;
-                string COMUNAD = null;
-                string CIUDADD = null;
-                string BANCOD = null;
-                string TCUENTAD = null;
-                string ECIVILD = null;
-                string SALUDD = null;
-                string PREVISIOND = null;
-                string TURNOD = null;
-                string SINDICATO = null;
-                string TIPOCONTRATOD = null;
-                CONTRATO contra = new CONTRATO();
-                var trabajador = new detalle();
-                trabajador = CreaSalida(contra, pers, FNACIM, NACIONALIDADD, REGIOND, CIUDADD, COMUNAD,
-                     BANCOD, TCUENTAD, ECIVILD, SALUDD, PREVISIOND, FAENAD, TURNOD, FINICI,
-                     FTERMI, FFERIA, DIASD, FSINDI, SINDICATO, RAZONSOCIAL, TIPOCONTRATOD, SUELDOD, EXISTE);
-                return Json(new
-                {
-                    trabajador
-                }, JsonRequestBehavior.AllowGet);
+                oR.data2 = null;
+                return oR;
             }
         }
         public detalle CreaSalida(CONTRATO cont, PERSONA pers, string FNACIM, string NACIONALIDADD, string REGIOND, string CIUDADD, string COMUNAD,
@@ -269,24 +258,49 @@ namespace GYCEmpresa.Controllers
                 nr.existe = EXISTED;
             return nr;
         }
-        public virtual JsonResult MarcacionesTrabajador(string trabajador, string fechaInicio, string fechaFin)
+        public Reply MarcacionesTrabajador(string token,string trabajador, string fechaInicio, string fechaFin)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
 
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             string empresa = cont.EMPRESA;
-            var marcas = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
-            return Json(new
+            if(cont != null)
             {
-                marcas
-            }, JsonRequestBehavior.AllowGet);
+                oR.data2 = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
+                oR.result = 1;
+                oR.data = token;
+                oR.message = "Consulta exitosa";
+
+            }
+
+            return oR;
 
         }
 
-        public virtual JsonResult SolicitudVacaciones(string trabajador, string fechaInicio, string fechaFin)
+        public Reply SolicitudVacaciones(string token, string trabajador, string fechaInicio, string fechaFin)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
 
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
@@ -343,15 +357,27 @@ namespace GYCEmpresa.Controllers
                 db.SOLICITUD_ANDROID.Add(newsol);
                 db.SaveChanges();
                 idsolicitud = newsol.correl;
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 =vacacion;
+                oR.message = "Solicitud de vacaciones";
             }
-            return Json(new
-            {  
-               vacacion
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
         }
 
-        public virtual JsonResult SolicitudCompensacion(string trabajador, string dias)
+        public Reply SolicitudCompensacion(string token,string trabajador, string dias)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
 
             int ndias = Convert.ToInt32(dias);
             var comp = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "N");
@@ -412,46 +438,130 @@ namespace GYCEmpresa.Controllers
                 db.SOLICITUD_ANDROID.Add(newsol);
                 db.SaveChanges();
                 idsolicitud = newsol.correl;
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = compensacion;
+                oR.message = "Solicitud de vacaciones";
 
             }
 
-            return Json(new
-            {
-                compensacion
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
 
         }
-        public virtual JsonResult ConfirmaSolicitud(string trabajador, string idsol)
+        public Reply ConfirmaSolicitud(string token,string trabajador, string idsol)
         {
+            DateTime hoy = DateTime.Now.Date;
+            DateTime finicio = f.PrimerDia(hoy);
+            DateTime ffinal = f.UltimoDia(hoy);
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            Reply oR = new Reply();
             var compensacion = new List<GYCEmpresa.Models.detvacacion>();
-
             int solic = Convert.ToInt32(idsol);
+            rhuesolv infosolv = new rhuesolv();
+            rhuesolc infosolc = new rhuesolc();
             var solicitud = db.SOLICITUD_ANDROID.Where(x => x.correl == solic).SingleOrDefault();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "Solicitud rechazada";
+            if (cont == null)
+            {
+                oR.message = "Falta contrato";
+                return oR;
+            }
+            string empresa = cont.EMPRESA;
+            if (ValidaToken(trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             if (solicitud != null)
             { 
                 if(solicitud.flg_tipo == "C")
                 {
-                int ndias = (int) solicitud.nro_dias;
-                var comp = rhuecalc.ProcesoCompensacion(trabajador, ndias, 1, "S");
+                    int nroSolicitud = db.Database.SqlQuery<int>("SELECT nro_solici FROM rhuesolc").FirstOrDefault();
+                    if (nroSolicitud == 0)
+                    {
+                        infosolc.nro_solici = 1;
+                    }
+                    else
+                    {
+                        int numsol = db.Database.SqlQuery<int>("SELECT MAX( nro_solici) FROM rhuesolc").First() + 1;
+                        infosolc.nro_solici = numsol;
+                    }
+                    infosolc.nrt_ruttr = trabajador;
+                    int ndias = (int)solicitud.nro_dias;
+                    DateTime fechaSol = DateTime.Now;
+                    infosolc.fec_solici = fechaSol;
+                    infosolc.est_solici = "Peticion";
+                    infosolc.rut_empr = empresa;
+                    infosolc.dias_solici = ndias;
+                    var comp = rhuecalc.ProcesoCompensacion(trabajador, ndias, infosolc.nro_solici, "S");
+                    if(comp.Count !=0)
+                    {
+                    foreach(var c in comp)
+                        {
+                            infosolc.dias_habil = c.dias_habil;
+                            infosolc.fec_inicio = c.fec_inivac;
+                        }
+                    db.rhuesolc.Add(infosolc);
+                    db.SaveChanges();
+                    oR.message = "Solicitud de compensación ingresada";
+                    }
                 }
                 if (solicitud.flg_tipo == "V")
                 {
-                    DateTime fecIni = (DateTime) solicitud.fec_desde;
+                    int nroSolicitud = db.Database.SqlQuery<int>("SELECT nro_solici FROM rhuesolv").FirstOrDefault();
+                    if (nroSolicitud == 0)
+                    {
+                        infosolv.nro_solici = 1;
+                    }
+                    else
+                    {
+                        int numsol = db.Database.SqlQuery<int>("SELECT MAX( nro_solici) FROM rhuesolv").First() + 1;
+                        infosolv.nro_solici = numsol;
+                    }
+                    DateTime fecIni = (DateTime)solicitud.fec_desde;
                     DateTime fecFin = (DateTime)solicitud.fec_hasta;
-                    var vaca = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, 1, "S");
+
+                    DateTime fechaSol = DateTime.Today;
+                    String fechActual = fechaSol.ToShortDateString();
+                    infosolv.nrt_ruttr = trabajador;
+                    infosolv.fec_solici = fechaSol;
+                    infosolv.est_solici = "Peticion";
+                    infosolv.fec_inicio = fecIni;
+                    infosolv.fec_termin = fecFin;
+                    infosolv.rut_empr = empresa;
+                    db.rhuesolv.Add(infosolv);
+                    db.SaveChanges();
+
+                    var vaca = rhuecalc.ProcesoVacaciones(trabajador, fecIni, fecFin, infosolv.nro_solici, "S");
+                    oR.message = "Solicitud de vacacion ingresada";
                 }
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = null;
             }
 
-            return Json(new
-            {
-                compensacion
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
 
         }
-        public virtual JsonResult Periodos(string Trabajador)
+        public Reply Periodos(string token,string Trabajador)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
+
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
- 
             var infoPeri = db.rhueperi.Where(v => v.nrt_ruttr == Trabajador).ToList();
             var periodos = new List<GYCEmpresa.Models.detperiodo>();
             var rhueperi = new List<GYCEmpresa.Models.rhueperi>();
@@ -473,9 +583,24 @@ namespace GYCEmpresa.Controllers
             {
                 foreach (var p in infoPeri)
                 {
-                    rhueperi.Add(p);
+                    periodos.Add(new detperiodo
+                    {
+                        nrt_ruttr = Trabajador,
+                        ano_inicio = p.ano_inicio,
+                        ano_termino = p.ano_termino,
+                        dias_legal = p.dias_legal,
+                        dias_progr = 0,
+                        dias_contr = p.dias_contr,
+                        dias_admin = p.dias_admin,
+                        dias_faena = p.dias_faena,
+                        dias_especi = p.dias_especi,
+                        dias_otros = p.dias_otros,
+                        fec_trans = p.fec_trans.ToString("dd'-'MM'-'yyyy"),
+                        rut_empr = empresa
+                    });
+
                     año = p.ano_termino;
-                }
+                 }
                 if (año == 0)
                 {
                     año = DateTime.Now.Year;
@@ -524,21 +649,30 @@ namespace GYCEmpresa.Controllers
                     fec_trans = DateTime.Now.Date.ToString("dd'-'MM'-'yyyy"),
                     rut_empr = empresa
                 });
-            }
-            return Json(new
-            {
-                periodos
-            }, JsonRequestBehavior.AllowGet);
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = periodos;
+                oR.message = "Consulta exitosa";
+                }
+            return oR;
         }
-        public virtual JsonResult CtaCte(string Trabajador)
+        public Reply CtaCte(string token,string Trabajador)
         {
             List<ListCuentaCorriente> cta = new List<ListCuentaCorriente>();
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
 
             var ctacte = new List<ListCuentaCorriente>();
-
             var infoPeriodos = new List<GYCEmpresa.Models.rhueperi>();
             infoPeriodos = db.rhueperi.Where(i => i.nrt_ruttr == Trabajador).ToList();
-
             foreach (var p in infoPeriodos)
             {
                 ctacte.Add(new ListCuentaCorriente()
@@ -565,6 +699,9 @@ namespace GYCEmpresa.Controllers
             {
 
                 var sol = (db.rhuesolv.Where(x => x.nrt_ruttr == p.nrt_ruttr && x.nro_solici == p.nro_solici)).SingleOrDefault();
+                if(sol!= null)
+                {
+
                 if (sol.est_solici.Substring(0, 2) == "Ac")
                 {
                     ctacte.Add(new ListCuentaCorriente()
@@ -584,6 +721,7 @@ namespace GYCEmpresa.Controllers
                         tiporden = "X"
                     });
                 }
+                }
             }
             var infoComp = new List<GYCEmpresa.Models.rhueusos>();
             infoComp = db.rhueusos.Where(i => i.nrt_ruttr == Trabajador && i.tip_uso == "C").ToList();
@@ -591,6 +729,9 @@ namespace GYCEmpresa.Controllers
             foreach (var p in infoComp)
             {
                 var solco = (db.rhuesolc.Where(x => x.nrt_ruttr == p.nrt_ruttr && x.nro_solici == p.nro_solici)).SingleOrDefault();
+                if(solco != null)
+                {
+
                 if (solco.est_solici.Substring(0, 2) == "Ac")
                 {
                     ctacte.Add(new ListCuentaCorriente()
@@ -609,6 +750,7 @@ namespace GYCEmpresa.Controllers
                         tipouso = "C",
                         tiporden = "X"
                     });
+                }
                 }
             }
             var ctapas = new List<ListCuentaCorriente>(ctacte.OrderBy(x => x.periodo).ThenBy(x => x.finivac).ThenBy(x => x.finivac));
@@ -653,14 +795,27 @@ namespace GYCEmpresa.Controllers
 
             }
             var cuentacorriente = new List<ListCuentaCorriente>(ctacte.OrderByDescending(x => x.periodo).ThenBy(x => x.tiporden).ThenByDescending(x => x.finivac));
-            return Json(new
-            {
-                cuentacorriente
-            }, JsonRequestBehavior.AllowGet);
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = cuentacorriente;
+            oR.message = "Consulta exitosa";
+            return oR;
         }
 
-        public virtual JsonResult Utilizados(string Trabajador)
+        public Reply Utilizados(string token,string Trabajador)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
+
             string empresa = System.Web.HttpContext.Current.Session["sessionEmpresa"] as String;
             string usuario = System.Web.HttpContext.Current.Session["sessionUsuario"] as String;
             var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
@@ -670,38 +825,54 @@ namespace GYCEmpresa.Controllers
             foreach (var p in infoUsos)
             {
                 var sol = (db.rhuesolv.Where(x => x.nrt_ruttr == p.nrt_ruttr && x.nro_solici == p.nro_solici)).SingleOrDefault();
-                if (sol.est_solici.Substring(0, 2) == "Ac")
+                if (sol != null)
                 {
-                    usados.Add(new detusados()
+                    if (sol.est_solici.Substring(0, 2) == "Ac")
                     {
-                        nrt_ruttr = p.nrt_ruttr,
-                        fec_inivac = p.fec_inivac.ToString("dd'-'MM'-'yyyy"),
-                        fec_tervac = p.fec_tervac.ToString("dd'-'MM'-'yyyy"),
-                        fec_transa = p.fec_transa.ToString("dd'-'MM'-'yyyy"),
-                        ano_inicio = p.ano_inicio,
-                        ano_termino = p.ano_termino,
-                        tip_uso = p.tip_uso,
-                        nro_solici = p.nro_solici,
-                        dias_admin = p.dias_admin,
-                        dias_contr = p.dias_contr,
-                        dias_corri = p.dias_corri,
-                        dias_especi = p.dias_especi,
-                        dias_faena = p.dias_faena,
-                        dias_legal = p.dias_legal,
-                        dias_otros = p.dias_otros,
-                        dias_progr = p.dias_progr,
-                        rut_empr = p.rut_empr,
-                    });
+                        usados.Add(new detusados()
+                        {
+                            nrt_ruttr = p.nrt_ruttr,
+                            fec_inivac = p.fec_inivac.ToString("dd'-'MM'-'yyyy"),
+                            fec_tervac = p.fec_tervac.ToString("dd'-'MM'-'yyyy"),
+                            fec_transa = p.fec_transa.ToString("dd'-'MM'-'yyyy"),
+                            ano_inicio = p.ano_inicio,
+                            ano_termino = p.ano_termino,
+                            tip_uso = p.tip_uso,
+                            nro_solici = p.nro_solici,
+                            dias_admin = p.dias_admin,
+                            dias_contr = p.dias_contr,
+                            dias_corri = p.dias_corri,
+                            dias_especi = p.dias_especi,
+                            dias_faena = p.dias_faena,
+                            dias_legal = p.dias_legal,
+                            dias_otros = p.dias_otros,
+                            dias_progr = p.dias_progr,
+                            rut_empr = p.rut_empr,
+                        });
+                    }
                 }
             }
-            return Json(new
-            {
-                usados
-            }, JsonRequestBehavior.AllowGet);
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = usados;
+            oR.message = "Consulta exitosa";
+
+
+            return oR;
         }
-        public virtual JsonResult LicenciasMedicas(string Trabajador, string fecini, string fecfin)
+        public Reply LicenciasMedicas(string token,string Trabajador, string fecini, string fecfin)
         {
-            int resultado = 0;
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime finicio = Convert.ToDateTime(fecini);
             DateTime ftermino = Convert.ToDateTime(fecfin);
             //List<LICENCIAMEDICA> Licencias = new List<LICENCIAMEDICA>();
@@ -711,7 +882,6 @@ namespace GYCEmpresa.Controllers
 
             if (licen.Count != 0)
             {
-                resultado = 1;
                 foreach (var l in licen)
                 {
                     licencias.Add(new detlicencia()
@@ -727,14 +897,37 @@ namespace GYCEmpresa.Controllers
                     });
 
                 }
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = licencias;
+                oR.message = "Consulta exitosa";
             }
+            return oR;
+        }
+        public virtual JsonResult RegistroAsistencia(string token,string trabajador, DateTime finicio, DateTime ffinal)
+        {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            //if (ValidaToken(trabajador, token) == 0)
+            //{
+            //    oR.message = "Problema de acceso";
+            //    return oR;
+            //}
+            detcabezera cabezera = new detcabezera();
+            List<InformeFinal> asistencia = new List<InformeFinal>();
+            cabezera = Cabezera(trabajador, finicio, ffinal);
+            asistencia = Registro(trabajador, finicio, ffinal);
             return Json(new
-            {   resultado,
-                licencias
+            {
+                cabezera, asistencia
             }, JsonRequestBehavior.AllowGet);
         }
-        public virtual JsonResult Registro(string Trabajador, DateTime finicio, DateTime ffinal)
+        public List<InformeFinal> Registro(string Trabajador, DateTime finicio, DateTime ffinal)
         {
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -750,27 +943,33 @@ namespace GYCEmpresa.Controllers
             holguraent = 0;
             if (dettiemp != null)
                 holguraent = Convert.ToInt32(dettiemp.val_param);
-
-            var registro = Asistencia.InformeIndividual(empresa,Trabajador, finicio, ffinal, faena);
-            return Json(new
-            {
-                registro
-            }, JsonRequestBehavior.AllowGet);
+            List<InformeFinal> registro = new List<InformeFinal>();
+            registro = Asistencia.InformeIndividual(empresa,Trabajador, finicio, ffinal, faena);
+            return registro;
         }
-        public virtual JsonResult Cabezera(string Trabajador, DateTime finicio, DateTime ffinal)
+        public detcabezera Cabezera(string Trabajador, DateTime finicio, DateTime ffinal)
         {
+            detcabezera cabezera = new detcabezera();
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
-            var registro = Asistencia.CabezeraInforme(empresa, Trabajador, finicio, finicio);
-            return Json(new
-            {
-                registro
-            }, JsonRequestBehavior.AllowGet);
+            cabezera = Asistencia.CabezeraInforme(empresa, Trabajador, finicio, finicio);
+            return cabezera;
         }
-        public virtual JsonResult SolicitudPermiso(string Trabajador, string fechaInicio, string fechaFin, string hora1, string hora2)
+        public Reply SolicitudPermiso(string token,string Trabajador, string fechaInicio, string fechaFin, string hora1, string hora2)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -779,14 +978,26 @@ namespace GYCEmpresa.Controllers
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
             var permiso = Permiso.SolicitudPermisoInasistencia(Trabajador, fechaInicio, fechaFin, "0","0",empresa);
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = permiso;
+            oR.message = "Solicitud existosa";
 
-            return Json(new
-            {
-                permiso
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
         }
-        public virtual JsonResult ConsultaPermiso(string Trabajador, string fechaInicio, string fechaFin)
+        public Reply ConsultaPermiso(string token,string Trabajador, string fechaInicio, string fechaFin)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -830,11 +1041,12 @@ namespace GYCEmpresa.Controllers
 
                 });
             }
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = consulta;
+            oR.message = "Consulta exitosa";
 
-            return Json(new
-            {
-                consulta
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
         }
         private InfoRegistraDispositivo RegistraDispositivo(string Id_Dispositivo)
         {
@@ -876,8 +1088,19 @@ namespace GYCEmpresa.Controllers
                 }
             }
         }
-        public virtual JsonResult BuscaDocumentos(string Trabajador)
+        public Reply BuscaDocumentos(string token,string Trabajador)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe informacion";
+            if (ValidaToken(Trabajador, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -902,16 +1125,28 @@ namespace GYCEmpresa.Controllers
                     archivo = p.ARCHIVO
                 });
             }
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = documentos;
+            oR.message = "Consulta exitosa";
 
 
-            return Json(new
-            {
-                documentos
-            }, JsonRequestBehavior.AllowGet);
+
+            return oR;
         }
-        public int CambioClave(solcambio data)
+        public Reply CambioClave(solcambio data)
         {
-            int existe = 0;
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No se pudo cambiar la clave";
+            if (ValidaToken(data.rut, data.token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == data.rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -930,26 +1165,49 @@ namespace GYCEmpresa.Controllers
 
                 string comando = "SET [CONTRASEÑA] = '" + data.nueva + "' WHERE [RUT] = '" + data.rut + "'";
                 db.Database.ExecuteSqlCommand("UPDATE USUARIO_ANDROID " + comando);
-                existe = 1;
+                    oR.result = 1;
+                    oR.data = data.token;
+                    oR.data2 = null;
+                    oR.message = "Cambio de clave exitoso";
             }
             }
-            return existe;
+            return oR;
         }
-        public virtual JsonResult MotivoPermiso(string rut)
+        public Reply MotivoPermiso(string token,string rut)
         {
+            Reply oR = new Reply();
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = null;
+            oR.message = "Tabla se cargo";
+            if (ValidaToken(rut, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
             var Tipper = db.remepage.Where(x => x.nom_tabla == "PERMISO" && x.rut_empr == empresa).Select(x => new { Id = x.cod_param, Descripcion = x.gls_param }).ToList().OrderBy(x => x.Descripcion);
+            oR.data2 = Tipper;
 
-            return Json(new
-            {
-                Tipper
-            }, JsonRequestBehavior.AllowGet);
+            return oR;
         }
-        public virtual JsonResult Notificaciones(string rut)
+        public Reply Notificaciones(string token,string rut)
         {
+            Reply oR = new Reply();
+            oR.result = 0;
+            oR.data = null;
+            oR.data2 = null;
+            oR.message = "No existe información";
+            if (ValidaToken(rut, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
             int faena = cont.FAENA;
@@ -980,13 +1238,26 @@ namespace GYCEmpresa.Controllers
                     USUARIO1 = n.USUARIO1
                     });
             }
-            return Json(new
-            {
-                notifica
-            }, JsonRequestBehavior.AllowGet);
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = notifica;
+            oR.message = "Consulta exitosa";
+
+            return oR;
         }
-        public virtual JsonResult TipoDocumento(string rut)
+        public Reply TipoDocumento(string token,string rut)
         {
+            Reply oR = new Reply();
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = null;
+            oR.message = "Tabla se cargo";
+            if (ValidaToken(rut, token) == 0)
+            {
+                oR.message = "Problema de acceso";
+                return oR;
+            }
+
             DateTime hoy = DateTime.Now.Date;
             int[] tipo = new int[1000];
             string[] desc = new string[1000];
@@ -1040,14 +1311,113 @@ namespace GYCEmpresa.Controllers
                 });
                 }
             }
-            return Json(new
+            oR.data2 = tipodocum;
+            return oR;
+        }
+        public ActionResult RecuperaContraseña(string Usuario, string Empresa)
+        {
+            try
             {
-                tipodocum
-            }, JsonRequestBehavior.AllowGet);
+                var UltimaSolicitud = db2.LOG_MAIL.Where(x => x.USUARIO == Usuario).OrderByDescending(x => x.FECHA_ENVIO).Take(1).SingleOrDefault();
+                if (UltimaSolicitud != null)
+                {
+                    if (UltimaSolicitud.FECHA_ENVIO > DateTime.Now.AddMinutes(-5))
+                    {
+                        TimeSpan minutos = TimeSpan.Parse((UltimaSolicitud.FECHA_ENVIO - DateTime.Now.AddMinutes(-5)).ToString());
+                        ViewBag.Redireccionar = false;
+                        ViewBag.ErrorInfo = "La recuperacion ya fue solicitada. Espere " + minutos.Minutes + " minutos para intentar nuevamente";
+                        return View();
+                    }
+                }
+
+                var InfoUsuario = (from usuario in db.USUARIO
+                                   from cargo in db.CARGOEMPRESA
+                                   where usuario.RUT == cargo.RUT
+                                   && usuario.RUT == Usuario
+                                   && cargo.EMPRESA == Empresa
+                                   select new
+                                   {
+                                       cargo.CORREO,
+                                       cargo.NOMBRE
+                                   }).ToList();
+
+                if (InfoUsuario.Count > 0)
+                {
+                    Random rnd = new Random();
+                    string Pass = rnd.Next(1000, 9999).ToString();
+
+                    var ModPass = db.USUARIO.Where(x => x.RUT == Usuario).SingleOrDefault();
+                    ModPass.CONTRASENA = Pass;
+
+                    db.SaveChanges();
+
+
+                    String Firma = "<br /> Atte., <br /> Gestión y Competencias SPA.  <br/> <a href='https://www.gestionycompetencias.cl'>www.gestionycompetencias.cl</a> <br/> <img src='https://www.gycsol.cl/Content/img/logo-mail-gyc.jpg' alt='Gestion y Competencias'>";
+
+                    foreach (var usuario in InfoUsuario)
+                    {
+
+                        if (ModelState.IsValid)
+                        {
+                            var senderEmail = new MailAddress("plataforma@gycsol.cl", "Plataforma GYCSol");
+                            var receiverEmail = new MailAddress(usuario.CORREO, usuario.NOMBRE);
+                            var password = "Plataf0rma!!";
+                            var sub = "Recuperación de Contraseña";
+                            var body = "Estimados sr(a). " + usuario.NOMBRE + ": <br />Su nueva contraseña es: " + Pass + Firma;
+                            var smtp = new SmtpClient
+                            {
+                                Host = "gycsol.cl",
+                                Port = 25,
+                                EnableSsl = false,
+                                DeliveryMethod = SmtpDeliveryMethod.Network,
+                                 Credentials = new NetworkCredential(senderEmail.Address, password)
+                            };
+                            using (var mess = new MailMessage(senderEmail, receiverEmail)
+                            {
+                                Subject = sub,
+                                Body = body,
+                                SubjectEncoding = System.Text.Encoding.UTF8,
+                                BodyEncoding = System.Text.Encoding.UTF8,
+                                IsBodyHtml = true
+                            })
+                            {
+                                smtp.Send(mess);
+                            }
+                            //REGISTRO RECUPERACION Y ENVIO MAIL
+                            var IP = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                            if (string.IsNullOrEmpty(IP))
+                            {
+                                IP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                            }
+
+                            using (dbgyc2DataContext db = new dbgyc2DataContext())
+                            {
+                                db2.LOGMAIL(DateTime.Now, "NO MAC", IP, Usuario, usuario.CORREO, "RECUPERACION DE CONTRASEÑA USUARIO EMPRESA");
+                            }
+                        }
+
+                        ViewBag.Redireccionar = true;
+                        ViewBag.ErrorInfo = false;
+                        return View();
+                    }
+
+                }
+                else
+                {
+                    ViewBag.ErrorInfo = true;
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Some Error";
+            }
+            return View();
         }
 
 
- private class InfoRegistraDispositivo
+
+        private class InfoRegistraDispositivo
 {
     public int Id_dispositivo { get; set; }
     public string Token { get; set; }
@@ -1121,6 +1491,11 @@ namespace GYCEmpresa.Models
         public string idTrabajador { get; set; }
         public string touchless { get; set; }
         public string urlLogo { get; set; }
+        public string diaslicencia { get; set; }
+        public string diaspermiso { get; set; }
+        public string diasvacacion { get; set; }
+        public string diasfalla { get; set; }
+        public string diasdescanso { get; set; }
     }
 }
 namespace GYCEmpresa.Models

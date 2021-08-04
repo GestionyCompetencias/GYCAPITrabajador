@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpersonal data)
         {
-            JsonResult notificacion = APITrabajador.Notificaciones(data.rut);
+            Reply respuesta = APITrabajador.Notificaciones(data.token,data.rut);
             return Json(new
             {
-                notificacion
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }

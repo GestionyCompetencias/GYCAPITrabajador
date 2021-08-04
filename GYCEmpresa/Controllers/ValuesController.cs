@@ -32,7 +32,7 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult  Trabajador([Microsoft.AspNetCore.Mvc.FromBody] coneccion data)
         {
-            JsonResult trabajador = APITrabajador.ExistePersonaDetalle(data.usuario);
+            Reply trabajador = APITrabajador.ExistePersonaDetalle(data.usuario,data.clave);
             return Json(new
             {
                 trabajador

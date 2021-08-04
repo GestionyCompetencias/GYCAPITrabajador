@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solperiodos data)
         {
-            JsonResult periodos = APITrabajador.Periodos(data.rut);
+            Reply respuesta = APITrabajador.Periodos(data.token,data.rut);
             return Json(new
             {
-                periodos
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solperiodos
     {
+        public string token { get; set; }
         public string rut { get; set; }
     }
 }

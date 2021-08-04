@@ -34,10 +34,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpermiso data)
         {
-            JsonResult permiso = APITrabajador.SolicitudPermiso(data.rut, data.fecha1, data.fecha2,data.hora1,data.hora2);
+            Reply resultado = APITrabajador.SolicitudPermiso(data.token,data.rut, data.fecha1, data.fecha2,data.hora1,data.hora2);
             return Json(new
             {
-                permiso
+                resultado
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -49,6 +49,7 @@ namespace GYCEmpresa.Models
 
     public class solpermiso
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string fecha1 { get; set; }
         public string fecha2 { get; set; }

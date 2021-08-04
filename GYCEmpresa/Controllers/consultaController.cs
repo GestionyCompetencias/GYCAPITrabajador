@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solconsulta data)
         {
-            JsonResult consulta = APITrabajador.ConsultaPermiso(data.rut, data.fecha1, data.fecha2);
+            Reply respuesta = APITrabajador.ConsultaPermiso(data.token,data.rut, data.fecha1, data.fecha2);
             return Json(new
             {
-                consulta
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solconsulta
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string fecha1 { get; set; }
         public string fecha2 { get; set; }

@@ -33,10 +33,10 @@ namespace GYCEmpresa.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solcompensacion data)
         {
-            JsonResult compensacion = APITrabajador.SolicitudCompensacion(data.rut, data.dias);
+            Reply respuesta = APITrabajador.SolicitudCompensacion(data.token,data.rut, data.dias);
             return Json(new
             {
-                compensacion
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -48,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solcompensacion
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string dias { get; set; }
     }

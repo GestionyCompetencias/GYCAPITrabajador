@@ -21,10 +21,93 @@ namespace GYCEmpresa.App_Start
     {
         dbgycEntities3 db = new dbgycEntities3();
 
+        public int Edad(DateTime fecha)
+        {
+            int edad = 0;
+            DateTime hoy = DateTime.Now.Date;
+            if (fecha >= hoy) return edad;
+            edad = hoy.Year - fecha.Year;
+            if (hoy < fecha.AddYears(edad)) return --edad;
+            return edad;
+
+        }
+        public DateTime PrimerDia(DateTime fecha)
+        {
+            DateTime primero = Convert.ToDateTime("1900-01-01");
+            if (fecha == null) return primero;
+            string fecst;
+            int dia, mes, año;
+            mes = fecha.Month;
+            año = fecha.Year;
+            dia = 01;
+            fecst = año + "-" + mes + "-" + dia;
+            primero = Convert.ToDateTime(fecst);
+            return primero;
+
+        }
+        public DateTime UltimoDia(DateTime fecha)
+        {
+            DateTime ultimo = Convert.ToDateTime("1900-01-01");
+            if (fecha == null) return ultimo;
+            string fecst;
+            int dia, mes, año;
+            mes = fecha.Month;
+            año = fecha.Year;
+            if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)
+                dia = 31;
+            else
+                dia = 30;
+            if (mes == 2) dia = 28;
+            fecst = año + "-" + mes + "-" + dia;
+            ultimo = Convert.ToDateTime(fecst);
+            return ultimo;
+
+        }
+        public SelectList Meses()
+        {
+            var nr = new List<ListaMeses>();
+            nr.Add(new ListaMeses() { mes = 1, nombre = "Enero" });
+            nr.Add(new ListaMeses() { mes = 2, nombre = "Febrero" });
+            nr.Add(new ListaMeses() { mes = 3, nombre = "Marzo" });
+            nr.Add(new ListaMeses() { mes = 4, nombre = "Abril" });
+            nr.Add(new ListaMeses() { mes = 5, nombre = "Mayo" });
+            nr.Add(new ListaMeses() { mes = 6, nombre = "Junio" });
+            nr.Add(new ListaMeses() { mes = 7, nombre = "Julio" });
+            nr.Add(new ListaMeses() { mes = 8, nombre = "Agosto" });
+            nr.Add(new ListaMeses() { mes = 9, nombre = "Septiembre" });
+            nr.Add(new ListaMeses() { mes = 10, nombre = "Octubre" });
+            nr.Add(new ListaMeses() { mes = 11, nombre = "Noviembre" });
+            nr.Add(new ListaMeses() { mes = 12, nombre = "Diciembre" });
+
+            var MesesSL = new SelectList(nr, "Mes", "Nombre");
+
+            return MesesSL;
+
+        }
+        public SelectList Años()
+        {
+            var nr = new List<Listaanos>();
+            nr.Add(new Listaanos() { ano = 2020, nombre = "2020" });
+            nr.Add(new Listaanos() { ano = 2021, nombre = "2021" });
+            nr.Add(new Listaanos() { ano = 2022, nombre = "2022" });
+            nr.Add(new Listaanos() { ano = 2023, nombre = "2023" });
+            nr.Add(new Listaanos() { ano = 2024, nombre = "2024" });
+            nr.Add(new Listaanos() { ano = 2025, nombre = "2025" });
+            nr.Add(new Listaanos() { ano = 2026, nombre = "2026" });
+            nr.Add(new Listaanos() { ano = 2027, nombre = "2027" });
+            nr.Add(new Listaanos() { ano = 2028, nombre = "2028" });
+            nr.Add(new Listaanos() { ano = 2029, nombre = "2029" });
+            nr.Add(new Listaanos() { ano = 2030, nombre = "2030" });
+            nr.Add(new Listaanos() { ano = 2031, nombre = "2031" });
+
+            var AñosSL = new SelectList(nr, "Ano", "Nombre");
+            return AñosSL;
+        }
+
         public string Diasem(DateTime fecha)
         {
             string diatexto;
-            int dia = (int) fecha.DayOfWeek;
+            int dia = (int)fecha.DayOfWeek;
             diatexto = "Domingo";
             if (dia == 1) diatexto = "Lunes";
             if (dia == 2) diatexto = "Martes";
@@ -887,3 +970,15 @@ namespace GYCEmpresa.App_Start
 
 
 }
+public class ListaMeses
+{
+    public int mes { get; set; }
+    public string nombre { get; set; }
+}
+public class Listaanos
+{
+    public int ano { get; set; }
+    public string nombre { get; set; }
+}
+
+
