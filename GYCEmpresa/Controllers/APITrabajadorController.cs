@@ -1314,11 +1314,24 @@ namespace GYCEmpresa.Controllers
             oR.data2 = tipodocum;
             return oR;
         }
-        public ActionResult RecuperaContraseña(string Usuario, string Empresa)
+        public Reply RecuperaContraseña(string token, string Usuario)
         {
+            Reply oR = new Reply();
+            oR.result = 1;
+            oR.data = token;
+            oR.data2 = null;
+            oR.message = "Usuario sin contrato vigente.";
+            DateTime hoy = DateTime.Now.Date;
+            var cont = (db.CONTRATO.Where(x => x.PERSONA == Usuario && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            int faena = cont.FAENA;
+            string empresa = cont.EMPRESA;
+            if(cont!= null)
+            {
             try
             {
-                var UltimaSolicitud = db2.LOG_MAIL.Where(x => x.USUARIO == Usuario).OrderByDescending(x => x.FECHA_ENVIO).Take(1).SingleOrDefault();
+                    oR.message = "La recuperacion ya fue solicitada, espere un momento.";
+
+                    var UltimaSolicitud = db2.LOG_MAIL.Where(x => x.USUARIO == Usuario).OrderByDescending(x => x.FECHA_ENVIO).Take(1).SingleOrDefault();
                 if (UltimaSolicitud != null)
                 {
                     if (UltimaSolicitud.FECHA_ENVIO > DateTime.Now.AddMinutes(-5))
@@ -1326,51 +1339,50 @@ namespace GYCEmpresa.Controllers
                         TimeSpan minutos = TimeSpan.Parse((UltimaSolicitud.FECHA_ENVIO - DateTime.Now.AddMinutes(-5)).ToString());
                         ViewBag.Redireccionar = false;
                         ViewBag.ErrorInfo = "La recuperacion ya fue solicitada. Espere " + minutos.Minutes + " minutos para intentar nuevamente";
-                        return View();
+                        return oR;
                     }
                 }
+                    //var InfoUsuario = (from usuario in db.USUARIO_ANDROID
+                    //                   from cargo in db.CARGOEMPRESA
+                    //                   where usuario.RUT == cargo.RUT
+                    //                   && usuario.RUT == Usuario
+                    //                   && cargo.EMPRESA == empresa
+                    //                   select new
+                    //                   {
+                    //                       cargo.CORREO,
+                    //                       cargo.NOMBRE
+                    //                   }).ToList();
 
-                var InfoUsuario = (from usuario in db.USUARIO
-                                   from cargo in db.CARGOEMPRESA
-                                   where usuario.RUT == cargo.RUT
-                                   && usuario.RUT == Usuario
-                                   && cargo.EMPRESA == Empresa
-                                   select new
-                                   {
-                                       cargo.CORREO,
-                                       cargo.NOMBRE
-                                   }).ToList();
-
-                if (InfoUsuario.Count > 0)
-                {
-                    Random rnd = new Random();
-                    string Pass = rnd.Next(1000, 9999).ToString();
-
-                    var ModPass = db.USUARIO.Where(x => x.RUT == Usuario).SingleOrDefault();
-                    ModPass.CONTRASENA = Pass;
-
-                    db.SaveChanges();
-
-
-                    String Firma = "<br /> Atte., <br /> Gestión y Competencias SPA.  <br/> <a href='https://www.gestionycompetencias.cl'>www.gestionycompetencias.cl</a> <br/> <img src='https://www.gycsol.cl/Content/img/logo-mail-gyc.jpg' alt='Gestion y Competencias'>";
-
-                    foreach (var usuario in InfoUsuario)
+                    //if (InfoUsuario.Count > 0)
+                    var per = db.PERSONA.Where(x => x.RUT == Usuario).SingleOrDefault();
+                    if (per != null)
                     {
+                        string CORREO = per.CORREO;
+                        string NOMBRE = per.NOMBRE + " " + per.APATERNO + " " + per.AMATERNO;
+                        Random rnd = new Random();
+                        string Pass = rnd.Next(1000, 9999).ToString();
+
+                        var ModPass = db.USUARIO_ANDROID.Where(x => x.RUT == Usuario).SingleOrDefault();
+                        ModPass.CONTRASEÑA = Pass;
+                        db.SaveChanges();
+
+                        String Firma = "<br /> Atte., <br /> Gestión y Competencias SPA.  <br/> <a href='https://www.gestionycompetencias.cl'>www.gestionycompetencias.cl</a> <br/> <img src='https://www.gycsol.cl/Content/img/logo-mail-gyc.jpg' alt='Gestion y Competencias'>";
 
                         if (ModelState.IsValid)
                         {
                             var senderEmail = new MailAddress("plataforma@gycsol.cl", "Plataforma GYCSol");
-                            var receiverEmail = new MailAddress(usuario.CORREO, usuario.NOMBRE);
-                            var password = "Plataf0rma!!";
+                            var receiverEmail = new MailAddress(CORREO, NOMBRE);
+                            //var password = "Plataf0rma!!";
+                            var password = "4Ww8y7^j";
                             var sub = "Recuperación de Contraseña";
-                            var body = "Estimados sr(a). " + usuario.NOMBRE + ": <br />Su nueva contraseña es: " + Pass + Firma;
+                            var body = "Estimados sr(a). " + NOMBRE + ": <br />Su nueva contraseña es: " + Pass + Firma;
                             var smtp = new SmtpClient
                             {
                                 Host = "gycsol.cl",
                                 Port = 25,
                                 EnableSsl = false,
                                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                                 Credentials = new NetworkCredential(senderEmail.Address, password)
+                                Credentials = new NetworkCredential(senderEmail.Address, password)
                             };
                             using (var mess = new MailMessage(senderEmail, receiverEmail)
                             {
@@ -1392,27 +1404,29 @@ namespace GYCEmpresa.Controllers
 
                             using (dbgyc2DataContext db = new dbgyc2DataContext())
                             {
-                                db2.LOGMAIL(DateTime.Now, "NO MAC", IP, Usuario, usuario.CORREO, "RECUPERACION DE CONTRASEÑA USUARIO EMPRESA");
+                                db2.LOGMAIL(DateTime.Now, "NO MAC", IP, Usuario, CORREO, "RECUPERACION DE CONTRASEÑA USUARIO ");
                             }
                         }
-
-                        ViewBag.Redireccionar = true;
-                        ViewBag.ErrorInfo = false;
-                        return View();
+                        oR.result = 1;
+                        oR.message = "Se proceso exitosamente.";
+                        return oR;
                     }
-
-                }
-                else
-                {
-                    ViewBag.ErrorInfo = true;
-                    return View();
+                    else
+                    {
+                    oR.result = 1;
+                    oR.message = "Usuario no autorizado.";
+                    return oR;
                 }
             }
             catch (Exception)
             {
-                ViewBag.Error = "Some Error";
+                oR.result = 1;
+                oR.message = "Problemas con el correo";
+                return oR;
             }
-            return View();
+
+            }
+            return oR;
         }
 
 
