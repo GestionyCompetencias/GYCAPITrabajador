@@ -8,14 +8,14 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+//using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace GYCEmpresa.Controllers
 {
-    [Route("api/licencia")]
+    [Route("api/tipo")]
 
     //[ApiController]
-    public class licenciaController : Controller
+    public class tipoController : Controller
     {
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
@@ -23,7 +23,7 @@ namespace GYCEmpresa.Controllers
         public JsonResult Get()
         {
             respuesta respuesta = new respuesta();
-            respuesta.mensaje = "Consulta licencias medicas";
+            respuesta.mensaje = "Combo box tipos de documentos";
             return Json(new
             {
                 respuesta
@@ -31,26 +31,15 @@ namespace GYCEmpresa.Controllers
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] sollicencia data)
+        public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpersonal data)
         {
-            Reply respuesta = APITrabajador.LicenciasMedicas(data.token,data.rut, data.fecha1, data.fecha2);
+            Reply respuesta = APITrabajador.TipoDocumento(data.token,data.rut);
             return Json(new
             {
-               respuesta
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
     }
 
-}
-namespace GYCEmpresa.Models
-{
-
-    public class sollicencia
-    {
-        public string token { get; set; }
-        public string rut { get; set; }
-        public string fecha1 { get; set; }
-        public string fecha2 { get; set; }
-    }
 }

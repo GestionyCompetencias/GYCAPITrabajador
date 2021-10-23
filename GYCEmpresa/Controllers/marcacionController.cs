@@ -20,18 +20,23 @@ namespace GYCEmpresa.Controllers
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public string[] Get()
+        public JsonResult Get()
         {
-            return new string[] { "Hola ", "Informacion de marcaciones" };
+            respuesta respuesta = new respuesta();
+            respuesta.mensaje = "Consulta de marcaciones";
+            return Json(new
+            {
+                respuesta
+            }, JsonRequestBehavior.AllowGet);
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solmarcacion data)
         {
-            JsonResult marcas = APITrabajador.MarcacionesTrabajador(data.rut,data.fecha1,data.fecha2);
+            Reply respuesta = APITrabajador.MarcacionesTrabajador(data.token, data.rut,data.fecha1,data.fecha2);
             return Json(new
             {
-                marcas
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -43,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solmarcacion
     {
+        public string token { get; set; }
         public string rut { get; set; }
         public string fecha1 { get; set; }
         public string fecha2 { get; set; }

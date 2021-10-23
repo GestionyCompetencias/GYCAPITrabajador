@@ -20,18 +20,23 @@ namespace GYCEmpresa.Controllers
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public string[] Get()
+        public JsonResult Get()
         {
-            return new string[] { "Hola ", "Informacion personal" };
+            respuesta respuesta = new respuesta();
+            respuesta.mensaje = "Informacion personal";
+            return Json(new
+            {
+                respuesta
+            }, JsonRequestBehavior.AllowGet);
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solpersonal data)
         {
-            JsonResult trabajador = APITrabajador.ExistePersonaDetalle(data.rut);
+            Reply respuesta = APITrabajador.ExistePersonaDetalle(data.rut,data.token);
             return Json(new
             {
-                trabajador
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -43,6 +48,8 @@ namespace GYCEmpresa.Models
 
     public class solpersonal
     {
+        public string token { get; set; }
+
         public string rut { get; set; }
     }
 }

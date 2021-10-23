@@ -20,18 +20,23 @@ namespace GYCEmpresa.Controllers
         // Get API
         private APITrabajadorController APITrabajador = new APITrabajadorController();
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public string[] Get()
+        public JsonResult Get()
         {
-            return new string[] { "Hola ", "Periodos de vacaciones" };
+            respuesta respuesta = new respuesta();
+            respuesta.mensaje = "Consulta de periodos";
+            return Json(new
+            {
+                respuesta
+            }, JsonRequestBehavior.AllowGet);
         }
         // Get Api Id
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public JsonResult Post([Microsoft.AspNetCore.Mvc.FromBody] solperiodos data)
         {
-            JsonResult periodos = APITrabajador.Periodos(data.rut);
+            Reply respuesta = APITrabajador.Periodos(data.token,data.rut);
             return Json(new
             {
-                periodos
+                respuesta
             }, JsonRequestBehavior.AllowGet);
 
         }
@@ -43,6 +48,7 @@ namespace GYCEmpresa.Models
 
     public class solperiodos
     {
+        public string token { get; set; }
         public string rut { get; set; }
     }
 }

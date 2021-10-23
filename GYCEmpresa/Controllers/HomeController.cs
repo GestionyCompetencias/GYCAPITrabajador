@@ -21,6 +21,7 @@ namespace GYCEmpresa.Controllers
             public virtual JsonResult Index(solpersonal entrada)
         {
             string RUT = entrada.rut;
+            string token = entrada.token;
 
             if (RUT == null) return Json(new
             {
@@ -28,9 +29,7 @@ namespace GYCEmpresa.Controllers
             }, JsonRequestBehavior.AllowGet);
 
 
-            string token = "gyhhbjkk45kljkjlk4545kkkkk7777hghghghjghjghjghghjgh";
-            JsonResult trabajador = APITrabajador.ExistePersonaDetalle(RUT);
-            //var trabajador = APITrabajador.ExistePersonaDetalle(RUT);
+            Reply trabajador = APITrabajador.ExistePersonaDetalle(RUT,token);
             return Json(new
             {
                 trabajador
