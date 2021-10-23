@@ -3293,7 +3293,8 @@ namespace GYCEmpresa.Controllers
             t_salida = "";
 
             infoTurno = db.TurnoTrabajador.Where(x => x.RutTrabajador == rut && x.FechaTerminoTurno > finicio).ToList();
-            detContr = db.CONTRATO.Where(x => x.PERSONA == rut && x.EMPRESA== empresa  && x.FTERMNO > finicio && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR ==true && x.RECHAZADO ==false).SingleOrDefault();
+            var cont1 = db.CONTRATO.Where(x => x.PERSONA == rut && x.EMPRESA== empresa  && x.FTERMNO > finicio && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR ==true && x.RECHAZADO ==false).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0) detContr = cont1.First();
             int tratur = 1;
             if (infoTurno.Count() > 0)
             {

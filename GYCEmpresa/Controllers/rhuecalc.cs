@@ -536,7 +536,6 @@ namespace GYCEmpresa.Controllers
 
 
 
-            string sal;
             for (ind = 1; ind < nperi; ind++)
             {
                 if (peri_tra[ind].sald != peri_tra[ind].nuev)

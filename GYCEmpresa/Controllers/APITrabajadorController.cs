@@ -36,11 +36,12 @@ namespace GYCEmpresa.Controllers
             DateTime ffinal = f.UltimoDia(hoy);
             if (ffinal > hoy) ffinal = hoy;
             int dias_vac=0, dias_per=0, dias_lic=0, dias_ina=0, dias_des=0;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            if(cont != null)
+            CONTRATO cont =new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if(cont1.Count != 0)
             {
                 oR.message = "Clave invalida";
-
+                cont = cont1.First();
                 string empresa = cont.EMPRESA;
                 //var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave && x.HABILITADO == true)).SingleOrDefault();
                 var lst = (db.USUARIO_ANDROID.Where(x => x.RUT == trabajador && x.CONTRASEÑA == clave )).SingleOrDefault();
@@ -50,7 +51,7 @@ namespace GYCEmpresa.Controllers
 
                     if (Info.Token != "Error")
                     {
-                        //USUARIO_ANDROID usuarioToken = lst.First();
+                        //USUARIO_ANDROID usuarioToken = lst.First(); 
                         USUARIO_ANDROID usuarioToken = lst;
                         DateTime hoydia = DateTime.Now.Date;
                         usuarioToken.TOKEN = Info.Token;
@@ -60,8 +61,7 @@ namespace GYCEmpresa.Controllers
 
                         oR.result = 1;
                         string mensaje = "Token:" + Info.Token + "#Tipo:" + lst.TIPO.ToString();
-
-                        int id_trabajador = db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FIRMAEMPRESA== true && x.FIRMATRABAJADOR== true && x.RECHAZADO== false && x.FTERMNO >=hoydia ).Select(x => x.ID).SingleOrDefault();
+                        int id_trabajador = cont.ID;
                         mensaje = mensaje + "#IdTrabajador:" + id_trabajador + "#Touchless:" + usuarioToken.TOUCHLESS;
                         List<InformeFinal> asistencia = new List<InformeFinal>();
                         asistencia = Registro(trabajador, finicio, ffinal);
@@ -130,12 +130,26 @@ namespace GYCEmpresa.Controllers
             string CODIGO;
             DateTime FFERIADO, FSINDICATO;
             string RAZONSOCIAL=null;
+            CONTRATO cont = new CONTRATO();
+            FERIADOESPECIAL feri = new FERIADOESPECIAL();
+            SINDICATOTRABAJADOR sind = new SINDICATOTRABAJADOR();
             if (pers != null)
             {
 
-                var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-                var feri = (db.FERIADOESPECIAL.Where(x => x.nrt_ruttr == rut)).SingleOrDefault();
-                var sind = (db.SINDICATOTRABAJADOR.Where(x => x.nrt_ruttr == rut)).SingleOrDefault();
+                var cont1 = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+                if (cont1.Count!=0){
+                    cont = cont1.First();
+                }
+                var feri1 = (db.FERIADOESPECIAL.Where(x => x.nrt_ruttr == rut)).OrderByDescending(x => x.fec_feriado).ToList();
+                if(feri1.Count!= 0)
+                {
+                    feri = feri1.First();
+                }
+                var sind1 = (db.SINDICATOTRABAJADOR.Where(x => x.nrt_ruttr == rut)).OrderByDescending(x => x.fec_afili).ToList();
+                if (sind1.Count != 0)
+                {
+                    sind = sind1.First();
+                }
                 var ciud = (db.CIUDAD.Where(x => x.ID == pers.CIUDAD)).SingleOrDefault();
                 var turn = (db.TurnoTrabajador.Where(x => x.RutTrabajador == rut && hoy >= x.FechaInicioTurno && x.FechaTerminoTurno >= hoy)).ToList();
                 int TURNO = 1;
@@ -151,14 +165,15 @@ namespace GYCEmpresa.Controllers
                 }
                 DIAS = 0;
                 FFERIADO = hoy;
-                if (feri != null)
+                if (feri.correl !=0)
                 {
-                    DIAS = (int)feri.dias_especi;
+                    DIAS = 0;
+                    if(feri.dias_especi != null)  DIAS = (int)feri.dias_especi;
                     FFERIADO = (DateTime)feri.fec_feriado;
                 }
                 FSINDICATO = hoy;
                 CODIGO = null;
-                if (sind != null)
+                if (sind.correl  != 0)
                 {
                     FSINDICATO = (DateTime)sind.fec_afili;
                     CODIGO = sind.cod_sindi;
@@ -190,7 +205,7 @@ namespace GYCEmpresa.Controllers
                     turno = (int)u.IdTurno;
                 }
                 string TURNOD = db.Turno.Where(x => x.IdTurno == turno).Select(x => x.Descripcion).SingleOrDefault();
-                string SINDICATO = db.remepage.Where(x => x.nom_tabla == "SINDICATO" && x.cod_param == codsin).Select(x => x.gls_param).SingleOrDefault();
+                string SINDICATO = db.remepage.Where(x => x.nom_tabla == "SINDICATO" && x.cod_param == codsin && x.rut_empr == empresa).Select(x => x.gls_param).SingleOrDefault();
                 string TIPOCONTRATOD = db.TIPOCONTRATO.Where(x => x.ID == cont.TCONTRATO).Select(x => x.DESCRIPCION).SingleOrDefault();
                 string NACIONALIDADD = db.NACIONALIDAD.Where(x => x.ID == codnac).Select(x => x.PAIS).SingleOrDefault();
                 string FAENAD = db.FAENA.Where(x => x.ID == FAENAPAS).Select(x => x.DESCRIPCION).SingleOrDefault();
@@ -274,10 +289,12 @@ namespace GYCEmpresa.Controllers
             DateTime fecIni = Convert.ToDateTime(fechaInicio);
             DateTime fecFin = Convert.ToDateTime(fechaFin);
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
             string empresa = cont.EMPRESA;
-            if(cont != null)
+            if(cont1.Count != 0)
             {
+                cont = cont1.First();
                 oR.data2 = db.JVC_MARCACIONES(fecIni, fecFin, 0, trabajador, empresa);
                 oR.result = 1;
                 oR.data = token;
@@ -345,7 +362,7 @@ namespace GYCEmpresa.Controllers
                         dias_otros = Convert.ToString(v.dias_otros),
                         idsolicitud = Convert.ToString(nrosol)
                     }); ;
-            }
+                }
                 newsol.correl = nrosol;
                 newsol.nrt_ruttr = trabajador;
                 newsol.flg_tipo = "V";
@@ -361,6 +378,10 @@ namespace GYCEmpresa.Controllers
                 oR.data = token;
                 oR.data2 =vacacion;
                 oR.message = "Solicitud de vacaciones";
+            }
+            else
+            {
+                oR.message = "No tiene suficientes dias";
             }
             return oR;
         }
@@ -453,7 +474,9 @@ namespace GYCEmpresa.Controllers
             DateTime hoy = DateTime.Now.Date;
             DateTime finicio = f.PrimerDia(hoy);
             DateTime ffinal = f.UltimoDia(hoy);
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if(cont1.Count!=0) cont = cont1.First();
             Reply oR = new Reply();
             var compensacion = new List<GYCEmpresa.Models.detvacacion>();
             int solic = Convert.ToInt32(idsol);
@@ -464,7 +487,7 @@ namespace GYCEmpresa.Controllers
             oR.data = null;
             oR.data2 = null;
             oR.message = "Solicitud rechazada";
-            if (cont == null)
+            if (cont1.Count == 0)
             {
                 oR.message = "Falta contrato";
                 return oR;
@@ -567,24 +590,27 @@ namespace GYCEmpresa.Controllers
             var rhueperi = new List<GYCEmpresa.Models.rhueperi>();
             int año = 0;
             DateTime hoy = DateTime.Now;
-            var con = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            string empresa = con.EMPRESA;
-            DateTime ingreso = con.FINICIO;
-            string horario = "ADM";
-            rhuedias dias = db.rhuedias.Where(x => x.cod_horar == horario).SingleOrDefault();
-            int legal = 0;
-            int contr = 0;
-            int admin = 0;
-            int dfaena = 0;
-            int especi = 0;
-            int otros = 0;
-
-            if (con != null)
+            CONTRATO con = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
             {
+                con = cont1.First();
+                string empresa = con.EMPRESA;
+                DateTime ingreso = con.FINICIO;
+                string horario = "ADM";
+                rhuedias dias = db.rhuedias.Where(x => x.cod_horar == horario).SingleOrDefault();
+                int legal = 0;
+                int contr = 0;
+                int admin = 0;
+                int dfaena = 0;
+                int especi = 0;
+                int otros = 0;
+                int ind = 1;
                 foreach (var p in infoPeri)
                 {
                     periodos.Add(new detperiodo
                     {
+                        correl = ind,
                         nrt_ruttr = Trabajador,
                         ano_inicio = p.ano_inicio,
                         ano_termino = p.ano_termino,
@@ -598,7 +624,7 @@ namespace GYCEmpresa.Controllers
                         fec_trans = p.fec_trans.ToString("dd'-'MM'-'yyyy"),
                         rut_empr = empresa
                     });
-
+                    ind++;
                     año = p.ano_termino;
                  }
                 if (año == 0)
@@ -636,6 +662,7 @@ namespace GYCEmpresa.Controllers
                 else { otros = propor; propor = 0; }
                 periodos.Add(new detperiodo
                 {
+                    correl = ind,
                     nrt_ruttr = Trabajador,
                     ano_inicio = año,
                     ano_termino = año + 1,
@@ -822,6 +849,7 @@ namespace GYCEmpresa.Controllers
             var infoUsos = new List<GYCEmpresa.Models.rhueusos>();
             infoUsos = db.rhueusos.Where(i => i.nrt_ruttr == Trabajador && i.tip_uso == "V").ToList();
             var usados = new List<detusados>();
+            int cor = 0;
             foreach (var p in infoUsos)
             {
                 var sol = (db.rhuesolv.Where(x => x.nrt_ruttr == p.nrt_ruttr && x.nro_solici == p.nro_solici)).SingleOrDefault();
@@ -829,8 +857,10 @@ namespace GYCEmpresa.Controllers
                 {
                     if (sol.est_solici.Substring(0, 2) == "Ac")
                     {
+                        cor++;
                         usados.Add(new detusados()
                         {
+                            correl = cor,
                             nrt_ruttr = p.nrt_ruttr,
                             fec_inivac = p.fec_inivac.ToString("dd'-'MM'-'yyyy"),
                             fec_tervac = p.fec_tervac.ToString("dd'-'MM'-'yyyy"),
@@ -848,7 +878,7 @@ namespace GYCEmpresa.Controllers
                             dias_otros = p.dias_otros,
                             dias_progr = p.dias_progr,
                             rut_empr = p.rut_empr,
-                        });
+                        }) ;
                     }
                 }
             }
@@ -884,6 +914,10 @@ namespace GYCEmpresa.Controllers
             {
                 foreach (var l in licen)
                 {
+                    var Tiplic = db.TIPOLICENCIASMEDICAS.Where(x => x.ID == l.TIPO_LICENCIA ).SingleOrDefault();
+                    var Tipmed = db.TIPOMEDICO.Where(x => x.ID == l.TIPO_LICENCIA).SingleOrDefault();
+                    string lic = Tiplic.DESCRIPCION;
+                    string med = Tipmed.DESCRIPCION;
                     licencias.Add(new detlicencia()
                     {
                         TRABAJADOR = l.TRABAJADOR,
@@ -891,8 +925,9 @@ namespace GYCEmpresa.Controllers
                         FINICIO = l.FINICIO.ToString("dd'-'MM'-'yyyy"),
                         FTERMINO = l.FTERMINO.ToString("dd'-'MM'-'yyyy"),
                         DIAS = l.DIAS,
+                        TIPO_MEDICO = med,
                         //PDF = l.PDF,
-                        TIPOLICENCIASMEDICAS = l.TIPOLICENCIASMEDICAS,
+                        TIPO_LICENCIA = lic,
                         COMENTARIO = l.COMENTARIO
                     });
 
@@ -928,36 +963,46 @@ namespace GYCEmpresa.Controllers
         public List<InformeFinal> Registro(string Trabajador, DateTime finicio, DateTime ffinal)
         {
 
-            DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            int faena = cont.FAENA;
-            string empresa = cont.EMPRESA;
-
-            int holguraent;
-            remepage dettiemp = new remepage();
-            var infoferia = new List<GYCEmpresa.Models.remepage>();
-            infoferia = db.remepage.Where(x => x.nom_tabla == "FERIADOS" && x.fec_param >= finicio && x.fec_param <= ffinal).ToList();
-            var infoTiemp = new List<GYCEmpresa.Models.remepage>();
-            infoTiemp = db.remepage.Where(x => x.nom_tabla == "TIEMPO" && x.rut_empr == empresa).ToList();
-            dettiemp = infoTiemp.Where(x => "1         " == x.cod_param).SingleOrDefault();
-            holguraent = 0;
-            if (dettiemp != null)
-                holguraent = Convert.ToInt32(dettiemp.val_param);
             List<InformeFinal> registro = new List<InformeFinal>();
-            registro = Asistencia.InformeIndividual(empresa,Trabajador, finicio, ffinal, faena);
+            DateTime hoy = DateTime.Now.Date;
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
+                int faena = cont.FAENA;
+                string empresa = cont.EMPRESA;
+
+                int holguraent;
+                remepage dettiemp = new remepage();
+                var infoferia = new List<GYCEmpresa.Models.remepage>();
+                infoferia = db.remepage.Where(x => x.nom_tabla == "FERIADOS" && x.fec_param >= finicio && x.fec_param <= ffinal).ToList();
+                var infoTiemp = new List<GYCEmpresa.Models.remepage>();
+                infoTiemp = db.remepage.Where(x => x.nom_tabla == "TIEMPO" && x.rut_empr == empresa).ToList();
+                dettiemp = infoTiemp.Where(x => "1         " == x.cod_param).SingleOrDefault();
+                holguraent = 0;
+                if (dettiemp != null)
+                    holguraent = Convert.ToInt32(dettiemp.val_param);
+                registro = Asistencia.InformeIndividual(empresa, Trabajador, finicio, ffinal, faena);
+            }
             return registro;
         }
         public detcabezera Cabezera(string Trabajador, DateTime finicio, DateTime ffinal)
         {
             detcabezera cabezera = new detcabezera();
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            int faena = cont.FAENA;
-            string empresa = cont.EMPRESA;
-            cabezera = Asistencia.CabezeraInforme(empresa, Trabajador, finicio, finicio);
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
+                int faena = cont.FAENA;
+                string empresa = cont.EMPRESA;
+                cabezera = Asistencia.CabezeraInforme(empresa, Trabajador, finicio, finicio);
+            }
             return cabezera;
         }
-        public Reply SolicitudPermiso(string token,string Trabajador, string fechaInicio, string fechaFin, string hora1, string hora2)
+        public Reply SolicitudPermiso(string token,string Trabajador, string fechaInicio, string fechaFin, string hora1, string hora2,string motivo)
         {
             Reply oR = new Reply();
             oR.result = 0;
@@ -971,17 +1016,22 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            int faena = cont.FAENA;
-            string empresa = cont.EMPRESA;
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if(cont1.Count != 0)
+            {
+                cont = cont1.First();
+                int faena = cont.FAENA;
+                string empresa = cont.EMPRESA;
 
-            DateTime fecIni = Convert.ToDateTime(fechaInicio);
-            DateTime fecFin = Convert.ToDateTime(fechaFin);
-            var permiso = Permiso.SolicitudPermisoInasistencia(Trabajador, fechaInicio, fechaFin, "0","0",empresa);
-            oR.result = 1;
-            oR.data = token;
-            oR.data2 = permiso;
-            oR.message = "Solicitud existosa";
+                DateTime fecIni = Convert.ToDateTime(fechaInicio);
+                DateTime fecFin = Convert.ToDateTime(fechaFin);
+                var permiso = Permiso.SolicitudPermisoInasistencia(Trabajador, fechaInicio, fechaFin, hora1, hora2, empresa, motivo);
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = permiso;
+                oR.message = "Solicitud existosa";
+            }
 
             return oR;
         }
@@ -999,53 +1049,57 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            int faena = cont.FAENA;
-            string empresa = cont.EMPRESA;
-
-            DateTime fecIni = Convert.ToDateTime(fechaInicio);
-            DateTime fecFin = Convert.ToDateTime(fechaFin);
-            var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
-            string nom = persona.APATERNO + " " + persona.AMATERNO + " " + persona.NOMBRE;
-
-            var querySolicitudes = (from spi in db.SOLICITUDPERMISOINASISTENCIA
-                                    where spi.EMPRESA == empresa && spi.TRABAJADOR==Trabajador && ((spi.FINICIO >= fecIni && spi.FINICIO < fecFin) || (spi.FTERMINO >= fecIni && spi.FTERMINO < fecFin))
-                                    join per in db.PERSONA on spi.TRABAJADOR equals per.RUT
-                                    select new
-                                    {
-                                        ID = spi.ID,
-                                        FECHA = spi.FECHA,
-                                        FINICIO = spi.FINICIO,
-                                        FTERMINO = spi.FTERMINO,
-                                        AUTORIZAEMPRESA = spi.AUTORIZAEMPRESA,
-                                        AUTORIZATRABAJADOR = spi.AUTORIZATRABAJADOR,
-                                        COMPENSADO = spi.COMPENSADO,
-                                        TRABAJADOR = per.NOMBRE + " " + per.APATERNO + " " + per.AMATERNO,
-                                        MOTIVO = spi.OBSERVACION
-                                    }).ToList();
-
-            List<detconsulta> consulta = new List<detconsulta>();
-            foreach (var v in querySolicitudes)
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
             {
-                consulta.Add(new detconsulta()
+                cont = cont1.First();
+                int faena = cont.FAENA;
+                string empresa = cont.EMPRESA;
+
+                DateTime fecIni = Convert.ToDateTime(fechaInicio);
+                DateTime fecFin = Convert.ToDateTime(fechaFin);
+                var persona = (db.PERSONA.Where(x => x.RUT == Trabajador)).SingleOrDefault();
+                string nom = persona.APATERNO + " " + persona.AMATERNO + " " + persona.NOMBRE;
+
+                var querySolicitudes = (from spi in db.SOLICITUDPERMISOINASISTENCIA
+                                        where spi.EMPRESA == empresa && spi.TRABAJADOR == Trabajador && ((spi.FINICIO >= fecIni && spi.FINICIO < fecFin) || (spi.FTERMINO >= fecIni && spi.FTERMINO < fecFin))
+                                        join per in db.PERSONA on spi.TRABAJADOR equals per.RUT
+                                        select new
+                                        {
+                                            ID = spi.ID,
+                                            FECHA = spi.FECHA,
+                                            FINICIO = spi.FINICIO,
+                                            FTERMINO = spi.FTERMINO,
+                                            AUTORIZAEMPRESA = spi.AUTORIZAEMPRESA,
+                                            AUTORIZATRABAJADOR = spi.AUTORIZATRABAJADOR,
+                                            COMPENSADO = spi.COMPENSADO,
+                                            TRABAJADOR = per.NOMBRE + " " + per.APATERNO + " " + per.AMATERNO,
+                                            MOTIVO = spi.OBSERVACION
+                                        }).ToList();
+
+                List<detconsulta> consulta = new List<detconsulta>();
+                foreach (var v in querySolicitudes)
                 {
-                    ID = v.ID,
-                    FECHA = v.FECHA.ToString("dd'-'MM'-'yyyy"),
-                    FINICIO = v.FINICIO.ToString("dd'-'MM'-'yyyy"),
-                    FTERMINO = v.FTERMINO.ToString("dd'-'MM'-'yyyy"),
-                    AUTORIZAEMPRESA = v.AUTORIZAEMPRESA,
-                    AUTORIZATRABAJADOR = v.AUTORIZATRABAJADOR,
-                    COMPENSADO = v.COMPENSADO,
-                    TRABAJADOR = v.TRABAJADOR,
-                    MOTIVO = v.MOTIVO
+                    consulta.Add(new detconsulta()
+                    {
+                        ID = v.ID,
+                        FECHA = v.FECHA.ToString("dd'-'MM'-'yyyy"),
+                        FINICIO = v.FINICIO.ToString("dd'-'MM'-'yyyy"),
+                        FTERMINO = v.FTERMINO.ToString("dd'-'MM'-'yyyy"),
+                        AUTORIZAEMPRESA = v.AUTORIZAEMPRESA,
+                        AUTORIZATRABAJADOR = v.AUTORIZATRABAJADOR,
+                        COMPENSADO = v.COMPENSADO,
+                        TRABAJADOR = v.TRABAJADOR,
+                        MOTIVO = v.MOTIVO
 
-                });
+                    });
+                }
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = consulta;
+                oR.message = "Consulta exitosa";
             }
-            oR.result = 1;
-            oR.data = token;
-            oR.data2 = consulta;
-            oR.message = "Consulta exitosa";
-
             return oR;
         }
         private InfoRegistraDispositivo RegistraDispositivo(string Id_Dispositivo)
@@ -1102,7 +1156,11 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Trabajador && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
 
@@ -1114,6 +1172,7 @@ namespace GYCEmpresa.Controllers
             {
                 DateTime fec1 = (DateTime) p.FINICIO;
                 DateTime fec2 = (DateTime) p.FTERMINO;
+                string URL = f.DescargaArchivoS3(p.S3_BUCKET, p.S3_DIRECTORIO, p.S3_DOCUEMNTO);
                 documentos.Add(new detdoc()
                 {
                     trabajador = p.TRABAJADOR,
@@ -1122,16 +1181,15 @@ namespace GYCEmpresa.Controllers
                     descripcion = p.DESCRIPCION,
                     inicio = fec1.ToString("dd'-'MM'-'yyyy"),
                     termino = fec2.ToString("dd'-'MM'-'yyyy"),
-                    archivo = p.ARCHIVO
-                });
+                    archivo = p.ARCHIVO,
+                    url = URL
+                }); ;
             }
             oR.result = 1;
             oR.data = token;
             oR.data2 = documentos;
             oR.message = "Consulta exitosa";
-
-
-
+            }
             return oR;
         }
         public Reply CambioClave(solcambio data)
@@ -1148,7 +1206,11 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == data.rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == data.rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
 
@@ -1170,16 +1232,17 @@ namespace GYCEmpresa.Controllers
                     oR.data2 = null;
                     oR.message = "Cambio de clave exitoso";
             }
+                }
             }
             return oR;
         }
         public Reply MotivoPermiso(string token,string rut)
         {
             Reply oR = new Reply();
-            oR.result = 1;
+            oR.result = 0;
             oR.data = token;
             oR.data2 = null;
-            oR.message = "Tabla se cargo";
+            oR.message = "Problemas al cargar tabla";
             if (ValidaToken(rut, token) == 0)
             {
                 oR.message = "Problema de acceso";
@@ -1187,11 +1250,20 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
-            int faena = cont.FAENA;
-            string empresa = cont.EMPRESA;
-            var Tipper = db.remepage.Where(x => x.nom_tabla == "PERMISO" && x.rut_empr == empresa).Select(x => new { Id = x.cod_param, Descripcion = x.gls_param }).ToList().OrderBy(x => x.Descripcion);
-            oR.data2 = Tipper;
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
+                int faena = cont.FAENA;
+                string empresa = cont.EMPRESA;
+                var Tipper = db.remepage.Where(x => x.nom_tabla == "PERMISO" && x.rut_empr == empresa).Select(x => new { Id = x.cod_param, Descripcion = x.gls_param }).ToList().OrderBy(x => x.Descripcion);
+                oR.data2 = Tipper;
+                oR.result = 1;
+                oR.data = token;
+                oR.data2 = null;
+                oR.message = "Tabla se cargo  correctamente";
+            }
 
             return oR;
         }
@@ -1209,7 +1281,11 @@ namespace GYCEmpresa.Controllers
             }
 
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
             var noti = new List<GYCEmpresa.Models.NOTIFICACION>();
@@ -1242,6 +1318,7 @@ namespace GYCEmpresa.Controllers
             oR.data = token;
             oR.data2 = notifica;
             oR.message = "Consulta exitosa";
+            }
 
             return oR;
         }
@@ -1267,7 +1344,11 @@ namespace GYCEmpresa.Controllers
                 desc[ind] = null;
             }
 
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == rut && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
 
@@ -1312,6 +1393,7 @@ namespace GYCEmpresa.Controllers
                 }
             }
             oR.data2 = tipodocum;
+            }
             return oR;
         }
         public Reply RecuperaContraseña(string token, string Usuario)
@@ -1322,7 +1404,11 @@ namespace GYCEmpresa.Controllers
             oR.data2 = null;
             oR.message = "Usuario sin contrato vigente.";
             DateTime hoy = DateTime.Now.Date;
-            var cont = (db.CONTRATO.Where(x => x.PERSONA == Usuario && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).SingleOrDefault();
+            CONTRATO cont = new CONTRATO();
+            var cont1 = (db.CONTRATO.Where(x => x.PERSONA == Usuario && x.FTERMNO >= hoy && x.FIRMAEMPRESA == true && x.FIRMATRABAJADOR == true && x.RECHAZADO == false)).OrderByDescending(x => x.FINICIO).ToList();
+            if (cont1.Count != 0)
+            {
+                cont = cont1.First();
             int faena = cont.FAENA;
             string empresa = cont.EMPRESA;
             if(cont!= null)
@@ -1424,6 +1510,7 @@ namespace GYCEmpresa.Controllers
                 oR.message = "Problemas con el correo";
                 return oR;
             }
+                }
 
             }
             return oR;
@@ -1523,6 +1610,7 @@ namespace GYCEmpresa.Models
         public object inicio { get; set; }
         public string termino { get; set; }
         public object archivo { get; set; }
+        public object url { get; set; }
     }
 }
 namespace GYCEmpresa.Models
@@ -1637,13 +1725,12 @@ namespace GYCEmpresa.Models
         public string FINICIO { get; set; }
         public string FTERMINO { get; set; }
         public Nullable<int> DIAS { get; set; }
-        public int TIPO_LICENCIA { get; set; }
+        public string TIPO_LICENCIA { get; set; }
         public string COMENTARIO { get; set; }
-        public Nullable<int> TIPO_MEDICO { get; set; }
+        public string TIPO_MEDICO { get; set; }
         public byte[] PDF { get; set; }
-
-        public virtual TIPOLICENCIASMEDICAS TIPOLICENCIASMEDICAS { get; set; }
-        public virtual TIPOMEDICO TIPOMEDICO { get; set; }
+        public string TIPOLICENCIASMEDICAS { get; set; }
+        public string TIPOMEDICO { get; set; }
         public virtual PERSONA PERSONA { get; set; }
     }
 }

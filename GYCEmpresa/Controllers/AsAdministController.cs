@@ -1652,19 +1652,13 @@ namespace GYCEmpresa.Controllers
 
 
         [HttpPost]
-        public int SolicitudPermisoInasistencia(string Trabajador, string FechaInicio, string FechaTermino, string HoraInicio, string HoraTermino, string empresa)
+        public int SolicitudPermisoInasistencia(string Trabajador, string FechaInicio, string FechaTermino, string HoraInicio, string HoraTermino, string empresa,string motivo)
         {
-
-
-          
             DateTime FechaIni = Convert.ToDateTime(FechaInicio);
             DateTime FechaTer = Convert.ToDateTime(FechaTermino);
                     string PuedeRegistrar = db2.FILTRO_FECHAS_SOLICITUDES(Trabajador, FechaIni, FechaTer, "P").Select(x => x.Column1).SingleOrDefault();
-
-
-                  
-
-                    var Persona = (from persona in db.PERSONA
+            var motiv = db.remepage.Where(x => x.nom_tabla.Trim() == "INASIS" && x.rut_empr.Trim() == "1" && x.cod_param.Trim()==motivo.Trim()).SingleOrDefault();
+            var Persona = (from persona in db.PERSONA
                                    where persona.RUT == Trabajador
                                    select new
                                    {
@@ -1684,7 +1678,7 @@ namespace GYCEmpresa.Controllers
                     sol.ESTADO = 0;
                     sol.RECHAZADA = false;
                     sol.COMPENSADO = 0;
-                    sol.OBSERVACION = "0";
+                    sol.OBSERVACION = motiv.val_param;
                     db.SOLICITUDPERMISOINASISTENCIA.Add(sol);
                     db.SaveChanges();
 

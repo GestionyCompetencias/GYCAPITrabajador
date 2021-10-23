@@ -3654,6 +3654,7 @@
     <Folder Include="Views\tipo\" />
     <Folder Include="Views\utilizados\" />
     <Folder Include="Views\vacacion\" />
+    <Folder Include="Views\VerificaRUT\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
